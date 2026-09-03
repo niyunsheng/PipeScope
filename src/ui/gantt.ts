@@ -256,7 +256,8 @@ export function mountGantt(wrapper: HTMLElement, store: Store): void {
     const hoverMb = hit.op ? hit.op.mb : null;
     if (hit.op) {
       const o = hit.op;
-      tooltip.innerHTML = `<b>${o.kind === 'F' ? t('forward') : t('backward')} · ${t('microBatch')} ${o.mb}</b><br>${t('opWhere', { r: o.rank, c: o.chunk, s: o.stage })}<br>${fmt(o.start)} – ${fmt(o.end)} (${fmt(o.end - o.start)})`;
+      const tok = s.config.tokens ? ` · ${s.config.tokens[o.mb]} ${t('tokens')}` : '';
+      tooltip.innerHTML = `<b>${o.kind === 'F' ? t('forward') : t('backward')} · ${t('microBatch')} ${o.mb}</b>${tok}<br>${t('opWhere', { r: o.rank, c: o.chunk, s: o.stage })}<br>${fmt(o.start)} – ${fmt(o.end)} (${fmt(o.end - o.start)})`;
     } else if (hit.idle) {
       const i = hit.idle;
       tooltip.innerHTML = `<b>${i.reason === 'wait-recv' ? t('waitingRecv') : t('waitingSend')}</b> · rank ${i.rank}<br>${i.detail}<br>${fmt(i.start)} – ${fmt(i.end)} · ${t('waitDetail', { a: fmt(i.peerWait), b: fmt(i.transfer) })}`;

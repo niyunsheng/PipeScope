@@ -67,12 +67,32 @@ export interface SimConfig {
    * vanishes, leaving 17 (the default).
    */
   activationMultiplier?: number;
-  /** Total transformer layers in the model; layers per chunk = numLayers / (pp * vpp). Default 16. */
-  numLayers?: number;
-  /** Override for layers per virtual chunk (otherwise derived from numLayers). */
+  /** Transformer layers per virtual chunk; default 2. */
   layersPerChunk?: number;
+  /**
+   * Ratio of the linear-layer FLOP coefficient to the core-attention FLOP
+   * coefficient, k. Per layer, linear FLOPs ∝ k * s * h^2 and core-attention
+   * FLOPs ∝ s^2 * h (both up to the same constant), so linear : attention =
+   * k * h : s. GPT: 24 s h^2 vs 4 s^2 h -> k = 6 (default). The quadratic
+   * share at the reference length is a = s / (k * h + s) and compute of a
+   * micro-batch with r = tokens / seqLen scales as (1 - a) * r + a * r^2.
+   */
+  linearAttnRatio?: number;
   /** Static memory per rank in bytes (weights, grads, optimizer state); default 0. */
   baselineBytes?: number;
+  /**
+   * Tokens per micro-batch (length = microBatches). When set, compute time
+   * and activation memory of micro-batch i scale with tokens[i] / seqLen:
+   * memory linearly, compute as (1 - a) * r + a * r^2 where a is the share of
+   * attention FLOPs at the reference length (see `quadraticShare`).
+   * Unset = every micro-batch has seqLen tokens.
+   */
+  tokens?: number[];
+  /** How `tokens` were generated (UI / URL metadata; the simulator ignores these). */
+  lengthMode?: 'uniform' | 'lognormal' | 'custom';
+  lengthCv?: number;
+  lengthSeed?: number;
+  lengthOrder?: 'asis' | 'asc' | 'desc' | 'alternate';
 }
 
 /** A compute step: run F or B of `mb` through model chunk `chunk`. */

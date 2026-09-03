@@ -1,5 +1,6 @@
 import { mountControls, recompute } from './ui/controls.ts';
 import { mountGantt } from './ui/gantt.ts';
+import { mountLengthsInfo } from './ui/lengthsInfo.ts';
 import { t } from './ui/i18n.ts';
 import { mountMemory } from './ui/memory.ts';
 import { mountMetrics } from './ui/metrics.ts';
@@ -7,9 +8,9 @@ import { Store } from './ui/state.ts';
 import { readUrl, writeUrl } from './ui/url.ts';
 
 const initial = readUrl({
-  schedule: '1f1b',
+  schedule: 'interleaved-1f1b',
   pp: 4,
-  vpp: 1,
+  vpp: 2,
   microBatches: 8,
   forwardTime: 1,
   backwardTime: 2,
@@ -20,8 +21,12 @@ const initial = readUrl({
   microBatchSize: 1,
   dtypeBytes: 2,
   activationMultiplier: 17,
-  numLayers: 16,
-  baselineBytes: 0,
+  layersPerChunk: 2,
+  linearAttnRatio: 6,
+  lengthMode: 'uniform',
+  lengthCv: 0.05,
+  lengthSeed: 1,
+  lengthOrder: 'asis',
 });
 
 const store = new Store({
@@ -39,16 +44,18 @@ app.innerHTML = `
   <header class="topbar">
     <h1>PipeScope</h1>
     <span class="subtitle">${t('subtitle')}</span>
+    <span id="schedule-slot" class="segmented"></span>
     <div class="topbar-actions">
       <button id="share" class="btn" type="button">${t('share')}</button>
       <a class="btn" href="https://github.com/niyunsheng/PipeScope" target="_blank" rel="noopener">${t('star')}</a>
     </div>
   </header>
   <div class="layout">
-    <aside id="controls" class="sidebar"></aside>
+    <aside class="sidebar"><div id="controls"></div></aside>
     <main class="content">
       <section class="panel">
         <h2>${t('timeline')} <span class="hint-inline">${t('timelineHint')}</span></h2>
+        <div id="lengths-info"></div>
         <div id="gantt" class="canvas-wrap"></div>
       </section>
       <section class="panel">
@@ -73,7 +80,8 @@ shareBtn.addEventListener('click', async () => {
   }
 });
 
-mountControls(document.getElementById('controls')!, store);
+mountControls(document.getElementById('controls')!, document.getElementById('schedule-slot')!, store);
+mountLengthsInfo(document.getElementById('lengths-info')!, store);
 mountGantt(document.getElementById('gantt')!, store);
 mountMemory(document.getElementById('memory')!, store);
 mountMetrics(document.getElementById('metrics')!, store);

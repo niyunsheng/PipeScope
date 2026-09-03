@@ -18,15 +18,10 @@ export function mountMetrics(root: HTMLElement, store: Store): void {
       d.innerHTML = `<span class="tile-label">${label}</span><span class="tile-value">${value}</span><span class="tile-note">${note}</span>`;
       tiles.appendChild(d);
     };
-    const denom = s.config.pp * m.totalTime;
-    const waitRecv = m.ranks.reduce((a, r) => a + r.waitRecv, 0) / denom;
-    const waitSend = m.ranks.reduce((a, r) => a + r.waitSend, 0) / denom;
     const peak = m.ranks.reduce((a, b) => (b.peakMemory > a.peakMemory ? b : a));
     tile(t('ideal'), fmt(m.idealTime), t('idealNote'));
     tile(t('actual'), fmt(m.totalTime), t('actualNote', { d: fmt(m.totalTime - m.idealTime) }));
     tile(t('bubble'), pct(m.bubbleFraction), t('bubbleNote'));
-    tile(t('waitRecv'), pct(waitRecv), t('waitRecvNote'));
-    tile(t('waitSend'), pct(waitSend), t('waitSendNote'));
     tile(t('peak'), fmtBytes(peak.peakMemory), t('peakNote', { r: peak.rank }));
     root.appendChild(tiles);
 

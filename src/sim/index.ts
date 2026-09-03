@@ -9,7 +9,7 @@ import type { SimConfig, Trace } from './types.ts';
 export * from './types.ts';
 export { SCHEDULES, buildProgram } from './schedules/index.ts';
 export { runProgram } from './engine.ts';
-export { constantCost, inputBytes, activationBytes, layersPerChunk } from './cost.ts';
+export { constantCost, inputBytes, activationBytes, layersPerChunk, quadraticShare, computeScale } from './cost.ts';
 export type { CostModel } from './cost.ts';
 
 export function validateConfig(cfg: SimConfig): string[] {
@@ -22,8 +22,9 @@ export function validateConfig(cfg: SimConfig): string[] {
   if (!(cfg.backwardTime > 0)) errors.push('backward time must be > 0');
   if (!(cfg.p2pLatency >= 0)) errors.push('p2p latency must be ≥ 0');
   if (cfg.commModel !== undefined && cfg.commModel !== 'async' && cfg.commModel !== 'sync') errors.push('commModel must be async or sync');
-  if (cfg.numLayers !== undefined && cfg.layersPerChunk === undefined && cfg.numLayers % (cfg.pp * cfg.vpp) !== 0) {
-    errors.push(`layers (${cfg.numLayers}) must be divisible by pp × vpp = ${cfg.pp * cfg.vpp}`);
+  if (cfg.tokens !== undefined) {
+    if (cfg.tokens.length !== cfg.microBatches) errors.push(`tokens has ${cfg.tokens.length} entries, expected ${cfg.microBatches}`);
+    if (cfg.tokens.some((x) => !(x > 0))) errors.push('every micro-batch must have > 0 tokens');
   }
   const info = SCHEDULES[cfg.schedule];
   if (!info) errors.push(`unknown schedule: ${cfg.schedule}`);

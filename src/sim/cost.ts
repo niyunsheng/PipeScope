@@ -23,8 +23,7 @@ export function inputBytes(cfg: SimConfig): number {
 
 /** Transformer layers held by one virtual chunk. */
 export function layersPerChunk(cfg: SimConfig): number {
-  if (cfg.layersPerChunk !== undefined) return cfg.layersPerChunk;
-  return (cfg.numLayers ?? 16) / (cfg.pp * cfg.vpp);
+  return cfg.layersPerChunk ?? 2;
 }
 
 /** Total activation retained per (mb, chunk) between forward and backward. */
@@ -34,13 +33,35 @@ export function activationBytes(cfg: SimConfig): { input: number; intermediate: 
   return { input, intermediate: layersPerChunk(cfg) * (cfg.activationMultiplier ?? 17) * input };
 }
 
-/** v1: every micro-batch and chunk costs the same. */
+/**
+ * Quadratic (core-attention) share of per-layer compute at the reference
+ * length: s / (k * h + s), with k = linear / attention FLOP coefficient ratio.
+ */
+export function quadraticShare(cfg: Pick<SimConfig, 'seqLen' | 'hiddenSize' | 'linearAttnRatio'>): number {
+  const s = cfg.seqLen ?? 4096;
+  const h = cfg.hiddenSize ?? 4096;
+  const k = cfg.linearAttnRatio ?? 6;
+  return s / (k * h + s);
+}
+
+/** Relative compute cost of a micro-batch with `ratio` = tokens / seqLen. */
+export function computeScale(ratio: number, alpha: number): number {
+  return (1 - alpha) * ratio + alpha * ratio * ratio;
+}
+
+/**
+ * Default cost model. Every chunk costs the same; micro-batches scale with
+ * their token count when `cfg.tokens` is given (v2), otherwise all are equal.
+ */
 export function constantCost(cfg: SimConfig): CostModel {
   const act = activationBytes(cfg);
+  const L0 = cfg.seqLen ?? 4096;
+  const alpha = quadraticShare(cfg);
+  const ratio = (mb: number) => (cfg.tokens && cfg.tokens[mb] !== undefined ? cfg.tokens[mb] / L0 : 1);
   return {
-    compute: (kind) => (kind === 'F' ? cfg.forwardTime : cfg.backwardTime),
+    compute: (kind, mb) => (kind === 'F' ? cfg.forwardTime : cfg.backwardTime) * computeScale(ratio(mb), alpha),
     transfer: () => cfg.p2pLatency,
-    activationInput: () => act.input,
-    activationIntermediate: () => act.intermediate,
+    activationInput: (mb) => act.input * ratio(mb),
+    activationIntermediate: (mb) => act.intermediate * ratio(mb),
   };
 }

@@ -16,8 +16,10 @@ const KEYS: [keyof SimConfig, string][] = [
   ['microBatchSize', 'b'],
   ['dtypeBytes', 'dtype'],
   ['activationMultiplier', 'mult'],
-  ['numLayers', 'layers'],
-  ['baselineBytes', 'base'],
+  ['layersPerChunk', 'layers'],
+  ['linearAttnRatio', 'k'],
+  ['lengthCv', 'cv'],
+  ['lengthSeed', 'seed'],
 ];
 
 export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: number | null } {
@@ -27,6 +29,12 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
   if (schedule) config.schedule = schedule as ScheduleName;
   const comm = q.get('comm');
   if (comm === 'async' || comm === 'sync') config.commModel = comm as CommModel;
+  const mode = q.get('len');
+  if (mode === 'uniform' || mode === 'lognormal' || mode === 'custom') config.lengthMode = mode;
+  const order = q.get('order');
+  if (order === 'asis' || order === 'asc' || order === 'desc' || order === 'alternate') config.lengthOrder = order;
+  const toks = q.get('tokens');
+  if (toks) config.tokens = toks.split(',').map(Number).filter((x) => x > 0);
   for (const [key, name] of KEYS) {
     const v = q.get(name);
     if (v !== null && Number.isFinite(Number(v))) (config as unknown as Record<string, number>)[key] = Number(v);
@@ -39,6 +47,9 @@ export function writeUrl(config: SimConfig, selectedMb: number | null): void {
   const q = new URLSearchParams();
   q.set('schedule', config.schedule);
   q.set('comm', config.commModel ?? 'async');
+  q.set('len', config.lengthMode ?? 'uniform');
+  q.set('order', config.lengthOrder ?? 'asis');
+  if (config.lengthMode === 'custom' && config.tokens) q.set('tokens', config.tokens.join(','));
   for (const [key, name] of KEYS) {
     const v = config[key];
     if (v !== undefined) q.set(name, String(v));

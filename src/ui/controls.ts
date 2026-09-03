@@ -1,8 +1,10 @@
-import { SCHEDULES, activationBytes, inputBytes, layersPerChunk, simulate, validateConfig } from '../sim/index.ts';
+import { SCHEDULES, activationBytes, inputBytes, quadraticShare, simulate, validateConfig } from '../sim/index.ts';
+import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
 import { fmtBytes } from './format.ts';
 import { t } from './i18n.ts';
 import type { Key } from './i18n.ts';
-import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
+import { generateLengths, parseCustom } from './lengths.ts';
+import type { LengthMode, LengthOrder } from './lengths.ts';
 import type { Store } from './state.ts';
 
 interface NumField {
@@ -10,201 +12,280 @@ interface NumField {
   label: Key;
   min: number;
   step: number;
-  hint?: Key;
-  /** Multiply the typed value by this factor before storing (e.g. MB -> bytes). */
-  scale?: number;
-  /** Fieldset the field belongs to. */
-  group: 'pipeline' | 'memory';
 }
 
-const FIELDS: NumField[] = [
-  { key: 'pp', label: 'pp', min: 1, step: 1, hint: 'ppHint', group: 'pipeline' },
-  { key: 'vpp', label: 'vpp', min: 1, step: 1, hint: 'vppHint', group: 'pipeline' },
-  { key: 'microBatches', label: 'microBatches', min: 1, step: 1, hint: 'microBatchesHint', group: 'pipeline' },
-  { key: 'p2pLatency', label: 'p2pLatency', min: 0, step: 0.05, hint: 'p2pLatencyHint', group: 'pipeline' },
-  { key: 'forwardTime', label: 'forwardTime', min: 0.01, step: 0.1, hint: 'forwardTimeHint', group: 'pipeline' },
-  { key: 'backwardTime', label: 'backwardTime', min: 0.01, step: 0.1, hint: 'backwardTimeHint', group: 'pipeline' },
-  { key: 'seqLen', label: 'seqLen', min: 1, step: 1024, group: 'memory' },
-  { key: 'hiddenSize', label: 'hidden', min: 1, step: 512, group: 'memory' },
-  { key: 'microBatchSize', label: 'mbs', min: 1, step: 1, hint: 'mbsHint', group: 'memory' },
-  { key: 'activationMultiplier', label: 'multiplier', min: 0, step: 1, hint: 'multiplierHint', group: 'memory' },
-  { key: 'numLayers', label: 'layers', min: 1, step: 1, hint: 'layersHint', group: 'memory' },
-  { key: 'baselineBytes', label: 'baseline', min: 0, step: 1024, scale: 1024 ** 2, hint: 'baselineHint', group: 'memory' },
+/** Three-column grids; order here is the visual order. */
+const PIPELINE_FIELDS: NumField[] = [
+  { key: 'pp', label: 'pp', min: 1, step: 1 },
+  { key: 'vpp', label: 'vpp', min: 1, step: 1 },
+  { key: 'microBatches', label: 'microBatches', min: 1, step: 1 },
+  { key: 'p2pLatency', label: 'p2pLatency', min: 0, step: 0.05 },
+  { key: 'forwardTime', label: 'forwardTime', min: 0.01, step: 0.1 },
+  { key: 'backwardTime', label: 'backwardTime', min: 0.01, step: 0.1 },
+];
+const MODEL_FIELDS: NumField[] = [
+  { key: 'seqLen', label: 'seqLen', min: 1, step: 1024 },
+  { key: 'hiddenSize', label: 'hidden', min: 1, step: 512 },
+  { key: 'microBatchSize', label: 'mbs', min: 1, step: 1 },
+];
+/** Full-width rows: input with its explanation shown beside it. */
+const MODEL_ROWS: (NumField & { note: Key })[] = [
+  { key: 'activationMultiplier', label: 'multiplier', min: 0, step: 1, note: 'multiplierNote' },
+  { key: 'linearAttnRatio', label: 'linearAttn', min: 0, step: 1, note: 'linearAttnNote' },
 ];
 
 const SCHEDULE_DESC: Record<ScheduleName, Key> = { gpipe: 'schedGpipe', '1f1b': 'sched1f1b', 'interleaved-1f1b': 'schedInterleaved' };
-
-const DTYPES: { label: string; bytes: number }[] = [
-  { label: '1 Byte', bytes: 1 },
-  { label: '2 Bytes', bytes: 2 },
-  { label: '4 Bytes', bytes: 4 },
+const COMM_OPTIONS: { value: CommModel; label: Key; hint: Key }[] = [
+  { value: 'async', label: 'commAsync', hint: 'commAsyncHint' },
+  { value: 'sync', label: 'commSync', hint: 'commSyncHint' },
 ];
+const DTYPES = [1, 2, 4];
 
+/** Regenerate `tokens` from the length settings so it always matches microBatches / seqLen. */
+export function syncTokens(cfg: SimConfig, custom: number[]): SimConfig {
+  const mode: LengthMode = cfg.lengthMode ?? 'uniform';
+  if (mode === 'uniform') {
+    const { tokens: _t, ...rest } = cfg;
+    return rest;
+  }
+  const tokens = generateLengths({
+    n: cfg.microBatches,
+    mean: cfg.seqLen ?? 4096,
+    mode,
+    cv: cfg.lengthCv ?? 0,
+    seed: cfg.lengthSeed ?? 1,
+    order: cfg.lengthOrder ?? 'asis',
+    custom,
+  });
+  return { ...cfg, tokens };
+}
+
+/** Custom token list typed by the user (kept outside SimConfig; cycled into `tokens`). */
+let customTokens: number[] = [];
 
 /** Run the simulator for the store's config and publish trace or error. */
 export function recompute(store: Store): void {
-  const cfg = store.get().config;
-  const errors = validateConfig(cfg);
+  const synced = syncTokens(store.get().config, customTokens);
+  store.set({ config: synced });
+  const errors = validateConfig(synced);
   if (errors.length) {
-    store.set({ trace: null, error: errors.join('；') });
+    store.set({ trace: null, error: errors.join('; ') });
     return;
   }
   try {
-    const trace = simulate(cfg);
+    const trace = simulate(synced);
     store.set({ trace, error: null, selectedMb: null, hoverMb: null });
   } catch (e) {
     store.set({ trace: null, error: e instanceof Error ? e.message : String(e) });
   }
 }
 
-export function mountControls(root: HTMLElement, store: Store): void {
-  root.innerHTML = '';
-  const form = document.createElement('form');
-  form.className = 'controls';
-  form.addEventListener('submit', (e) => e.preventDefault());
+// ---- small DOM helpers -----------------------------------------------------
 
-  const fieldset = (legend: string, layout: 'rows' | 'grid2' | 'grid3'): { fs: HTMLFieldSetElement; grid: HTMLDivElement } => {
-    const fs = document.createElement('fieldset');
-    fs.className = 'group';
-    const lg = document.createElement('legend');
-    lg.textContent = legend;
-    fs.appendChild(lg);
-    const grid = document.createElement('div');
-    grid.className = layout;
-    fs.appendChild(grid);
-    form.appendChild(fs);
-    return { fs, grid };
-  };
+function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string): HTMLElementTagNameMap[K] {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
 
-  // Schedule + comm model
-  const schedGroup = fieldset(t('groupSchedule'), 'rows');
-  const schedWrap = document.createElement('label');
-  schedWrap.className = 'field row';
-  schedWrap.innerHTML = `<span>${t('schedule')}</span>`;
-  const select = document.createElement('select');
-  for (const info of Object.values(SCHEDULES)) {
-    const o = document.createElement('option');
-    o.value = info.name;
-    o.textContent = info.label;
-    select.appendChild(o);
-  }
-  schedWrap.appendChild(select);
-  schedGroup.grid.appendChild(schedWrap);
-  const desc = document.createElement('p');
-  desc.className = 'hint span2';
+function fieldset(parent: HTMLElement, legend: string): { fs: HTMLFieldSetElement; grid: HTMLDivElement } {
+  const fs = el('fieldset', 'group');
+  fs.appendChild(el('legend', undefined, legend));
+  const grid = el('div', 'grid3');
+  fs.appendChild(grid);
+  parent.appendChild(fs);
+  return { fs, grid };
+}
 
-  select.addEventListener('change', () => {
-    const schedule = select.value as ScheduleName;
-    const cfg = { ...store.get().config, schedule };
-    // Defaults per schedule: GPipe / 1F1B use vpp 1, interleaved uses vpp 2.
-    cfg.vpp = SCHEDULES[schedule].supportsVpp ? 2 : 1;
-    store.set({ config: cfg });
-    syncInputs();
-    recompute(store);
-  });
-
-  // Communication model selector
-  const commWrap = document.createElement('label');
-  commWrap.className = 'field row';
-  commWrap.innerHTML = `<span>${t('comm')}</span>`;
-  const commSelect = document.createElement('select');
-  const COMM_OPTIONS: { value: CommModel; label: string; hint: string }[] = [
-    { value: 'async', label: t('commAsync'), hint: t('commAsyncHint') },
-    { value: 'sync', label: t('commSync'), hint: t('commSyncHint') },
-  ];
-  for (const o of COMM_OPTIONS) {
-    const opt = document.createElement('option');
+function select<V extends string>(options: { value: V; label: string }[], onChange: (v: V) => void): HTMLSelectElement {
+  const sel = el('select');
+  for (const o of options) {
+    const opt = el('option', undefined, o.label);
     opt.value = o.value;
-    opt.textContent = o.label;
-    commSelect.appendChild(opt);
+    sel.appendChild(opt);
   }
-  commWrap.appendChild(commSelect);
-  schedGroup.grid.appendChild(commWrap);
-  schedGroup.fs.appendChild(desc);
-  const commHint = document.createElement('p');
-  commHint.className = 'hint';
-  schedGroup.fs.appendChild(commHint);
-  commSelect.addEventListener('change', () => {
-    store.set({ config: { ...store.get().config, commModel: commSelect.value as CommModel } });
-    syncInputs();
-    recompute(store);
+  sel.addEventListener('change', () => onChange(sel.value as V));
+  return sel;
+}
+
+function numberInput(min: number, step: number, onChange: (v: number) => void): HTMLInputElement {
+  const input = el('input');
+  input.type = 'number';
+  input.min = String(min);
+  input.step = String(step);
+  input.addEventListener('input', () => {
+    const v = Number(input.value);
+    if (Number.isFinite(v)) onChange(v);
   });
+  return input;
+}
 
-  // Numeric fields
-  const inputs = new Map<keyof SimConfig, HTMLInputElement>();
-  let dtypeSelect: HTMLSelectElement | null = null;
-  const actSummary = document.createElement('p');
-  actSummary.className = 'hint summary';
-  const groups = { pipeline: fieldset(t('groupPipeline'), 'grid2'), memory: fieldset(t('groupMemory'), 'grid3') };
-  for (const f of FIELDS) {
-    const wrap = document.createElement('label');
-    wrap.className = 'field';
-    if (f.hint) wrap.title = t(f.hint);
-    const span = document.createElement('span');
-    span.textContent = t(f.label);
-    wrap.appendChild(span);
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.min = String(f.min);
-    input.step = String(f.step);
-    input.addEventListener('input', () => {
-      const v = Number(input.value);
-      if (!Number.isFinite(v)) return;
-      store.set({ config: { ...store.get().config, [f.key]: v * (f.scale ?? 1) } });
-      syncInputs();
-      recompute(store);
-    });
-    wrap.appendChild(input);
-    groups[f.group].grid.appendChild(wrap);
-    inputs.set(f.key, input);
-    if (f.key === 'microBatchSize') {
-      const dw = document.createElement('label');
-      dw.className = 'field';
-      dw.innerHTML = `<span>${t('dtype')}</span>`;
-      dtypeSelect = document.createElement('select');
-      for (const d of DTYPES) {
-        const o = document.createElement('option');
-        o.value = String(d.bytes);
-        o.textContent = d.label;
-        dtypeSelect.appendChild(o);
-      }
-      dtypeSelect.addEventListener('change', () => {
-        store.set({ config: { ...store.get().config, dtypeBytes: Number(dtypeSelect!.value) } });
-        syncInputs();
-        recompute(store);
-      });
-      dw.appendChild(dtypeSelect);
-      groups.memory.grid.appendChild(dw);
-    }
-  }
-  groups.memory.fs.appendChild(actSummary);
+/** Label above input (grid cell). */
+function cell(label: string, control: HTMLElement): HTMLLabelElement {
+  const wrap = el('label', 'field');
+  wrap.appendChild(el('span', undefined, label));
+  wrap.appendChild(control);
+  return wrap;
+}
 
-  const errorBox = document.createElement('p');
-  errorBox.className = 'error';
-  form.appendChild(errorBox);
+/** Full-width row: label | control | note (note wraps to the available width). */
+function row(label: string, control: HTMLElement, note: HTMLElement): HTMLLabelElement {
+  const wrap = el('label', 'field row-note span3');
+  wrap.appendChild(el('span', undefined, label));
+  wrap.appendChild(control);
+  wrap.appendChild(note);
+  return wrap;
+}
+
+// ---- panel -----------------------------------------------------------------
+
+/**
+ * Mount the parameter panel into `root` and the schedule selector into
+ * `scheduleSlot` (the top bar). Explanations are rendered next to the inputs.
+ */
+export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, store: Store): void {
+  root.innerHTML = '';
+  const form = el('form', 'controls');
+  form.addEventListener('submit', (e) => e.preventDefault());
   root.appendChild(form);
 
-  function syncInputs(): void {
-    const cfg = store.get().config;
-    select.value = cfg.schedule;
-    desc.textContent = t(SCHEDULE_DESC[cfg.schedule]);
-    const comm = cfg.commModel ?? 'async';
-    commSelect.value = comm;
-    commHint.textContent = COMM_OPTIONS.find((o) => o.value === comm)?.hint ?? '';
-    for (const [key, input] of inputs) {
-      const v = cfg[key];
-      const f = FIELDS.find((x) => x.key === key)!;
-      if (document.activeElement !== input) input.value = v === undefined ? '' : String((v as number) / (f.scale ?? 1));
-      input.disabled = key === 'vpp' && !SCHEDULES[cfg.schedule].supportsVpp;
-    }
-    if (dtypeSelect) dtypeSelect.value = String(cfg.dtypeBytes ?? 2);
-    const act = activationBytes(cfg);
-    actSummary.textContent = t('summary', { input: fmtBytes(inputBytes(cfg)), layers: layersPerChunk(cfg), act: fmtBytes(act.input + act.intermediate) });
+  const update = (patch: Partial<SimConfig>): void => {
+    store.set({ config: { ...store.get().config, ...patch } });
+    recompute(store);
+  };
+
+  // Schedule selector lives in the top bar as a segmented control.
+  const schedButtons = new Map<ScheduleName, HTMLButtonElement>();
+  for (const info of Object.values(SCHEDULES)) {
+    const b = el('button', undefined, info.label);
+    b.type = 'button';
+    b.addEventListener('click', () => update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1 }));
+    schedButtons.set(info.name, b);
+    scheduleSlot.appendChild(b);
+  }
+  const schedDesc = el('p', 'note');
+
+  // Pipeline
+  const pipe = fieldset(form, t('groupPipeline'));
+  const inputs = new Map<keyof SimConfig, HTMLInputElement>();
+  const addNum = (grid: HTMLElement, f: NumField) => {
+    const input = numberInput(f.min, f.step, (v) => update({ [f.key]: v }));
+    inputs.set(f.key, input);
+    grid.appendChild(cell(t(f.label), input));
+  };
+  pipe.fs.insertBefore(schedDesc, pipe.grid);
+  for (const f of PIPELINE_FIELDS) addNum(pipe.grid, f);
+  const commSelect = select(
+    COMM_OPTIONS.map((o) => ({ value: o.value, label: t(o.label) })),
+    (v: CommModel) => update({ commModel: v }),
+  );
+  const commNote = el('p', 'note');
+  pipe.grid.appendChild(row(t('comm'), commSelect, commNote));
+
+  // Model
+  const model = fieldset(form, t('groupMemory'));
+  for (const f of MODEL_FIELDS) addNum(model.grid, f);
+  const dtypeSelect = select(
+    DTYPES.map((b) => ({ value: String(b), label: `${b} Byte${b > 1 ? 's' : ''}` })),
+    (v: string) => update({ dtypeBytes: Number(v) }),
+  );
+  model.grid.appendChild(cell(t('dtype'), dtypeSelect));
+  addNum(model.grid, { key: 'layersPerChunk', label: 'layers', min: 0, step: 1 });
+  const modelNote = el('p', 'note span3');
+  model.grid.appendChild(modelNote);
+  const rowNotes = new Map<keyof SimConfig, HTMLParagraphElement>();
+  for (const f of MODEL_ROWS) {
+    const input = numberInput(f.min, f.step, (v) => update({ [f.key]: v }));
+    inputs.set(f.key, input);
+    const note = el('p', 'note');
+    rowNotes.set(f.key, note);
+    model.grid.appendChild(row(t(f.label), input, note));
   }
 
-  store.subscribe((s) => {
-    errorBox.textContent = s.error ?? '';
-    desc.textContent = t(SCHEDULE_DESC[s.config.schedule]);
+  // Micro-batch lengths
+  const len = fieldset(form, t('groupLengths'));
+  const modeSelect = select<LengthMode>(
+    [
+      { value: 'uniform', label: t('modeUniform') },
+      { value: 'lognormal', label: t('modeLognormal') },
+      { value: 'custom', label: t('modeCustom') },
+    ],
+    (v) => update({ lengthMode: v }),
+  );
+  const modeCell = cell(t('lengthMode'), modeSelect);
+  modeCell.classList.add('span2');
+  len.grid.appendChild(modeCell);
+  const cvInput = numberInput(0, 0.01, (v) => update({ lengthCv: v }));
+  const cvCell = cell(t('cv'), cvInput);
+  len.grid.appendChild(cvCell);
+  const seedInput = numberInput(0, 1, (v) => update({ lengthSeed: v }));
+  const seedCell = cell(t('seed'), seedInput);
+  len.grid.appendChild(seedCell);
+  const orderSelect = select<LengthOrder>(
+    [
+      { value: 'asis', label: t('orderAsis') },
+      { value: 'asc', label: t('orderAsc') },
+      { value: 'desc', label: t('orderDesc') },
+      { value: 'alternate', label: t('orderAlternate') },
+    ],
+    (v) => update({ lengthOrder: v }),
+  );
+  const orderCell = cell(t('order'), orderSelect);
+  orderCell.classList.add('span2');
+  len.grid.appendChild(orderCell);
+  const customInput = el('textarea');
+  customInput.rows = 2;
+  customInput.placeholder = '4096, 2048, 8192, ...';
+  customInput.addEventListener('input', () => {
+    customTokens = parseCustom(customInput.value);
+    recompute(store);
   });
-  syncInputs();
+  const customCell = cell(t('customLabel'), customInput);
+  customCell.classList.add('span3');
+  len.grid.appendChild(customCell);
+  const lenNote = el('p', 'note span3');
+  len.grid.appendChild(lenNote);
+
+  const errorBox = el('p', 'error');
+  form.appendChild(errorBox);
+
+  if ((store.get().config.lengthMode ?? 'uniform') === 'custom' && store.get().config.tokens) {
+    customTokens = store.get().config.tokens!.slice();
+    customInput.value = customTokens.join(', ');
+  }
+
+  const setValue = (input: HTMLInputElement, v: number | undefined) => {
+    if (document.activeElement !== input) input.value = v === undefined ? '' : String(v);
+  };
+
+  store.subscribe((s) => {
+    const cfg = s.config;
+    errorBox.textContent = s.error ?? '';
+    for (const [name, b] of schedButtons) b.classList.toggle('active', name === cfg.schedule);
+    schedDesc.textContent = t(SCHEDULE_DESC[cfg.schedule]);
+    for (const [key, input] of inputs) {
+      setValue(input, cfg[key] as number | undefined);
+      input.disabled = key === 'vpp' && !SCHEDULES[cfg.schedule].supportsVpp;
+    }
+    const comm = cfg.commModel ?? 'async';
+    commSelect.value = comm;
+    commNote.textContent = t(COMM_OPTIONS.find((o) => o.value === comm)!.hint);
+    dtypeSelect.value = String(cfg.dtypeBytes ?? 2);
+    const act = activationBytes(cfg);
+    modelNote.textContent = `${t('noteTimeUnit')} ${t('noteInput', { input: fmtBytes(inputBytes(cfg)), act: fmtBytes(act.input + act.intermediate), layers: cfg.layersPerChunk ?? 2, mult: cfg.activationMultiplier ?? 17 })}`;
+    rowNotes.get('activationMultiplier')!.textContent = t('multiplierNote');
+    rowNotes.get('linearAttnRatio')!.textContent = t('linearAttnNote', { alpha: quadraticShare(cfg).toFixed(3) });
+    const mode = cfg.lengthMode ?? 'uniform';
+    modeSelect.value = mode;
+    orderSelect.value = cfg.lengthOrder ?? 'asis';
+    setValue(cvInput, cfg.lengthCv ?? 0);
+    setValue(seedInput, cfg.lengthSeed ?? 1);
+    cvCell.hidden = mode !== 'lognormal';
+    seedCell.hidden = mode !== 'lognormal';
+    customCell.hidden = mode !== 'custom';
+    orderCell.hidden = mode === 'uniform';
+    lenNote.hidden = mode === 'uniform';
+    lenNote.textContent = mode === 'custom' ? t('customHint') : t('noteLengths', { alpha: quadraticShare(cfg).toFixed(3) });
+  });
 }
