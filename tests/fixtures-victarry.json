@@ -1,0 +1,12434 @@
+{
+"1f1b-pp4-vpp1-m8": {
+"pp": 4,
+"vpp": 1,
+"m": 8,
+"total": 33.0,
+"ops": [
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 0.0,
+"end": 1.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 10.0,
+"end": 12.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 13.0,
+"end": 15.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 8.0,
+"end": 10.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 11.0,
+"end": 13.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 6.0,
+"end": 8.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 9.0,
+"end": 11.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 12.0,
+"end": 14.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 15.0,
+"end": 17.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 4.0,
+"end": 6.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 7.0,
+"end": 9.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 10.0,
+"end": 12.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 13.0,
+"end": 15.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+}
+]
+},
+"1f1b-pp8-vpp1-m16": {
+"pp": 8,
+"vpp": 1,
+"m": 16,
+"total": 69.0,
+"ops": [
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 0.0,
+"end": 1.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 62.0,
+"end": 64.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 65.0,
+"end": 67.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 35.0,
+"end": 36.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 36.0,
+"end": 38.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 38.0,
+"end": 39.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 39.0,
+"end": 41.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 41.0,
+"end": 42.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 44.0,
+"end": 45.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 47.0,
+"end": 48.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 48.0,
+"end": 50.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 54.0,
+"end": 56.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 57.0,
+"end": 59.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 60.0,
+"end": 62.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 63.0,
+"end": 65.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 12.0,
+"end": 14.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 15.0,
+"end": 17.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 35.0,
+"end": 36.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 36.0,
+"end": 38.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 38.0,
+"end": 39.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 39.0,
+"end": 41.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 41.0,
+"end": 42.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 44.0,
+"end": 45.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 47.0,
+"end": 48.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 48.0,
+"end": 50.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 50.0,
+"end": 51.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 54.0,
+"end": 56.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 57.0,
+"end": 59.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 10.0,
+"end": 12.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 13.0,
+"end": 15.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 51.0,
+"end": 52.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 8.0,
+"end": 10.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 11.0,
+"end": 13.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 52.0,
+"end": 53.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+}
+]
+},
+"interleave-pp4-vpp2-m8": {
+"pp": 4,
+"vpp": 2,
+"m": 8,
+"total": 57.0,
+"ops": [
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 0.0,
+"end": 1.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 12.0,
+"end": 14.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 15.0,
+"end": 17.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 36.0,
+"end": 38.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 39.0,
+"end": 41.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 10.0,
+"end": 12.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 13.0,
+"end": 15.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 8.0,
+"end": 10.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 11.0,
+"end": 13.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+}
+]
+},
+"interleave-pp4-vpp3-m12": {
+"pp": 4,
+"vpp": 3,
+"m": 12,
+"total": 117.0,
+"ops": [
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 0.0,
+"end": 1.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 0,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 1,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 2,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 3,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 0,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 1,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 2,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 3,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 4,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 5,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 6,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 7,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 51.0,
+"end": 52.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 54.0,
+"end": 55.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 4,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 57.0,
+"end": 58.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 5,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 60.0,
+"end": 61.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 6,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 63.0,
+"end": 64.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 7,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 66.0,
+"end": 67.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 69.0,
+"end": 70.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 8,
+"kind": "F",
+"start": 72.0,
+"end": 73.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 73.0,
+"end": 75.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 9,
+"kind": "F",
+"start": 75.0,
+"end": 76.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 76.0,
+"end": 78.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 10,
+"kind": "F",
+"start": 78.0,
+"end": 79.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 79.0,
+"end": 81.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 11,
+"kind": "F",
+"start": 81.0,
+"end": 82.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 82.0,
+"end": 84.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 84.0,
+"end": 86.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 8,
+"kind": "B",
+"start": 90.0,
+"end": 92.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 9,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 10,
+"kind": "B",
+"start": 96.0,
+"end": 98.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 2,
+"mb": 11,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 111.0,
+"end": 113.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 113.0,
+"end": 115.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 115.0,
+"end": 117.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 0,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 1,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 2,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 3,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 0,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 1,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 2,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 3,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 4,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 5,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 6,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 7,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 51.0,
+"end": 52.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 4,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 54.0,
+"end": 55.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 5,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 57.0,
+"end": 58.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 6,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 60.0,
+"end": 61.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 7,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 63.0,
+"end": 64.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 66.0,
+"end": 67.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 69.0,
+"end": 70.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 72.0,
+"end": 73.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 73.0,
+"end": 75.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 8,
+"kind": "F",
+"start": 75.0,
+"end": 76.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 76.0,
+"end": 78.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 9,
+"kind": "F",
+"start": 78.0,
+"end": 79.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 79.0,
+"end": 81.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 10,
+"kind": "F",
+"start": 81.0,
+"end": 82.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 82.0,
+"end": 84.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 11,
+"kind": "F",
+"start": 84.0,
+"end": 85.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 85.0,
+"end": 87.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 8,
+"kind": "B",
+"start": 88.0,
+"end": 90.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 9,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 10,
+"kind": "B",
+"start": 94.0,
+"end": 96.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 2,
+"mb": 11,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 111.0,
+"end": 113.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 113.0,
+"end": 115.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 0,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 1,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 2,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 0,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 3,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 1,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 2,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 3,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 4,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 5,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 6,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 4,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 7,
+"kind": "F",
+"start": 52.0,
+"end": 53.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 5,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 55.0,
+"end": 56.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 6,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 58.0,
+"end": 59.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 7,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 61.0,
+"end": 62.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 62.0,
+"end": 64.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 64.0,
+"end": 65.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 65.0,
+"end": 67.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 67.0,
+"end": 68.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 68.0,
+"end": 70.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 70.0,
+"end": 71.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 71.0,
+"end": 73.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 73.0,
+"end": 74.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 74.0,
+"end": 76.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 76.0,
+"end": 77.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 77.0,
+"end": 79.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 8,
+"kind": "F",
+"start": 79.0,
+"end": 80.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 80.0,
+"end": 82.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 9,
+"kind": "F",
+"start": 82.0,
+"end": 83.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 83.0,
+"end": 85.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 10,
+"kind": "F",
+"start": 85.0,
+"end": 86.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 8,
+"kind": "B",
+"start": 86.0,
+"end": 88.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 11,
+"kind": "F",
+"start": 88.0,
+"end": 89.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 9,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 10,
+"kind": "B",
+"start": 92.0,
+"end": 94.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 2,
+"mb": 11,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 2,
+"stage": 6,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 111.0,
+"end": 113.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 0,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 0,
+"kind": "B",
+"start": 12.0,
+"end": 14.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 1,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 1,
+"kind": "B",
+"start": 15.0,
+"end": 17.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 2,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 2,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 3,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 3,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 35.0,
+"end": 36.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 36.0,
+"end": 38.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 38.0,
+"end": 39.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 39.0,
+"end": 41.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 41.0,
+"end": 42.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 44.0,
+"end": 45.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 4,
+"kind": "F",
+"start": 47.0,
+"end": 48.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 4,
+"kind": "B",
+"start": 48.0,
+"end": 50.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 5,
+"kind": "F",
+"start": 50.0,
+"end": 51.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 5,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 6,
+"kind": "F",
+"start": 53.0,
+"end": 54.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 6,
+"kind": "B",
+"start": 54.0,
+"end": 56.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 7,
+"kind": "F",
+"start": 56.0,
+"end": 57.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 7,
+"kind": "B",
+"start": 57.0,
+"end": 59.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 59.0,
+"end": 60.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 60.0,
+"end": 62.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 62.0,
+"end": 63.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 63.0,
+"end": 65.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 65.0,
+"end": 66.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 66.0,
+"end": 68.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 68.0,
+"end": 69.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 69.0,
+"end": 71.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 71.0,
+"end": 72.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 72.0,
+"end": 74.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 74.0,
+"end": 75.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 75.0,
+"end": 77.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 77.0,
+"end": 78.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 78.0,
+"end": 80.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 80.0,
+"end": 81.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 81.0,
+"end": 83.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 8,
+"kind": "F",
+"start": 83.0,
+"end": 84.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 8,
+"kind": "B",
+"start": 84.0,
+"end": 86.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 9,
+"kind": "F",
+"start": 86.0,
+"end": 87.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 9,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 10,
+"kind": "F",
+"start": 89.0,
+"end": 90.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 10,
+"kind": "B",
+"start": 90.0,
+"end": 92.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 11,
+"kind": "F",
+"start": 92.0,
+"end": 93.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 2,
+"mb": 11,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 3,
+"stage": 7,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+}
+]
+},
+"interleave-pp8-vpp2-m16": {
+"pp": 8,
+"vpp": 2,
+"m": 16,
+"total": 117.0,
+"ops": [
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 0.0,
+"end": 1.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 52.0,
+"end": 53.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 55.0,
+"end": 56.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 58.0,
+"end": 59.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 61.0,
+"end": 62.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 62.0,
+"end": 64.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 66.0,
+"end": 68.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 68.0,
+"end": 70.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 72.0,
+"end": 74.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 75.0,
+"end": 77.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 78.0,
+"end": 80.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 81.0,
+"end": 83.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 84.0,
+"end": 86.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 90.0,
+"end": 92.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 96.0,
+"end": 98.0
+},
+{
+"rank": 0,
+"stage": 8,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 111.0,
+"end": 113.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 113.0,
+"end": 115.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 115.0,
+"end": 117.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 41.0,
+"end": 42.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 44.0,
+"end": 45.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 47.0,
+"end": 48.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 48.0,
+"end": 50.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 50.0,
+"end": 51.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 53.0,
+"end": 54.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 54.0,
+"end": 56.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 56.0,
+"end": 57.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 57.0,
+"end": 59.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 59.0,
+"end": 60.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 60.0,
+"end": 62.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 62.0,
+"end": 63.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 63.0,
+"end": 65.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 65.0,
+"end": 67.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 73.0,
+"end": 75.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 76.0,
+"end": 78.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 79.0,
+"end": 81.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 82.0,
+"end": 84.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 85.0,
+"end": 87.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 88.0,
+"end": 90.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 94.0,
+"end": 96.0
+},
+{
+"rank": 1,
+"stage": 9,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 111.0,
+"end": 113.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 113.0,
+"end": 115.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 52.0,
+"end": 53.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 55.0,
+"end": 56.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 58.0,
+"end": 59.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 61.0,
+"end": 62.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 62.0,
+"end": 64.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 64.0,
+"end": 65.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 65.0,
+"end": 67.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 68.0,
+"end": 70.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 71.0,
+"end": 73.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 74.0,
+"end": 76.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 77.0,
+"end": 79.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 80.0,
+"end": 82.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 83.0,
+"end": 85.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 86.0,
+"end": 88.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 92.0,
+"end": 94.0
+},
+{
+"rank": 2,
+"stage": 10,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 2,
+"stage": 2,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 111.0,
+"end": 113.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 35.0,
+"end": 36.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 36.0,
+"end": 38.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 38.0,
+"end": 39.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 39.0,
+"end": 41.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 41.0,
+"end": 42.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 44.0,
+"end": 45.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 47.0,
+"end": 48.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 48.0,
+"end": 50.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 50.0,
+"end": 51.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 53.0,
+"end": 54.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 54.0,
+"end": 56.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 56.0,
+"end": 57.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 57.0,
+"end": 59.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 59.0,
+"end": 60.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 60.0,
+"end": 62.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 62.0,
+"end": 63.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 63.0,
+"end": 65.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 65.0,
+"end": 66.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 66.0,
+"end": 68.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 68.0,
+"end": 69.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 69.0,
+"end": 71.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 72.0,
+"end": 74.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 75.0,
+"end": 77.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 78.0,
+"end": 80.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 81.0,
+"end": 83.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 84.0,
+"end": 86.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 90.0,
+"end": 92.0
+},
+{
+"rank": 3,
+"stage": 11,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 3,
+"stage": 3,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 109.0,
+"end": 111.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 51.0,
+"end": 52.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 54.0,
+"end": 55.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 57.0,
+"end": 58.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 60.0,
+"end": 61.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 63.0,
+"end": 64.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 66.0,
+"end": 67.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 69.0,
+"end": 70.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 72.0,
+"end": 73.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 73.0,
+"end": 75.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 76.0,
+"end": 78.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 79.0,
+"end": 81.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 82.0,
+"end": 84.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 85.0,
+"end": 87.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 88.0,
+"end": 90.0
+},
+{
+"rank": 4,
+"stage": 12,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 4,
+"stage": 4,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 107.0,
+"end": 109.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 17.0,
+"end": 18.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 52.0,
+"end": 53.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 55.0,
+"end": 56.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 58.0,
+"end": 59.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 61.0,
+"end": 62.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 62.0,
+"end": 64.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 64.0,
+"end": 65.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 65.0,
+"end": 67.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 67.0,
+"end": 68.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 68.0,
+"end": 70.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 70.0,
+"end": 71.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 71.0,
+"end": 73.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 73.0,
+"end": 74.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 74.0,
+"end": 76.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 76.0,
+"end": 77.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 77.0,
+"end": 79.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 80.0,
+"end": 82.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 83.0,
+"end": 85.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 86.0,
+"end": 88.0
+},
+{
+"rank": 5,
+"stage": 13,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 5,
+"stage": 5,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 105.0,
+"end": 107.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 18.0,
+"end": 20.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 20.0,
+"end": 21.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 21.0,
+"end": 23.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 23.0,
+"end": 24.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 24.0,
+"end": 26.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 26.0,
+"end": 27.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 27.0,
+"end": 29.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 29.0,
+"end": 30.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 30.0,
+"end": 32.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 32.0,
+"end": 33.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 33.0,
+"end": 35.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 35.0,
+"end": 36.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 36.0,
+"end": 38.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 38.0,
+"end": 39.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 39.0,
+"end": 41.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 41.0,
+"end": 42.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 42.0,
+"end": 44.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 44.0,
+"end": 45.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 45.0,
+"end": 47.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 47.0,
+"end": 48.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 48.0,
+"end": 50.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 50.0,
+"end": 51.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 51.0,
+"end": 53.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 53.0,
+"end": 54.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 54.0,
+"end": 56.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 56.0,
+"end": 57.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 57.0,
+"end": 59.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 59.0,
+"end": 60.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 60.0,
+"end": 62.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 62.0,
+"end": 63.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 63.0,
+"end": 65.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 65.0,
+"end": 66.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 66.0,
+"end": 68.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 68.0,
+"end": 69.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 69.0,
+"end": 71.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 71.0,
+"end": 72.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 72.0,
+"end": 74.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 74.0,
+"end": 75.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 75.0,
+"end": 77.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 77.0,
+"end": 78.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 78.0,
+"end": 80.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 80.0,
+"end": 81.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 81.0,
+"end": 83.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 84.0,
+"end": 86.0
+},
+{
+"rank": 6,
+"stage": 14,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+},
+{
+"rank": 6,
+"stage": 6,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 103.0,
+"end": 105.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 9.0,
+"end": 10.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 11.0,
+"end": 12.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 14.0,
+"end": 15.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 8,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 9,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 10,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 11,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 12,
+"kind": "F",
+"start": 51.0,
+"end": 52.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 13,
+"kind": "F",
+"start": 54.0,
+"end": 55.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 14,
+"kind": "F",
+"start": 57.0,
+"end": 58.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 15,
+"kind": "F",
+"start": 60.0,
+"end": 61.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 8,
+"kind": "F",
+"start": 63.0,
+"end": 64.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 8,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 9,
+"kind": "F",
+"start": 66.0,
+"end": 67.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 9,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 10,
+"kind": "F",
+"start": 69.0,
+"end": 70.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 10,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 11,
+"kind": "F",
+"start": 72.0,
+"end": 73.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 11,
+"kind": "B",
+"start": 73.0,
+"end": 75.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 12,
+"kind": "F",
+"start": 75.0,
+"end": 76.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 12,
+"kind": "B",
+"start": 76.0,
+"end": 78.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 13,
+"kind": "F",
+"start": 78.0,
+"end": 79.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 13,
+"kind": "B",
+"start": 79.0,
+"end": 81.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 14,
+"kind": "F",
+"start": 81.0,
+"end": 82.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 14,
+"kind": "B",
+"start": 82.0,
+"end": 84.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 15,
+"kind": "F",
+"start": 84.0,
+"end": 85.0
+},
+{
+"rank": 7,
+"stage": 15,
+"chunk": 1,
+"mb": 15,
+"kind": "B",
+"start": 85.0,
+"end": 87.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 8,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 9,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 10,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 11,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 12,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 13,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 14,
+"kind": "B",
+"start": 99.0,
+"end": 101.0
+},
+{
+"rank": 7,
+"stage": 7,
+"chunk": 0,
+"mb": 15,
+"kind": "B",
+"start": 101.0,
+"end": 103.0
+}
+]
+},
+"interleave-pp2-vpp4-m8": {
+"pp": 2,
+"vpp": 4,
+"m": 8,
+"total": 99.0,
+"ops": [
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 0.0,
+"end": 1.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 0,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 1,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 0,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 1,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 8.0,
+"end": 9.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 0,
+"kind": "B",
+"start": 10.0,
+"end": 12.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 12.0,
+"end": 13.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 1,
+"kind": "B",
+"start": 13.0,
+"end": 15.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 15.0,
+"end": 16.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 0,
+"kind": "B",
+"start": 16.0,
+"end": 18.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 18.0,
+"end": 19.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 1,
+"kind": "B",
+"start": 19.0,
+"end": 21.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 2,
+"kind": "F",
+"start": 21.0,
+"end": 22.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 22.0,
+"end": 24.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 3,
+"kind": "F",
+"start": 24.0,
+"end": 25.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 25.0,
+"end": 27.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 2,
+"kind": "F",
+"start": 27.0,
+"end": 28.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 28.0,
+"end": 30.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 3,
+"kind": "F",
+"start": 30.0,
+"end": 31.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 31.0,
+"end": 33.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 33.0,
+"end": 34.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 2,
+"kind": "B",
+"start": 34.0,
+"end": 36.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 36.0,
+"end": 37.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 3,
+"kind": "B",
+"start": 37.0,
+"end": 39.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 39.0,
+"end": 40.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 2,
+"kind": "B",
+"start": 40.0,
+"end": 42.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 42.0,
+"end": 43.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 3,
+"kind": "B",
+"start": 43.0,
+"end": 45.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 4,
+"kind": "F",
+"start": 45.0,
+"end": 46.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 46.0,
+"end": 48.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 5,
+"kind": "F",
+"start": 48.0,
+"end": 49.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 49.0,
+"end": 51.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 4,
+"kind": "F",
+"start": 51.0,
+"end": 52.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 52.0,
+"end": 54.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 5,
+"kind": "F",
+"start": 54.0,
+"end": 55.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 55.0,
+"end": 57.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 57.0,
+"end": 58.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 4,
+"kind": "B",
+"start": 58.0,
+"end": 60.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 60.0,
+"end": 61.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 5,
+"kind": "B",
+"start": 61.0,
+"end": 63.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 63.0,
+"end": 64.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 4,
+"kind": "B",
+"start": 64.0,
+"end": 66.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 66.0,
+"end": 67.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 5,
+"kind": "B",
+"start": 67.0,
+"end": 69.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 6,
+"kind": "F",
+"start": 69.0,
+"end": 70.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 70.0,
+"end": 72.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 7,
+"kind": "F",
+"start": 72.0,
+"end": 73.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 73.0,
+"end": 75.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 6,
+"kind": "F",
+"start": 75.0,
+"end": 76.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 76.0,
+"end": 78.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 7,
+"kind": "F",
+"start": 78.0,
+"end": 79.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 79.0,
+"end": 81.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 6,
+"kind": "B",
+"start": 82.0,
+"end": 84.0
+},
+{
+"rank": 0,
+"stage": 6,
+"chunk": 3,
+"mb": 7,
+"kind": "B",
+"start": 85.0,
+"end": 87.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 6,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 0,
+"stage": 4,
+"chunk": 2,
+"mb": 7,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 0,
+"stage": 2,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+},
+{
+"rank": 0,
+"stage": 0,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 97.0,
+"end": 99.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "F",
+"start": 1.0,
+"end": 2.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "F",
+"start": 2.0,
+"end": 3.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 0,
+"kind": "F",
+"start": 3.0,
+"end": 4.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 1,
+"kind": "F",
+"start": 4.0,
+"end": 5.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 0,
+"kind": "F",
+"start": 5.0,
+"end": 6.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 1,
+"kind": "F",
+"start": 6.0,
+"end": 7.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 0,
+"kind": "F",
+"start": 7.0,
+"end": 8.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 0,
+"kind": "B",
+"start": 8.0,
+"end": 10.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 1,
+"kind": "F",
+"start": 10.0,
+"end": 11.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 1,
+"kind": "B",
+"start": 11.0,
+"end": 13.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "F",
+"start": 13.0,
+"end": 14.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 0,
+"kind": "B",
+"start": 14.0,
+"end": 16.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "F",
+"start": 16.0,
+"end": 17.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 1,
+"kind": "B",
+"start": 17.0,
+"end": 19.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 2,
+"kind": "F",
+"start": 19.0,
+"end": 20.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 0,
+"kind": "B",
+"start": 20.0,
+"end": 22.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 3,
+"kind": "F",
+"start": 22.0,
+"end": 23.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 1,
+"kind": "B",
+"start": 23.0,
+"end": 25.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 2,
+"kind": "F",
+"start": 25.0,
+"end": 26.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 0,
+"kind": "B",
+"start": 26.0,
+"end": 28.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 3,
+"kind": "F",
+"start": 28.0,
+"end": 29.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 1,
+"kind": "B",
+"start": 29.0,
+"end": 31.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 2,
+"kind": "F",
+"start": 31.0,
+"end": 32.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 2,
+"kind": "B",
+"start": 32.0,
+"end": 34.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 3,
+"kind": "F",
+"start": 34.0,
+"end": 35.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 3,
+"kind": "B",
+"start": 35.0,
+"end": 37.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "F",
+"start": 37.0,
+"end": 38.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 2,
+"kind": "B",
+"start": 38.0,
+"end": 40.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "F",
+"start": 40.0,
+"end": 41.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 3,
+"kind": "B",
+"start": 41.0,
+"end": 43.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 4,
+"kind": "F",
+"start": 43.0,
+"end": 44.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 2,
+"kind": "B",
+"start": 44.0,
+"end": 46.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 5,
+"kind": "F",
+"start": 46.0,
+"end": 47.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 3,
+"kind": "B",
+"start": 47.0,
+"end": 49.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 4,
+"kind": "F",
+"start": 49.0,
+"end": 50.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 2,
+"kind": "B",
+"start": 50.0,
+"end": 52.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 5,
+"kind": "F",
+"start": 52.0,
+"end": 53.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 3,
+"kind": "B",
+"start": 53.0,
+"end": 55.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 4,
+"kind": "F",
+"start": 55.0,
+"end": 56.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 4,
+"kind": "B",
+"start": 56.0,
+"end": 58.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 5,
+"kind": "F",
+"start": 58.0,
+"end": 59.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 5,
+"kind": "B",
+"start": 59.0,
+"end": 61.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "F",
+"start": 61.0,
+"end": 62.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 4,
+"kind": "B",
+"start": 62.0,
+"end": 64.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "F",
+"start": 64.0,
+"end": 65.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 5,
+"kind": "B",
+"start": 65.0,
+"end": 67.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 6,
+"kind": "F",
+"start": 67.0,
+"end": 68.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 4,
+"kind": "B",
+"start": 68.0,
+"end": 70.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 7,
+"kind": "F",
+"start": 70.0,
+"end": 71.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 5,
+"kind": "B",
+"start": 71.0,
+"end": 73.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 6,
+"kind": "F",
+"start": 73.0,
+"end": 74.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 4,
+"kind": "B",
+"start": 74.0,
+"end": 76.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 7,
+"kind": "F",
+"start": 76.0,
+"end": 77.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 5,
+"kind": "B",
+"start": 77.0,
+"end": 79.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 6,
+"kind": "F",
+"start": 79.0,
+"end": 80.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 6,
+"kind": "B",
+"start": 80.0,
+"end": 82.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 7,
+"kind": "F",
+"start": 82.0,
+"end": 83.0
+},
+{
+"rank": 1,
+"stage": 7,
+"chunk": 3,
+"mb": 7,
+"kind": "B",
+"start": 83.0,
+"end": 85.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 6,
+"kind": "B",
+"start": 85.0,
+"end": 87.0
+},
+{
+"rank": 1,
+"stage": 5,
+"chunk": 2,
+"mb": 7,
+"kind": "B",
+"start": 87.0,
+"end": 89.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 6,
+"kind": "B",
+"start": 89.0,
+"end": 91.0
+},
+{
+"rank": 1,
+"stage": 3,
+"chunk": 1,
+"mb": 7,
+"kind": "B",
+"start": 91.0,
+"end": 93.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 6,
+"kind": "B",
+"start": 93.0,
+"end": 95.0
+},
+{
+"rank": 1,
+"stage": 1,
+"chunk": 0,
+"mb": 7,
+"kind": "B",
+"start": 95.0,
+"end": 97.0
+}
+]
+}
+}

@@ -1,0 +1,23 @@
+{
+  "name": "pipescope",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline-parallel (PP/VPP) schedule visualizer driven by a discrete-event simulator.",
+  "scripts": {
+    "build": "node --experimental-strip-types scripts/build.ts",
+    "build:pages": "node --experimental-strip-types scripts/build.ts --base /PipeScope/",
+    "serve": "node --experimental-strip-types scripts/serve.ts",
+    "dev": "vite",
+    "typecheck": "tsc -p tsconfig.app.json",
+    "test": "node --test --experimental-strip-types tests/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
