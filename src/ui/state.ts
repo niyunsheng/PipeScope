@@ -14,8 +14,10 @@ export interface UiState {
   error: string | null;
   /** Micro-batch pinned by click; null = none. */
   selectedMb: number | null;
-  /** Micro-batch under the pointer; null = none. */
-  hoverMb: number | null;
+  /** Op pinned by shift-click, shown with its critical-predecessor chain; null = none. */
+  selectedOp: number | null;
+  /** Transfer (by tag) pinned by clicking a wait or a lane bar; its bars on both ranks are highlighted. */
+  selectedTransfer: string | null;
   /** Time under the pointer for the shared crosshair; null = none. */
   hoverTime: number | null;
   scale: TimeScale;
@@ -46,9 +48,18 @@ export class Store {
     l(this.state);
     return () => this.listeners.delete(l);
   }
-}
 
-/** The micro-batch currently emphasised: pinned selection wins over hover. */
-export function activeMb(s: UiState): number | null {
-  return s.selectedMb ?? s.hoverMb;
+  /**
+   * Subscribe, but only run `l` when one of `keys` changed (by reference).
+   * Hover updates fire on every mouse move; panels that do not draw the
+   * crosshair must not rebuild DOM or rewrite the URL on each of them.
+   */
+  subscribeTo(keys: (keyof UiState)[], l: Listener): () => void {
+    let prev: UiState | null = null;
+    return this.subscribe((s) => {
+      if (prev && keys.every((k) => prev![k] === s[k])) return;
+      prev = s;
+      l(s);
+    });
+  }
 }

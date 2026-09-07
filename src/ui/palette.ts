@@ -1,12 +1,18 @@
 /**
  * Colors follow the dataviz reference palette (validated with
  * scripts/validate_palette.js: all hard gates pass in light mode).
- * Chunk identity uses the categorical slots in fixed order; F uses the slot
- * color, B uses a lighter tint of the same hue so kind is encoded by lightness
- * and chunk by hue. Idle time uses neutral hatching so it never impersonates
- * a series.
+ * Colour allocation, by role:
+ *   - chunk identity: the categorical slots in fixed order (hue);
+ *   - F vs B: F is a light tint of the chunk hue, B the full-strength hue, so
+ *     kind is lightness and chunk is hue. B stays saturated rather than
+ *     shaded so it never drifts towards brown or grey;
+ *   - loss: violet, a hue kept out of the chunk slots that matter (purple is
+ *     the last categorical slot, only reached at vpp = 8);
+ *   - transfers: two light neutral greys on their own rows;
+ *   - failure: red, only when something went wrong.
+ * No two roles share a hue family, so nothing impersonates anything else.
  */
-export const CATEGORICAL = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948'];
+export const CATEGORICAL = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#e34948', '#4a3aa7'];
 
 export const INK = {
   primary: '#0b0b0b',
@@ -30,7 +36,12 @@ export function tint(hex: string, amount: number): string {
   return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 }
 
-export function chunkColor(chunk: number, kind: 'F' | 'B'): string {
+/** Forward: light tint of the chunk hue. Backward: the full-strength hue. Loss: violet. */
+export function chunkColor(chunk: number, kind: 'F' | 'B' | 'L'): string {
+  if (kind === 'L') return LOSS_COLOR;
   const base = CATEGORICAL[chunk % CATEGORICAL.length];
-  return kind === 'F' ? base : tint(base, 0.55);
+  return kind === 'F' ? tint(base, 0.5) : base;
 }
+
+/** Loss ops: violet, away from the chunk hues in use and from the comm greys. */
+export const LOSS_COLOR = '#7d3c98';

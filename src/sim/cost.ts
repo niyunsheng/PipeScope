@@ -18,19 +18,19 @@ export interface CostModel {
 
 /** Bytes of one chunk input tensor: seq * micro-batch size * hidden * dtype. */
 export function inputBytes(cfg: SimConfig): number {
-  return (cfg.seqLen ?? 4096) * (cfg.microBatchSize ?? 1) * (cfg.hiddenSize ?? 4096) * (cfg.dtypeBytes ?? 2);
+  return cfg.seqLen * cfg.microBatchSize * cfg.hiddenSize * cfg.dtypeBytes;
 }
 
 /** Transformer layers held by one virtual chunk. */
 export function layersPerChunk(cfg: SimConfig): number {
-  return cfg.layersPerChunk ?? 2;
+  return cfg.layersPerChunk;
 }
 
 /** Total activation retained per (mb, chunk) between forward and backward. */
 export function activationBytes(cfg: SimConfig): { input: number; intermediate: number } {
   if (cfg.activationBytes !== undefined) return { input: cfg.activationBytes, intermediate: 0 };
   const input = inputBytes(cfg);
-  return { input, intermediate: layersPerChunk(cfg) * (cfg.activationMultiplier ?? 17) * input };
+  return { input, intermediate: layersPerChunk(cfg) * cfg.activationMultiplier * input };
 }
 
 /**
@@ -38,9 +38,9 @@ export function activationBytes(cfg: SimConfig): { input: number; intermediate: 
  * length: s / (k * h + s), with k = linear / attention FLOP coefficient ratio.
  */
 export function quadraticShare(cfg: Pick<SimConfig, 'seqLen' | 'hiddenSize' | 'linearAttnRatio'>): number {
-  const s = cfg.seqLen ?? 4096;
-  const h = cfg.hiddenSize ?? 4096;
-  const k = cfg.linearAttnRatio ?? 6;
+  const s = cfg.seqLen;
+  const h = cfg.hiddenSize;
+  const k = cfg.linearAttnRatio;
   return s / (k * h + s);
 }
 
@@ -55,11 +55,13 @@ export function computeScale(ratio: number, alpha: number): number {
  */
 export function constantCost(cfg: SimConfig): CostModel {
   const act = activationBytes(cfg);
-  const L0 = cfg.seqLen ?? 4096;
+  const L0 = cfg.seqLen;
   const alpha = quadraticShare(cfg);
   const ratio = (mb: number) => (cfg.tokens && cfg.tokens[mb] !== undefined ? cfg.tokens[mb] / L0 : 1);
   return {
-    compute: (kind, mb) => (kind === 'F' ? cfg.forwardTime : cfg.backwardTime) * computeScale(ratio(mb), alpha),
+    // Loss is per token (cross-entropy), so it scales linearly with length.
+    compute: (kind, mb) =>
+      kind === 'L' ? cfg.lossTime * ratio(mb) : (kind === 'F' ? cfg.forwardTime : cfg.backwardTime) * computeScale(ratio(mb), alpha),
     transfer: () => cfg.p2pLatency,
     activationInput: (mb) => act.input * ratio(mb),
     activationIntermediate: (mb) => act.intermediate * ratio(mb),

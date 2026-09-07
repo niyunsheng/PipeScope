@@ -8,7 +8,7 @@
  * mirrors Megatron-LM's `batch_isend_irecv(...)` + `wait()` semantics.
  */
 
-export type ScheduleName = 'gpipe' | '1f1b' | 'interleaved-1f1b';
+export type ScheduleName = 'gpipe' | '1f1b' | 'interleaved-1f1b' | 'custom';
 
 /**
  * How a point-to-point transfer completes.
@@ -25,7 +25,10 @@ export type ScheduleName = 'gpipe' | '1f1b' | 'interleaved-1f1b';
 export type CommModel = 'async' | 'sync';
 
 /** Forward or backward pass of one micro-batch through one model chunk. */
-export type OpKind = 'F' | 'B';
+/** Forward, backward, or the loss computation that sits between them on the last stage. */
+export type OpKind = 'F' | 'B' | 'L';
+/** Kinds that flow between stages; the loss never leaves the last stage. */
+export type TensorKind = 'F' | 'B';
 
 export interface SimConfig {
   schedule: ScheduleName;
@@ -39,10 +42,43 @@ export interface SimConfig {
   forwardTime: number;
   /** Backward time of one micro-batch through one chunk. */
   backwardTime: number;
+  /**
+   * Loss computation time on the last stage, between a micro-batch's last
+   * forward and its first backward (Megatron runs it inside the last
+   * stage's `forward_step`). The op always exists as a dependency; 0 = no
+   * duration and not drawn. Memory is not modelled.
+   */
+  lossTime: number;
   /** Point-to-point latency of one activation / gradient transfer. */
   p2pLatency: number;
-  /** Communication completion semantics; default `async`. */
-  commModel?: CommModel;
+  /** Communication completion semantics. */
+  commModel: CommModel;
+  /**
+   * `custom` schedule only. Warmup forwards per rank as a formula over
+   * pp, vpp, m, r, G, total (see `sim/formula.ts`); Megatron's is
+   * `2 * (pp - r - 1) + (vpp - 1) * G`.
+   */
+  warmupFormula: string;
+  /**
+   * Interleaved and custom schedules: micro-batches processed on one chunk
+   * before switching (Megatron's `microbatch_group_size_per_vp_stage`).
+   * Valid range is [pp, m] with m mod G either 0 or ≥ pp; Megatron defaults
+   * to pp, and the UI keeps it equal to pp until it is edited by hand.
+   */
+  groupSize: number;
+  /**
+   * When a steady-state forward's output is sent: right after the forward
+   * (`F`, Megatron 1F1B and the interleaved overlap path) or after the
+   * backward together with the gradient (`B`, interleaved synchronous path).
+   */
+  sendAfter: 'F' | 'B';
+  /**
+   * When the gradient a backward needs is waited for: in the step that ends
+   * the previous round, before the forward (`beforeF`, interleaved
+   * synchronous path) or right before the backward itself (`beforeB`,
+   * 1F1B and the interleaved overlap path). See `megatronPlacement`.
+   */
+  waitGrad: 'beforeF' | 'beforeB';
   /**
    * Override: activation memory retained per (micro-batch, chunk) between
    * its forward and backward pass, in bytes, as a single number. When unset
@@ -51,35 +87,35 @@ export interface SimConfig {
    * `input = seqLen * microBatchSize * hiddenSize * dtypeBytes`.
    */
   activationBytes?: number;
-  /** Sequence length per sample; default 4096. */
-  seqLen?: number;
-  /** Hidden size; default 4096. */
-  hiddenSize?: number;
-  /** Samples per micro-batch; default 1. */
-  microBatchSize?: number;
-  /** Bytes per activation element; default 2 (bf16). */
-  dtypeBytes?: number;
+  /** Sequence length per sample. */
+  seqLen: number;
+  /** Hidden size. */
+  hiddenSize: number;
+  /** Samples per micro-batch. */
+  microBatchSize: number;
+  /** Bytes per activation element (2 = bf16). */
+  dtypeBytes: number;
   /**
    * Intermediate activation of one transformer layer as a multiple of the
    * layer input. Megatron's activation-recomputation paper gives
    * 34*s*b*h + 5*a*s^2*b bytes per layer vs. 2*s*b*h for the input, i.e.
    * 17 + 2.5*a*s/h; with flash attention (assumed) the attention-score term
-   * vanishes, leaving 17 (the default).
+   * vanishes, leaving 17.
    */
-  activationMultiplier?: number;
-  /** Transformer layers per virtual chunk; default 2. */
-  layersPerChunk?: number;
+  activationMultiplier: number;
+  /** Transformer layers per virtual chunk. */
+  layersPerChunk: number;
   /**
    * Ratio of the linear-layer FLOP coefficient to the core-attention FLOP
    * coefficient, k. Per layer, linear FLOPs ∝ k * s * h^2 and core-attention
    * FLOPs ∝ s^2 * h (both up to the same constant), so linear : attention =
-   * k * h : s. GPT: 24 s h^2 vs 4 s^2 h -> k = 6 (default). The quadratic
+   * k * h : s. GPT: 24 s h^2 vs 4 s^2 h -> k = 6. The quadratic
    * share at the reference length is a = s / (k * h + s) and compute of a
    * micro-batch with r = tokens / seqLen scales as (1 - a) * r + a * r^2.
    */
-  linearAttnRatio?: number;
-  /** Static memory per rank in bytes (weights, grads, optimizer state); default 0. */
-  baselineBytes?: number;
+  linearAttnRatio: number;
+  /** Static memory per rank in bytes (weights, grads, optimizer state). */
+  baselineBytes: number;
   /**
    * Tokens per micro-batch (length = microBatches). When set, compute time
    * and activation memory of micro-batch i scale with tokens[i] / seqLen:
@@ -89,10 +125,10 @@ export interface SimConfig {
    */
   tokens?: number[];
   /** How `tokens` were generated (UI / URL metadata; the simulator ignores these). */
-  lengthMode?: 'uniform' | 'lognormal' | 'custom';
-  lengthCv?: number;
-  lengthSeed?: number;
-  lengthOrder?: 'asis' | 'asc' | 'desc' | 'alternate';
+  lengthMode: 'uniform' | 'lognormal' | 'custom';
+  lengthCv: number;
+  lengthSeed: number;
+  lengthOrder: 'asis' | 'asc' | 'desc' | 'alternate';
 }
 
 /** A compute step: run F or B of `mb` through model chunk `chunk`. */
@@ -110,7 +146,7 @@ export interface ComputeStep {
  * both ends so schedule bugs surface as errors instead of silent mismatches.
  */
 export interface Transfer {
-  kind: OpKind;
+  kind: TensorKind;
   peer: number;
   tag: string;
   mb: number;
@@ -131,6 +167,23 @@ export type Step = ComputeStep | CommStep;
 /** Per-rank step sequences. `program[rank]` is executed sequentially. */
 export type Program = Step[][];
 
+export type IdleReason = 'wait-recv' | 'wait-send';
+
+/**
+ * A binding predecessor of an op: something that finished exactly when the
+ * op started, so delaying it would delay the op. `program`: the previous
+ * compute op on the same rank. `wait-recv` / `wait-send`: a transfer in the
+ * comm step before this op completed at the op's start, and `op` is the
+ * peer's compute op that immediately preceded the peer posting its end.
+ */
+export interface BlockedBy {
+  reason: 'program' | IdleReason;
+  /** `Op.id` of the predecessor; ids index into `Trace.ops`. */
+  op: number;
+  /** For waits: tag of the transfer whose completion released this rank. */
+  transferTag?: string;
+}
+
 /** A scheduled compute op with its simulated timing. */
 export interface Op {
   id: number;
@@ -142,9 +195,15 @@ export interface Op {
   kind: OpKind;
   start: number;
   end: number;
+  /**
+   * All binding predecessors. With zero latency and integer durations ties
+   * are common, so several constraints can bind at once. Ordered by priority:
+   * cross-rank waits first (they carry pipeline information), then the
+   * same-rank program order; the critical-path chain follows the first one.
+   * Empty only for an op that starts at t = 0.
+   */
+  predecessors: BlockedBy[];
 }
-
-export type IdleReason = 'wait-recv' | 'wait-send';
 
 /** A period during which a rank is blocked in a communication step. */
 export interface IdleInterval {
@@ -152,18 +211,40 @@ export interface IdleInterval {
   start: number;
   end: number;
   reason: IdleReason;
-  /** Human-readable description of the transfer that finished last. */
-  detail: string;
-  /** Time spent waiting for the peer to arrive at the matching step. */
+  /** Tag of the transfer that finished last, i.e. the one this rank was waiting on. */
+  transferTag: string;
+  /** Time spent waiting for the peer to post its end of the transfer. */
   peerWait: number;
-  /** Time spent on the wire after both peers arrived. */
+  /**
+   * Remaining idle time after the peer posted, i.e. wire time still in
+   * flight. Always `peerWait + transfer === end - start`.
+   */
   transfer: number;
+}
+
+/** One point-to-point transfer as it actually happened in the simulation. */
+export interface TransferRecord {
+  tag: string;
+  kind: TensorKind;
+  mb: number;
+  from: number;
+  to: number;
+  /** When the sender posted its send. */
+  sendPosted: number;
+  /** When the receiver posted its recv. */
+  recvPosted: number;
+  /** When data started moving: `sendPosted` under async, `max(sendPosted, recvPosted)` under sync. */
+  start: number;
+  /** When data landed on the receiver: `start + wire`. */
+  landed: number;
+  /** Sender's compute op that produced the tensor (null if none preceded the send). */
+  producer: number | null;
 }
 
 export interface MemorySample {
   t: number;
   bytes: number;
-  /** What changed at this event: input landed / forward started / backward ended. */
+  /** What changed at this event: input buffer allocated / forward started / backward ended. */
   event: 'input' | 'forward' | 'release';
   /** Activations resident on the rank right after this event, as "mb:chunk". */
   resident: string[];
@@ -191,10 +272,26 @@ export interface Metrics {
   ranks: RankMetrics[];
 }
 
+/**
+ * Why a simulation stopped early. Everything simulated up to that point is
+ * still returned, so the timeline can show what ran and mark what failed.
+ */
+export interface SimFailure {
+  kind: 'program' | 'deadlock' | 'tag-mismatch';
+  message: string;
+  /** Ranks stuck in a comm step when the run stopped, and what they were waiting on. */
+  blocked: { rank: number; since: number; waiting: string }[];
+  /** For `program`: the compute step that could not legally run, placed where it would have started. */
+  op: Op | null;
+}
+
 export interface Trace {
   config: SimConfig;
   ops: Op[];
   idles: IdleInterval[];
+  transfers: TransferRecord[];
+  /** Null when the whole program ran to completion. */
+  failure: SimFailure | null;
   /** memory[rank] is a step function sampled at every allocation / release. */
   memory: MemorySample[][];
   metrics: Metrics;

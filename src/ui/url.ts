@@ -1,59 +1,58 @@
-import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
+import { SCHEDULES, megatronPlacement } from '../sim/index.ts';
+import type { SimConfig } from '../sim/index.ts';
 
 /**
- * Shareable URLs: the configuration and the pinned micro-batch are mirrored
- * into the query string (`?schedule=1f1b&pp=4&vpp=1&mb=8&tf=1&tb=2&p2p=0&sel=3`).
+ * Shareable URLs. Only settings that differ from the defaults are written,
+ * one `key=value` pair per field named exactly as in `SimConfig`, so the
+ * default view is the bare page and a typical link looks like
+ * `?schedule=1f1b&p2pLatency=0.5&sel=3`. `tokens` is a comma list.
+ * The query is assembled by hand so commas stay readable; only values with
+ * characters that are unsafe in a query (spaces, `+`, `&`, ...) are escaped,
+ * which in practice is just the warmup formula.
  */
-const KEYS: [keyof SimConfig, string][] = [
-  ['pp', 'pp'],
-  ['vpp', 'vpp'],
-  ['microBatches', 'mb'],
-  ['forwardTime', 'tf'],
-  ['backwardTime', 'tb'],
-  ['p2pLatency', 'p2p'],
-  ['seqLen', 's'],
-  ['hiddenSize', 'h'],
-  ['microBatchSize', 'b'],
-  ['dtypeBytes', 'dtype'],
-  ['activationMultiplier', 'mult'],
-  ['layersPerChunk', 'layers'],
-  ['linearAttnRatio', 'k'],
-  ['lengthCv', 'cv'],
-  ['lengthSeed', 'seed'],
-];
-
 export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: number | null } {
   const q = new URLSearchParams(location.search);
-  const config: SimConfig = { ...defaults };
-  const schedule = q.get('schedule');
-  if (schedule) config.schedule = schedule as ScheduleName;
-  const comm = q.get('comm');
-  if (comm === 'async' || comm === 'sync') config.commModel = comm as CommModel;
-  const mode = q.get('len');
-  if (mode === 'uniform' || mode === 'lognormal' || mode === 'custom') config.lengthMode = mode;
-  const order = q.get('order');
-  if (order === 'asis' || order === 'asc' || order === 'desc' || order === 'alternate') config.lengthOrder = order;
+  const config = { ...defaults } as Record<string, unknown>;
+  for (const [key, def] of Object.entries(defaults)) {
+    const raw = q.get(key);
+    if (raw === null) continue;
+    if (typeof def === 'number') {
+      const v = Number(raw);
+      if (Number.isFinite(v)) config[key] = v;
+    } else {
+      config[key] = raw;
+    }
+  }
   const toks = q.get('tokens');
   if (toks) config.tokens = toks.split(',').map(Number).filter((x) => x > 0);
-  for (const [key, name] of KEYS) {
-    const v = q.get(name);
-    if (v !== null && Number.isFinite(Number(v))) (config as unknown as Record<string, number>)[key] = Number(v);
-  }
-  const sel = q.get('sel');
-  return { config, selectedMb: sel !== null && Number.isFinite(Number(sel)) ? Number(sel) : null };
+  // Group size defaults to pp; a link that changes pp but not G means G = pp.
+  if (!q.has('groupSize') && q.has('pp')) config.groupSize = config.pp;
+  if (config.schedule === '1f1b') config.commModel = 'sync'; // Megatron 1F1B always blocks
+  // Placement defaults depend on the schedule (Megatron's own), unless the link overrides them.
+  const place = megatronPlacement(config.schedule as SimConfig['schedule'], config.commModel as SimConfig['commModel']);
+  if (!q.has('sendAfter')) config.sendAfter = place.sendAfter;
+  if (!q.has('waitGrad')) config.waitGrad = place.waitGrad;
+  // Schedules without virtual stages imply vpp = 1; the link does not carry it.
+  const sched = SCHEDULES[config.schedule as SimConfig['schedule']];
+  if (sched && !sched.supportsVpp) config.vpp = 1;
+  const sel = Number(q.get('sel'));
+  return { config: config as unknown as SimConfig, selectedMb: q.has('sel') && Number.isFinite(sel) ? sel : null };
 }
 
-export function writeUrl(config: SimConfig, selectedMb: number | null): void {
-  const q = new URLSearchParams();
-  q.set('schedule', config.schedule);
-  q.set('comm', config.commModel ?? 'async');
-  q.set('len', config.lengthMode ?? 'uniform');
-  q.set('order', config.lengthOrder ?? 'asis');
-  if (config.lengthMode === 'custom' && config.tokens) q.set('tokens', config.tokens.join(','));
-  for (const [key, name] of KEYS) {
-    const v = config[key];
-    if (v !== undefined) q.set(name, String(v));
+const enc = (v: string) => (/^[A-Za-z0-9.,_-]*$/.test(v) ? v : encodeURIComponent(v));
+
+export function writeUrl(config: SimConfig, defaults: SimConfig, selectedMb: number | null): void {
+  const parts: string[] = [];
+  const impliedVpp = !SCHEDULES[config.schedule].supportsVpp;
+  for (const [key, def] of Object.entries(defaults)) {
+    if (key === 'vpp' && impliedVpp) continue;
+    if (key === 'groupSize' && (impliedVpp || config.groupSize === config.pp)) continue; // implied
+    if (key === 'warmupFormula' && config.schedule !== 'custom') continue; // only Custom uses it
+    if ((key === 'sendAfter' || key === 'waitGrad') && (config as unknown as Record<string, unknown>)[key] === (megatronPlacement(config.schedule, config.commModel) as unknown as Record<string, unknown>)[key]) continue;
+    const v = (config as unknown as Record<string, unknown>)[key];
+    if (v !== undefined && v !== def) parts.push(`${key}=${enc(String(v))}`);
   }
-  if (selectedMb !== null) q.set('sel', String(selectedMb));
-  history.replaceState(null, '', `?${q.toString()}`);
+  if (config.lengthMode === 'custom' && config.tokens) parts.push(`tokens=${config.tokens.join(',')}`);
+  if (selectedMb !== null) parts.push(`sel=${selectedMb}`);
+  history.replaceState(null, '', parts.length ? `?${parts.join('&')}` : location.pathname);
 }

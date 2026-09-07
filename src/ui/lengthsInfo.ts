@@ -13,9 +13,9 @@ export function mountLengthsInfo(root: HTMLElement, store: Store): void {
   details.appendChild(summary);
   details.appendChild(list);
   root.appendChild(details);
-  store.subscribe((s) => {
+  store.subscribeTo(['config'], (s) => {
     const toks = s.config.tokens;
-    const show = (s.config.lengthMode ?? 'uniform') !== 'uniform' && toks && toks.length > 0;
+    const show = s.config.lengthMode !== 'uniform' && toks && toks.length > 0;
     details.hidden = !show;
     if (!show || !toks) return;
     const sm = summarize(toks);

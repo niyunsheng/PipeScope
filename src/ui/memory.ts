@@ -1,6 +1,6 @@
 import { fmt, fmtBytes } from './format.ts';
 import { t } from './i18n.ts';
-import { AXIS_H, GUTTER, ROW_MAX, drawAxis, drawCrosshair, rowHeight, setupCanvas } from './gantt.ts';
+import { AXIS_H, GUTTER, ROW_MAX, drawAxis, drawCrosshair, perfProbe, setupCanvas } from './gantt.ts';
 import { INK } from './palette.ts';
 import type { Store, UiState } from './state.ts';
 
@@ -15,14 +15,20 @@ export function mountMemory(wrapper: HTMLElement, store: Store): void {
   const tooltip = document.createElement('div');
   tooltip.className = 'tooltip';
   tooltip.hidden = true;
+  const overlay = document.createElement('canvas');
+  overlay.className = 'overlay';
   wrapper.appendChild(canvas);
+  wrapper.appendChild(overlay);
   wrapper.appendChild(tooltip);
 
+  let width = 0;
+  let height = 0;
+
   const render = (s: UiState): void => {
-    const width = wrapper.clientWidth;
+    width = wrapper.clientWidth;
     const pp = s.config.pp;
-    const rowH = rowHeight(pp, ROW_MAX * pp);
-    const height = AXIS_H + rowH * pp + 4;
+    const rowH = ROW_MAX;
+    height = AXIS_H + rowH * pp + 4;
     const ctx = setupCanvas(canvas, width, height);
     ctx.fillStyle = INK.surface;
     ctx.fillRect(0, 0, width, height);
@@ -68,14 +74,6 @@ export function mountMemory(wrapper: HTMLElement, store: Store): void {
       ctx.moveTo(GUTTER, AXIS_H + (r + 1) * rowH + 0.5);
       ctx.lineTo(GUTTER + pw, AXIS_H + (r + 1) * rowH + 0.5);
       ctx.stroke();
-      // Value under the crosshair
-      if (s.hoverTime !== null) {
-        let cur = samples[0];
-        for (const smp of samples) if (smp.t <= s.hoverTime) cur = smp;
-        ctx.fillStyle = INK.primary;
-        ctx.textAlign = 'left';
-        ctx.fillText(fmtBytes(cur.bytes), x(s.hoverTime) + 6, AXIS_H + r * rowH + 10);
-      }
     }
     ctx.restore();
     // Row labels with peak
@@ -89,6 +87,31 @@ export function mountMemory(wrapper: HTMLElement, store: Store): void {
       ctx.fillText(fmtBytes(s.trace.metrics.ranks[r].peakMemory), GUTTER - 8, yc + 7);
       ctx.font = '12px system-ui, -apple-system, "Segoe UI", sans-serif';
     }
+  };
+
+  /** Crosshair and the per-rank value under it; repainted on every hover move. */
+  const renderOverlay = (s: UiState): void => {
+    const ctx = setupCanvas(overlay, width, height);
+    if (!s.trace || s.hoverTime === null) return;
+    const pp = s.config.pp;
+    const rowH = ROW_MAX;
+    const pw = Math.max(1, width - GUTTER - 8);
+    const x = (t: number) => GUTTER + (t - s.scale.offset) * s.scale.pxPerUnit;
+    ctx.font = '12px system-ui, -apple-system, "Segoe UI", sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = INK.primary;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(GUTTER, AXIS_H, pw, rowH * pp);
+    ctx.clip();
+    for (let r = 0; r < pp; r++) {
+      const samples = s.trace.memory[r];
+      let cur = samples[0];
+      for (const smp of samples) if (smp.t <= s.hoverTime) cur = smp;
+      ctx.fillText(fmtBytes(cur.bytes), x(s.hoverTime) + 6, AXIS_H + r * rowH + 10);
+    }
+    ctx.restore();
     drawCrosshair(ctx, s, rowH * pp);
   };
 
@@ -103,7 +126,7 @@ export function mountMemory(wrapper: HTMLElement, store: Store): void {
     }
     const time = s.scale.offset + (mx - GUTTER) / s.scale.pxPerUnit;
     const pp = s.config.pp;
-    const rowH = rowHeight(pp, ROW_MAX * pp);
+    const rowH = ROW_MAX;
     const rank = Math.floor((my - AXIS_H) / rowH);
     if (rank >= 0 && rank < pp) {
       let cur = s.trace.memory[rank][0];
@@ -123,6 +146,31 @@ export function mountMemory(wrapper: HTMLElement, store: Store): void {
     store.set({ hoverTime: null });
   });
 
-  store.subscribe(render);
-  new ResizeObserver(() => render(store.get())).observe(wrapper);
+  // Coalesce redraws to one per animation frame: several store updates can
+  // land between frames (hover + crosshair), and drawing twice is wasted.
+  const STATIC_KEYS: (keyof UiState)[] = ['trace', 'scale', 'config'];
+  let prev: UiState | null = null;
+  let frame = 0;
+  let needStatic = true;
+  const probe = perfProbe('memory');
+  store.subscribe((s) => {
+    if (!prev || STATIC_KEYS.some((k) => prev![k] !== s[k])) needStatic = true;
+    prev = s;
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      const t0 = performance.now();
+      const cur = store.get();
+      if (needStatic) {
+        needStatic = false;
+        render(cur);
+      }
+      renderOverlay(cur);
+      probe(performance.now() - t0);
+    });
+  });
+  new ResizeObserver(() => {
+    render(store.get());
+    renderOverlay(store.get());
+  }).observe(wrapper);
 }

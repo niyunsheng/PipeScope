@@ -16,6 +16,7 @@ createServer((req, res) => {
     res.end('not found');
     return;
   }
-  res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });
+  // Dev server: never let the browser reuse a stale bundle after a rebuild.
+  res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream', 'cache-control': 'no-store' });
   createReadStream(file).pipe(res);
 }).listen(port, () => console.log(`serving dist/ at http://localhost:${port}/`));

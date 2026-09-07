@@ -1,15 +1,18 @@
 import type { CostModel } from './cost.ts';
-import type { MemorySample, Op } from './types.ts';
+import type { MemorySample, Op, TransferRecord } from './types.ts';
 import { fTag } from './schedules/common.ts';
 
 /**
  * Activation memory model.
  *
  * For every (mb, chunk) on a rank:
- *   - the *input* tensor is allocated when it lands on the rank. For stage 0
- *     that is the forward start; for other stages it is the moment the p2p
- *     transfer delivered the data, which under the async comm model can be
- *     well before the forward starts (the receive buffer is already filled);
+ *   - the *input* tensor is allocated when its receive buffer comes into
+ *     existence: the earlier of the recv being posted (Megatron's
+ *     `_communicate` allocates the destination tensor before the irecv) and
+ *     the data starting to move towards this rank (under the async model the
+ *     sender writes into the receiver's buffer before the recv is posted).
+ *     This is exactly where the recv bar begins in the timeline, and always
+ *     at or before the forward. For stage 0 the input appears at the forward start;
  *   - the *intermediate* activations are allocated when the forward starts;
  *   - both are released when the backward pass ends.
  * The static baseline (weights, gradients, optimizer state) is a constant.
@@ -20,8 +23,9 @@ export function computeMemory(
   pp: number,
   cost: CostModel,
   baseline: number,
-  landed: Map<string, number> = new Map(),
+  transfers: TransferRecord[] = [],
 ): MemorySample[][] {
+  const allocated = new Map(transfers.map((tr) => [tr.tag, Math.min(tr.recvPosted, tr.start)]));
   interface Ev {
     t: number;
     delta: number;
@@ -36,11 +40,11 @@ export function computeMemory(
     if (op.kind === 'F') {
       const input = cost.activationInput(op.mb, op.chunk, op.rank);
       const inter = cost.activationIntermediate(op.mb, op.chunk, op.rank);
-      const landedAt = op.stage > 0 ? landed.get(fTag(op.mb, op.stage - 1)) : undefined;
-      const tIn = Math.min(op.start, landedAt ?? op.start);
+      const allocAt = op.stage > 0 ? allocated.get(fTag(op.mb, op.stage - 1)) : undefined;
+      const tIn = Math.min(op.start, allocAt ?? op.start);
       if (input > 0) events[op.rank].push({ t: tIn, delta: input, key, event: 'input', order: 1 });
       if (inter > 0) events[op.rank].push({ t: op.start, delta: inter, key, event: 'forward', order: 2 });
-    } else {
+    } else if (op.kind === 'B') {
       const total = cost.activationInput(op.mb, op.chunk, op.rank) + cost.activationIntermediate(op.mb, op.chunk, op.rank);
       events[op.rank].push({ t: op.end, delta: -total, key, event: 'release', order: 0 });
     }

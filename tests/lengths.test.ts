@@ -1,11 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { simulate, computeScale, quadraticShare } from '../src/sim/index.ts';
+import { DEFAULT_CONFIG, megatronPlacement, simulate, computeScale, quadraticShare } from '../src/sim/index.ts';
 import type { SimConfig } from '../src/sim/index.ts';
 import { generateLengths, orderLengths } from '../src/ui/lengths.ts';
 
 const EPS = 1e-9;
-const base: SimConfig = { schedule: '1f1b', pp: 4, vpp: 1, microBatches: 8, forwardTime: 1, backwardTime: 2, p2pLatency: 0, seqLen: 4096, hiddenSize: 4096 };
+const base: SimConfig = { ...DEFAULT_CONFIG, ...megatronPlacement('1f1b', 'sync'), commModel: 'sync', schedule: '1f1b', pp: 4, vpp: 1, groupSize: 4, microBatches: 8, forwardTime: 1, backwardTime: 2, p2pLatency: 0, seqLen: 4096, hiddenSize: 4096 };
 
 test('log-normal lengths are reproducible, keep the mean roughly, and reorder as asked', () => {
   const a = generateLengths({ n: 2000, mean: 4096, mode: 'lognormal', cv: 0.5, seed: 7, order: 'asis' });
@@ -43,8 +43,9 @@ test('heterogeneous lengths keep schedule invariants and the ideal time equals t
   const tokens = generateLengths({ n: 16, mean: 4096, mode: 'lognormal', cv: 0.8, seed: 3, order: 'alternate' });
   for (const schedule of ['1f1b', 'interleaved-1f1b', 'gpipe'] as const) {
     const vpp = schedule === 'interleaved-1f1b' ? 2 : 1;
-    const t = simulate({ ...base, schedule, vpp, microBatches: 16, tokens, p2pLatency: 0.2 });
-    assert.equal(t.ops.length, 2 * 16 * 4 * vpp);
+    // `base` is 1F1B under sync; each schedule takes its own Megatron placement for that model.
+    const t = simulate({ ...base, ...megatronPlacement(schedule, 'sync'), schedule, vpp, microBatches: 16, tokens, p2pLatency: 0.2 });
+    assert.equal(t.ops.filter((o) => o.kind !== 'L').length, 2 * 16 * 4 * vpp);
     for (const r of t.metrics.ranks) {
       const accounted = r.busy + r.waitRecv + r.waitSend + r.tail;
       assert.ok(Math.abs(accounted - t.metrics.totalTime) < EPS);

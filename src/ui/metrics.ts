@@ -1,6 +1,6 @@
 import { fmt, fmtBytes, pct } from './format.ts';
 import { t } from './i18n.ts';
-import { chunkColor } from './palette.ts';
+import { INK, LOSS_COLOR, chunkColor } from './palette.ts';
 import type { Store, UiState } from './state.ts';
 
 /** Stat tiles and the chunk / idle legend. */
@@ -25,15 +25,16 @@ export function mountMetrics(root: HTMLElement, store: Store): void {
     tile(t('peak'), fmtBytes(peak.peakMemory), t('peakNote', { r: peak.rank }));
     root.appendChild(tiles);
 
-    // Legend: chunk hue × F/B lightness, plus idle textures.
+    // Legend: chunk hue × F/B lightness, plus the two comm-row segment styles.
     const legend = document.createElement('div');
     legend.className = 'legend';
     for (let c = 0; c < s.config.vpp; c++) {
       legend.innerHTML += `<span class="swatch" style="background:${chunkColor(c, 'F')}"></span>${t('legendF', { c })} <span class="swatch" style="background:${chunkColor(c, 'B')}"></span>${t('legendB', { c })} `;
     }
-    legend.innerHTML += `<span class="swatch hatch-recv"></span>${t('legendRecv')} <span class="swatch hatch-send"></span>${t('legendSend')}`;
+    if (s.config.lossTime > 0) legend.innerHTML += `<span class="swatch" style="background:${LOSS_COLOR}"></span>${t('legendLoss')} `;
+    legend.innerHTML += `<span class="swatch" style="background:${INK.muted}"></span>${t('legendWire')} <span class="swatch" style="background:${INK.axis}"></span>${t('legendWait')}`;
     root.appendChild(legend);
 
   };
-  store.subscribe(render);
+  store.subscribeTo(['trace', 'config'], render);
 }

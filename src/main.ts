@@ -1,3 +1,4 @@
+import { DEFAULT_CONFIG, validateConfig } from './sim/index.ts';
 import { mountControls, recompute } from './ui/controls.ts';
 import { mountGantt } from './ui/gantt.ts';
 import { mountLengthsInfo } from './ui/lengthsInfo.ts';
@@ -7,34 +8,23 @@ import { mountMetrics } from './ui/metrics.ts';
 import { Store } from './ui/state.ts';
 import { readUrl, writeUrl } from './ui/url.ts';
 
-const initial = readUrl({
-  schedule: 'interleaved-1f1b',
-  pp: 4,
-  vpp: 2,
-  microBatches: 8,
-  forwardTime: 1,
-  backwardTime: 2,
-  p2pLatency: 0,
-  commModel: 'async',
-  seqLen: 4096,
-  hiddenSize: 4096,
-  microBatchSize: 1,
-  dtypeBytes: 2,
-  activationMultiplier: 17,
-  layersPerChunk: 2,
-  linearAttnRatio: 6,
-  lengthMode: 'uniform',
-  lengthCv: 0.05,
-  lengthSeed: 1,
-  lengthOrder: 'asis',
-});
+
+// A query string that does not describe a valid configuration (stale link,
+// hand-edited values) is dropped entirely and the default view is shown.
+let initial = readUrl(DEFAULT_CONFIG);
+// Custom token lists are cycled to the micro-batch count later, so their length is not checked here.
+if (validateConfig({ ...initial.config, tokens: undefined }).length > 0) {
+  history.replaceState(null, '', location.pathname);
+  initial = { config: { ...DEFAULT_CONFIG }, selectedMb: null };
+}
 
 const store = new Store({
   config: initial.config,
   trace: null,
   error: null,
   selectedMb: null,
-  hoverMb: null,
+  selectedOp: null,
+  selectedTransfer: null,
   hoverTime: null,
   scale: { pxPerUnit: 10, offset: 0 },
 });
@@ -42,7 +32,7 @@ const store = new Store({
 const app = document.getElementById('root')!;
 app.innerHTML = `
   <header class="topbar">
-    <h1>PipeScope</h1>
+    <h1><a href="./" title="${t('homeHint')}">PipeScope</a></h1>
     <span class="subtitle">${t('subtitle')}</span>
     <span id="schedule-slot" class="segmented"></span>
     <div class="topbar-actions">
@@ -87,4 +77,5 @@ mountMemory(document.getElementById('memory')!, store);
 mountMetrics(document.getElementById('metrics')!, store);
 recompute(store);
 if (initial.selectedMb !== null) store.set({ selectedMb: initial.selectedMb });
-store.subscribe((s) => writeUrl(s.config, s.selectedMb));
+// history.replaceState is rate-limited by browsers; only touch it when the shareable state changes.
+store.subscribeTo(['config', 'selectedMb'], (s) => writeUrl(s.config, DEFAULT_CONFIG, s.selectedMb));
