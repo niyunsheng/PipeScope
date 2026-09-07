@@ -6,6 +6,7 @@
  *
  *   node --experimental-strip-types scripts/build.ts [--base /PipeScope/]
  */
+import { spawnSync } from 'node:child_process';
 import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
 import { dirname, join, relative } from 'node:path';
@@ -38,6 +39,13 @@ for (const file of walk(src)) {
     const out = join(dist, rel.replace(/\.ts$/, '.js'));
     mkdirSync(dirname(out), { recursive: true });
     writeFileSync(out, js);
+    // Type stripping does not parse; catch duplicate declarations and the like here
+    // instead of in the browser console.
+    const check = spawnSync(process.execPath, ['--check', out], { encoding: 'utf8' });
+    if (check.status !== 0) {
+      console.error(check.stderr);
+      process.exit(1);
+    }
     count++;
   } else {
     const out = join(dist, rel);
