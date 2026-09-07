@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, SCHEDULES, activationBytes, builtinWarmupFormula, inputBytes, megatronPlacement, parseFormula, quadraticShare, simulate, validateConfig, warmupVars } from '../sim/index.ts';
+import { DEFAULT_CONFIG, SCHEDULES, activationBytes, builtinWarmupFormula, inputBytes, layersPerChunk, megatronPlacement, parseFormula, quadraticShare, simulate, validateConfig, warmupVars } from '../sim/index.ts';
 import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
 import { fmtBytes } from './format.ts';
 import { t } from './i18n.ts';
@@ -197,8 +197,8 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     b.type = 'button';
     // Switching schedule also resets the placement to what Megatron uses for it.
     b.addEventListener('click', () => {
-      // 1F1B exists only as a blocking schedule in Megatron, so it forces the sync model.
-      const comm = info.name === '1f1b' ? 'sync' : store.get().config.commModel;
+      // 1F1B (and the GPipe baseline, which mirrors its communication) are blocking-only.
+      const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : store.get().config.commModel;
       update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, ...megatronPlacement(info.name, comm) });
     });
     schedButtons.set(info.name, b);
@@ -291,7 +291,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     (v: string) => update({ dtypeBytes: Number(v) }),
   );
   model.grid.appendChild(cell(t('dtype'), dtypeSelect));
-  addNum(model.grid, { key: 'layersPerChunk', label: 'layers', min: 0, step: 1 });
+  addNum(model.grid, { key: 'numLayers', label: 'layers', min: 1, step: 1 });
   const modelNote = el('p', 'note span3');
   model.grid.appendChild(modelNote);
   const rowNotes = new Map<keyof SimConfig, HTMLParagraphElement>();
@@ -408,7 +408,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     }
     const comm = cfg.commModel;
     commSeg.set(comm);
-    commSeg.enable(cfg.schedule !== '1f1b');
+    commSeg.enable(cfg.schedule === 'interleaved-1f1b' || cfg.schedule === 'custom');
     // Hint: the transport semantics, plus which Megatron path this selects for the current schedule.
     const pathHint =
       cfg.schedule === 'interleaved-1f1b' ? t(comm === 'async' ? 'commPathVppAsync' : 'commPathVppSync')
@@ -418,7 +418,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     commNote.textContent = `${t(COMM_OPTIONS.find((o) => o.value === comm)!.hint)} ${pathHint}`.trim();
     dtypeSelect.value = String(cfg.dtypeBytes);
     const act = activationBytes(cfg);
-    modelNote.textContent = `${t('noteTimeUnit')} ${t('noteInput', { input: fmtBytes(inputBytes(cfg)), act: fmtBytes(act.input + act.intermediate), layers: cfg.layersPerChunk, mult: cfg.activationMultiplier })}`;
+    modelNote.textContent = `${t('noteTimeUnit', { lpc: layersPerChunk(cfg), stages: cfg.pp * cfg.vpp })} ${t('noteInput', { input: fmtBytes(inputBytes(cfg)), act: fmtBytes(act.input + act.intermediate), layers: layersPerChunk(cfg), mult: cfg.activationMultiplier })}`;
     rowNotes.get('activationMultiplier')!.textContent = t('multiplierNote');
     rowNotes.get('linearAttnRatio')!.textContent = t('linearAttnNote', { alpha: quadraticShare(cfg).toFixed(3) });
     const mode = cfg.lengthMode;

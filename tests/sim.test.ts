@@ -13,10 +13,12 @@ const fbOps = (t: Trace): Op[] => t.ops.filter((o) => o.kind !== 'L');
 function cfg(schedule: ScheduleName, pp: number, vpp: number, m: number, extra: Partial<SimConfig> = {}): SimConfig {
   // activationBytes = 1 makes peak memory equal to the number of resident activations.
   const commModel = extra.commModel ?? DEFAULT_CONFIG.commModel;
-  const base = { ...DEFAULT_CONFIG, ...megatronPlacement(schedule, commModel), schedule, pp, vpp, groupSize: pp, microBatches: m, forwardTime: 1, backwardTime: 2, p2pLatency: 0, activationBytes: 1, ...extra };
-  // Megatron's 1F1B always blocks; its idealised non-blocking form is the Custom schedule with one chunk.
-  if (schedule === '1f1b' && base.commModel !== 'sync') {
-    return { ...base, schedule: 'custom', warmupFormula: 'pp - r - 1', groupSize: m, ...megatronPlacement('1f1b', 'sync'), ...extra };
+  // One layer per chunk, so per-chunk times equal the per-layer inputs and closed forms stay simple.
+  const base = { ...DEFAULT_CONFIG, ...megatronPlacement(schedule, commModel), schedule, pp, vpp, groupSize: pp, numLayers: pp * vpp, microBatches: m, forwardTime: 1, backwardTime: 2, p2pLatency: 0, activationBytes: 1, ...extra };
+  // 1F1B and GPipe are blocking-only; their idealised non-blocking forms are Custom with one chunk.
+  if ((schedule === '1f1b' || schedule === 'gpipe') && base.commModel !== 'sync') {
+    const formula = schedule === '1f1b' ? 'pp - r - 1' : 'total';
+    return { ...base, schedule: 'custom', warmupFormula: formula, groupSize: m, ...megatronPlacement('1f1b', 'sync'), ...extra };
   }
   return base;
 }
@@ -414,7 +416,7 @@ test('a program that schedules a backward before its own forward is rejected', (
     [{ type: 'compute', kind: 'F', mb: 0, chunk: 0 }, { type: 'comm', sends: [{ kind: 'F', peer: 1, tag: 'F:0:0', mb: 0 }], recvs: [] }],
     [{ type: 'comm', sends: [], recvs: [{ kind: 'F', peer: 0, tag: 'F:0:0', mb: 0 }] }, { type: 'compute', kind: 'B', mb: 0, chunk: 0 }, { type: 'compute', kind: 'F', mb: 0, chunk: 0 }],
   ] as Program;
-  const cost = constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, microBatches: 1 });
+  const cost = constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, numLayers: 2, microBatches: 1 });
   const r = runProgram(bad, 2, cost, 'async');
   assert.equal(r.failure?.kind, 'program');
   assert.match(r.failure!.message, /Program error on rank 1/);
@@ -431,7 +433,7 @@ test('a deadlocked program reports the stuck ranks and keeps the partial timelin
     [{ type: 'compute', kind: 'F', mb: 0, chunk: 0 }, { type: 'comm', sends: [], recvs: [{ kind: 'B', peer: 1, tag: 'B:0:1', mb: 0 }] }],
     [{ type: 'compute', kind: 'F', mb: 0, chunk: 0 }],
   ] as Program;
-  const r = runProgram(bad, 2, constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, microBatches: 1 }), 'async');
+  const r = runProgram(bad, 2, constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, numLayers: 2, microBatches: 1 }), 'async');
   assert.equal(r.failure?.kind, 'deadlock');
   assert.deepEqual(r.failure!.blocked.map((b) => b.rank), [0]);
   assert.equal(r.failure!.blocked[0].since, 1);
@@ -493,7 +495,7 @@ test('async comm: a recv whose data already landed completes immediately', () =>
 });
 
 test('input buffers are allocated when the recv is posted (or data lands), before the forward starts', () => {
-  const base = { p2pLatency: 0.5, activationBytes: undefined, seqLen: 1024, hiddenSize: 1024, microBatchSize: 1, dtypeBytes: 2, activationMultiplier: 17, layersPerChunk: 1 };
+  const base = { p2pLatency: 0.5, activationBytes: undefined, seqLen: 1024, hiddenSize: 1024, microBatchSize: 1, dtypeBytes: 2, activationMultiplier: 17, numLayers: 4 };
   const input = 1024 * 1024 * 2;
   for (const commModel of ['async', 'sync'] as const) {
     const t = simulate(cfg('1f1b', 4, 1, 8, { ...base, commModel }));

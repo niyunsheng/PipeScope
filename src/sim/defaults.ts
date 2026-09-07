@@ -52,7 +52,7 @@ export const DEFAULT_CONFIG: SimConfig = {
   microBatchSize: 1,
   dtypeBytes: 2,
   activationMultiplier: 17,
-  layersPerChunk: 2,
+  numLayers: 8,
   linearAttnRatio: 6,
   baselineBytes: 0,
   lengthMode: 'uniform',

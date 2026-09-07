@@ -38,9 +38,13 @@ export interface SimConfig {
   vpp: number;
   /** Number of micro-batches per global batch. */
   microBatches: number;
-  /** Forward time of one micro-batch through one chunk. */
+  /**
+   * Forward time of one micro-batch through one transformer layer. A chunk
+   * costs `layersPerChunk * forwardTime`, so schedules with different chunk
+   * counts (1F1B vs. VPP) stay comparable for the same model.
+   */
   forwardTime: number;
-  /** Backward time of one micro-batch through one chunk. */
+  /** Backward time of one micro-batch through one transformer layer. */
   backwardTime: number;
   /**
    * Loss computation time on the last stage, between a micro-batch's last
@@ -83,7 +87,7 @@ export interface SimConfig {
    * Override: activation memory retained per (micro-batch, chunk) between
    * its forward and backward pass, in bytes, as a single number. When unset
    * the activation is derived from the model shape below as
-   * `input + layersPerChunk * activationMultiplier * input`, where
+   * `input + layersPerChunk * activationMultiplier * input` (layersPerChunk = numLayers / (pp * vpp)), where
    * `input = seqLen * microBatchSize * hiddenSize * dtypeBytes`.
    */
   activationBytes?: number;
@@ -103,8 +107,8 @@ export interface SimConfig {
    * vanishes, leaving 17.
    */
   activationMultiplier: number;
-  /** Transformer layers per virtual chunk. */
-  layersPerChunk: number;
+  /** Total transformer layers in the model; must be divisible by pp * vpp (layers per chunk). */
+  numLayers: number;
   /**
    * Ratio of the linear-layer FLOP coefficient to the core-attention FLOP
    * coefficient, k. Per layer, linear FLOPs ∝ k * s * h^2 and core-attention

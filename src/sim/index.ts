@@ -27,6 +27,8 @@ export function validateConfig(cfg: SimConfig): string[] {
   if (!(cfg.forwardTime > 0)) errors.push('forward time must be > 0');
   if (!(cfg.backwardTime > 0)) errors.push('backward time must be > 0');
   if (!(cfg.lossTime >= 0)) errors.push('loss time must be ≥ 0');
+  if (!isInt(cfg.numLayers) || cfg.numLayers < 1) errors.push('layers must be an integer ≥ 1');
+  else if (cfg.numLayers % (cfg.pp * cfg.vpp) !== 0) errors.push(`layers (${cfg.numLayers}) must be divisible by pp × vpp = ${cfg.pp * cfg.vpp} stages`);
   if (!(cfg.p2pLatency >= 0)) errors.push('p2p latency must be ≥ 0');
   if (cfg.commModel !== 'async' && cfg.commModel !== 'sync') errors.push('commModel must be async or sync');
   if (cfg.tokens !== undefined) {
@@ -61,8 +63,8 @@ export function validateConfig(cfg: SimConfig): string[] {
     }
     // Megatron's 1F1B has no non-blocking variant: every p2p call waits. The idealised
     // async version of the same program is available as Custom with vpp = 1.
-    if (cfg.schedule === '1f1b' && cfg.commModel !== 'sync') {
-      errors.push('1F1B runs under the sync comm model only, as in Megatron; for a non-blocking variant use the Custom schedule with vpp = 1');
+    if ((cfg.schedule === '1f1b' || cfg.schedule === 'gpipe') && cfg.commModel !== 'sync') {
+      errors.push(`${info.label} runs under the sync comm model only (blocking p2p, as Megatron's 1F1B); for a non-blocking variant use the Custom schedule with vpp = 1`);
     }
     // Built-in schedules only take the placement Megatron implements for them; free combinations live in `custom`.
     if (cfg.schedule === '1f1b' || cfg.schedule === 'interleaved-1f1b') {

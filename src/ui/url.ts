@@ -10,12 +10,31 @@ import type { SimConfig } from '../sim/index.ts';
  * characters that are unsafe in a query (spaces, `+`, `&`, ...) are escaped,
  * which in practice is just the warmup formula.
  */
+/**
+ * Parse the query by hand: URLSearchParams turns `+` into a space, but `+` is
+ * an operator in the warmup formula and we want it to stay literal.
+ */
+function parseQuery(search: string): Map<string, string> {
+  const q = new Map<string, string>();
+  for (const part of search.replace(/^\?/, '').split('&')) {
+    if (!part) continue;
+    const i = part.indexOf('=');
+    const k = decodeURIComponent(i < 0 ? part : part.slice(0, i));
+    const v = i < 0 ? '' : decodeURIComponent(part.slice(i + 1));
+    q.set(k, v);
+  }
+  return q;
+}
+
+/** Escape only what would break the query itself; `+ ( ) *` stay readable. */
+const enc = (v: string) => v.replace(/[%&#=?\s]/g, (c) => (/\s/.test(c) ? '' : encodeURIComponent(c)));
+
 export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: number | null } {
-  const q = new URLSearchParams(location.search);
+  const q = parseQuery(location.search);
   const config = { ...defaults } as Record<string, unknown>;
   for (const [key, def] of Object.entries(defaults)) {
     const raw = q.get(key);
-    if (raw === null) continue;
+    if (raw === undefined) continue;
     if (typeof def === 'number') {
       const v = Number(raw);
       if (Number.isFinite(v)) config[key] = v;
@@ -27,7 +46,7 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
   if (toks) config.tokens = toks.split(',').map(Number).filter((x) => x > 0);
   // Group size defaults to pp; a link that changes pp but not G means G = pp.
   if (!q.has('groupSize') && q.has('pp')) config.groupSize = config.pp;
-  if (config.schedule === '1f1b') config.commModel = 'sync'; // Megatron 1F1B always blocks
+  if (config.schedule === '1f1b' || config.schedule === 'gpipe') config.commModel = 'sync'; // blocking-only schedules
   // Placement defaults depend on the schedule (Megatron's own), unless the link overrides them.
   const place = megatronPlacement(config.schedule as SimConfig['schedule'], config.commModel as SimConfig['commModel']);
   if (!q.has('sendAfter')) config.sendAfter = place.sendAfter;
@@ -39,8 +58,6 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
   return { config: config as unknown as SimConfig, selectedMb: q.has('sel') && Number.isFinite(sel) ? sel : null };
 }
 
-const enc = (v: string) => (/^[A-Za-z0-9.,_-]*$/.test(v) ? v : encodeURIComponent(v));
-
 export function writeUrl(config: SimConfig, defaults: SimConfig, selectedMb: number | null): void {
   const parts: string[] = [];
   const impliedVpp = !SCHEDULES[config.schedule].supportsVpp;
@@ -48,6 +65,7 @@ export function writeUrl(config: SimConfig, defaults: SimConfig, selectedMb: num
     if (key === 'vpp' && impliedVpp) continue;
     if (key === 'groupSize' && (impliedVpp || config.groupSize === config.pp)) continue; // implied
     if (key === 'warmupFormula' && config.schedule !== 'custom') continue; // only Custom uses it
+    if (key === 'commModel' && (config.schedule === '1f1b' || config.schedule === 'gpipe')) continue; // implied: blocking-only
     if ((key === 'sendAfter' || key === 'waitGrad') && (config as unknown as Record<string, unknown>)[key] === (megatronPlacement(config.schedule, config.commModel) as unknown as Record<string, unknown>)[key]) continue;
     const v = (config as unknown as Record<string, unknown>)[key];
     if (v !== undefined && v !== def) parts.push(`${key}=${enc(String(v))}`);

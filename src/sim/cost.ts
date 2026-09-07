@@ -21,9 +21,9 @@ export function inputBytes(cfg: SimConfig): number {
   return cfg.seqLen * cfg.microBatchSize * cfg.hiddenSize * cfg.dtypeBytes;
 }
 
-/** Transformer layers held by one virtual chunk. */
+/** Transformer layers held by one virtual chunk (stage). */
 export function layersPerChunk(cfg: SimConfig): number {
-  return cfg.layersPerChunk;
+  return cfg.numLayers / (cfg.pp * cfg.vpp);
 }
 
 /** Total activation retained per (mb, chunk) between forward and backward. */
@@ -50,18 +50,19 @@ export function computeScale(ratio: number, alpha: number): number {
 }
 
 /**
- * Default cost model. Every chunk costs the same; micro-batches scale with
+ * Default cost model. Per-layer times × layers per chunk; micro-batches scale with
  * their token count when `cfg.tokens` is given (v2), otherwise all are equal.
  */
 export function constantCost(cfg: SimConfig): CostModel {
   const act = activationBytes(cfg);
+  const layers = layersPerChunk(cfg);
   const L0 = cfg.seqLen;
   const alpha = quadraticShare(cfg);
   const ratio = (mb: number) => (cfg.tokens && cfg.tokens[mb] !== undefined ? cfg.tokens[mb] / L0 : 1);
   return {
     // Loss is per token (cross-entropy), so it scales linearly with length.
     compute: (kind, mb) =>
-      kind === 'L' ? cfg.lossTime * ratio(mb) : (kind === 'F' ? cfg.forwardTime : cfg.backwardTime) * computeScale(ratio(mb), alpha),
+      kind === 'L' ? cfg.lossTime * ratio(mb) : layers * (kind === 'F' ? cfg.forwardTime : cfg.backwardTime) * computeScale(ratio(mb), alpha),
     transfer: () => cfg.p2pLatency,
     activationInput: (mb) => act.input * ratio(mb),
     activationIntermediate: (mb) => act.intermediate * ratio(mb),
