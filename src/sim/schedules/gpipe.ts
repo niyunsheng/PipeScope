@@ -16,5 +16,6 @@ export function gpipeProgram(cfg: SimConfig): Program {
     warmupOf: () => cfg.microBatches, // every forward is warmup; the steady loop is empty
     sendAfter: 'F',
     waitGrad: 'beforeB',
+    nonblocking: false,
   });
 }

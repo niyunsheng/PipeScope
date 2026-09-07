@@ -6,15 +6,15 @@ import { fTag } from './schedules/common.ts';
  * Activation memory model.
  *
  * For every (mb, chunk) on a rank:
- *   - the *input* tensor is allocated when its receive buffer comes into
- *     existence: the earlier of the recv being posted (Megatron's
- *     `_communicate` allocates the destination tensor before the irecv) and
- *     the data starting to move towards this rank (under the async model the
- *     sender writes into the receiver's buffer before the recv is posted).
- *     This is exactly where the recv bar begins in the timeline, and always
- *     at or before the forward. For stage 0 the input appears at the forward start;
+ *   - the *input* tensor is allocated when the recv is posted: Megatron's
+ *     `_communicate` allocates the destination tensor before the irecv, so
+ *     the buffer exists from then on. For stage 0 the input appears at the
+ *     forward start;
  *   - the *intermediate* activations are allocated when the forward starts;
- *   - both are released when the backward pass ends.
+ *   - both are released when the backward pass ends;
+ *   - on the *sending* side, an op's output tensor (activation for F, input
+ *     gradient for B) stays alive from the op's end until the transfer has
+ *     landed, when Megatron's `deallocate_pipeline_outputs` frees it.
  * The static baseline (weights, gradients, optimizer state) is a constant.
  * The result per rank is a step function sampled at every event.
  */
@@ -25,7 +25,7 @@ export function computeMemory(
   baseline: number,
   transfers: TransferRecord[] = [],
 ): MemorySample[][] {
-  const allocated = new Map(transfers.map((tr) => [tr.tag, Math.min(tr.recvPosted, tr.start)]));
+  const allocated = new Map(transfers.map((tr) => [tr.tag, tr.recvPosted]));
   interface Ev {
     t: number;
     delta: number;
@@ -48,6 +48,16 @@ export function computeMemory(
       const total = cost.activationInput(op.mb, op.chunk, op.rank) + cost.activationIntermediate(op.mb, op.chunk, op.rank);
       events[op.rank].push({ t: op.end, delta: -total, key, event: 'release', order: 0 });
     }
+  }
+  // Sender-side output buffers: held from the producing op's end until the data has landed.
+  for (const tr of transfers) {
+    if (tr.producer === null) continue;
+    const prod = ops[tr.producer];
+    const bytes = cost.activationInput(tr.mb, prod.chunk, tr.from);
+    if (bytes <= 0 || tr.landed <= prod.end) continue;
+    const key = `${tr.mb}:${prod.chunk}:${tr.kind === 'F' ? 'out' : 'grad'}`;
+    events[tr.from].push({ t: prod.end, delta: bytes, key, event: 'output', order: 2 });
+    events[tr.from].push({ t: tr.landed, delta: -bytes, key, event: 'sent', order: 0 });
   }
   return events.map((evs) => {
     evs.sort((a, b) => a.t - b.t || a.order - b.order);

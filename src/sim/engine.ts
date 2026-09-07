@@ -1,10 +1,10 @@
 import type { CostModel } from './cost.ts';
 import type {
   BlockedBy,
-  CommModel,
   CommStep,
   IdleInterval,
   Op,
+  PostStep,
   Program,
   SimFailure,
   Transfer,
@@ -16,11 +16,7 @@ export interface RunResult {
   idles: IdleInterval[];
   /** Time at which each rank finished its program. */
   rankFinish: number[];
-  /**
-   * Every transfer with its posting, start and landing times. Under `async`
-   * data can land before the recv completes (it is buffered); under `sync`
-   * landing equals the recv completion.
-   */
+  /** Every transfer with its posting, rendezvous and landing times. */
   transfers: TransferRecord[];
   /** Set when the run stopped early; the other fields hold the partial result. */
   failure: SimFailure | null;
@@ -43,14 +39,27 @@ interface Channel {
   recvs: Posted[];
 }
 
+/** One end of a transfer this rank has posted and not yet waited for. */
+interface Outstanding {
+  channel: Channel;
+  index: number;
+  transfer: Transfer;
+  isSend: boolean;
+  postedAt: number;
+}
+
 interface RankState {
   pc: number;
   clock: number;
-  /** Set while blocked in a comm step: index into channel queues per transfer. */
-  pending: { channel: Channel; index: number; transfer: Transfer; isSend: boolean }[] | null;
+  /** Transfers posted by this rank whose completion has not been waited for yet, by tag. */
+  outstanding: Map<string, Outstanding>;
+  /** Every tag this rank has ever posted, to tell "already completed" from "never posted" in a wait. */
+  everPosted: Set<string>;
+  /** Set while blocked in a comm / wait step: the tags being waited for. */
+  waiting: string[] | null;
   /** Ids of compute ops issued by this rank, in order. */
   opIds: number[];
-  /** Binding cross-rank predecessors found by the last comm step; consumed by the next compute op. */
+  /** Binding cross-rank predecessors found by the last blocking step; consumed by the next compute op. */
   commBinding: BlockedBy[];
 }
 
@@ -59,34 +68,45 @@ function channelKey(src: number, dst: number, kind: string): string {
 }
 
 /**
- * Execute per-rank programs under rendezvous communication semantics.
+ * Execute per-rank programs under NCCL-style rendezvous communication.
  *
- * Each rank advances through its steps; compute steps simply consume time,
- * comm steps block the rank until every transfer in the step has completed.
- * Under `sync` a transfer completes at `max(sender arrival, receiver arrival)
- * + transfer time` for both peers; under `async` the sender completes at once
- * and the receiver completes at `max(receiver arrival, sender arrival +
- * transfer time)`. See `CommModel` in types.ts.
- * Because all programs are static, a fixed-point sweep over runnable ranks is
- * equivalent to an event-heap DES and easier to reason about. A sweep that
- * makes no progress while some rank is still blocked means the schedule
- * deadlocks (e.g. an unmatched recv), which is reported with context.
+ * Each rank advances through its steps. Compute steps consume time. A
+ * transfer starts moving once both peers have posted their end and lands
+ * `latency` later, for both peers alike. `comm` steps post and block until
+ * everything in them has landed (Megatron's synchronous path); `post` steps
+ * only post (isend / irecv) and `wait` steps block until previously posted
+ * transfers have landed (the overlap path). Because all programs are static,
+ * a fixed-point sweep over runnable ranks is equivalent to an event-heap DES
+ * and easier to reason about. A sweep that makes no progress while some rank
+ * is still blocked means the schedule deadlocks, which is reported with the
+ * partial timeline.
  */
-export function runProgram(program: Program, pp: number, cost: CostModel, commModel: CommModel = 'async'): RunResult {
-  const ranks: RankState[] = Array.from({ length: pp }, () => ({ pc: 0, clock: 0, pending: null, opIds: [], commBinding: [] }));
+export function runProgram(program: Program, pp: number, cost: CostModel): RunResult {
+  const ranks: RankState[] = Array.from({ length: pp }, () => ({
+    pc: 0,
+    clock: 0,
+    outstanding: new Map(),
+    everPosted: new Set(),
+    waiting: null,
+    opIds: [],
+    commBinding: [],
+  }));
   const channels = new Map<string, Channel>();
   const ops: Op[] = [];
   const idles: IdleInterval[] = [];
   /** (mb, stage) pairs whose forward has been issued, for the local F -> B check below. */
   const forwarded = new Set<string>();
   const transfers: TransferRecord[] = [];
+  const recorded = new Set<string>();
   let nextOpId = 0;
   let failure: SimFailure | null = null;
+
+  const describe = (o: Outstanding) => `${o.isSend ? 'send' : 'recv'} ${o.transfer.tag} ${o.isSend ? 'to' : 'from'} rank ${o.transfer.peer}`;
   /** Describe what every blocked rank is waiting on, for failure reports. */
   const blockedRanks = () =>
     ranks.flatMap((st, r) =>
-      st.pending
-        ? [{ rank: r, since: st.clock, waiting: st.pending.map((p) => `${p.isSend ? 'send' : 'recv'} ${p.transfer.tag} ${p.isSend ? 'to' : 'from'} rank ${p.transfer.peer}`).join(', ') }]
+      st.waiting
+        ? [{ rank: r, since: st.clock, waiting: st.waiting.map((tag) => describe(st.outstanding.get(tag)!)).join(', ') }]
         : [],
     );
 
@@ -119,90 +139,95 @@ export function runProgram(program: Program, pp: number, cost: CostModel, commMo
     return null;
   };
 
-  const post = (rank: number, step: CommStep): void => {
+  /** Post every transfer of a comm / post step at the rank's current clock. */
+  const postAll = (rank: number, step: CommStep | PostStep): string[] => {
     const st = ranks[rank];
-    st.pending = [];
+    const tags: string[] = [];
     for (const t of step.sends) {
       const ch = getChannel(rank, t.peer, t.kind);
       ch.sends.push({ rank, time: st.clock, transfer: t });
-      st.pending.push({ channel: ch, index: ch.sends.length - 1, transfer: t, isSend: true });
+      st.outstanding.set(t.tag, { channel: ch, index: ch.sends.length - 1, transfer: t, isSend: true, postedAt: st.clock });
+      st.everPosted.add(t.tag);
+      tags.push(t.tag);
     }
     for (const t of step.recvs) {
       const ch = getChannel(t.peer, rank, t.kind);
       ch.recvs.push({ rank, time: st.clock, transfer: t });
-      st.pending.push({ channel: ch, index: ch.recvs.length - 1, transfer: t, isSend: false });
+      st.outstanding.set(t.tag, { channel: ch, index: ch.recvs.length - 1, transfer: t, isSend: false, postedAt: st.clock });
+      st.everPosted.add(t.tag);
+      tags.push(t.tag);
     }
+    return tags;
   };
 
-  /** Try to complete the comm step a rank is blocked on. Returns true on progress. */
+  /**
+   * Try to finish the blocking step a rank is in. Every waited-for transfer
+   * needs its counterpart posted; then it lands at `max(both posted) + wire`.
+   * Returns true when the rank could move on.
+   */
   const tryComplete = (rank: number): boolean => {
     const st = ranks[rank];
-    if (!st.pending) return false;
-    let completion = st.clock;
-    let peerArrival = st.clock;
-    let last: { transfer: Transfer; isSend: boolean; peer: Posted } | null = null;
-    const results: { done: number; isSend: boolean; peer: Posted; wire: number; transfer: Transfer; from: number; to: number }[] = [];
-    for (const p of st.pending) {
-      if (commModel === 'async' && p.isSend) continue; // buffered send: never blocks the sender
-      const counterpart = p.isSend ? p.channel.recvs[p.index] : p.channel.sends[p.index];
-      if (!counterpart) return false; // peer has not reached the matching step yet
-      if (counterpart.transfer.tag !== p.transfer.tag) {
+    if (!st.waiting) return false;
+    const results: { done: number; o: Outstanding; peer: Posted }[] = [];
+    for (const tag of st.waiting) {
+      const o = st.outstanding.get(tag);
+      if (!o) {
+        failure = { kind: 'program', message: `Program error on rank ${rank}: waiting for ${tag}, which was never posted.`, blocked: blockedRanks(), op: null };
+        return false;
+      }
+      const counterpart = o.isSend ? o.channel.recvs[o.index] : o.channel.sends[o.index];
+      if (!counterpart) return false; // peer has not posted the matching end yet
+      if (counterpart.transfer.tag !== o.transfer.tag) {
         failure = {
           kind: 'tag-mismatch',
           message:
-            `Tag mismatch on rank ${rank}: ${p.isSend ? 'send' : 'recv'} ${p.transfer.tag} ` +
-            `paired with peer ${counterpart.rank}'s ${counterpart.transfer.tag}. ` +
+            `Tag mismatch on rank ${rank}: ${describe(o)} paired with peer ${counterpart.rank}'s ${counterpart.transfer.tag}. ` +
             'The schedule generator posted transfers in an inconsistent order.',
           blocked: blockedRanks(),
           op: null,
         };
         return false;
       }
-      const from = p.isSend ? rank : p.transfer.peer;
-      const to = p.isSend ? p.transfer.peer : rank;
-      const wire = cost.transfer(p.transfer.kind, p.transfer.mb, from, to);
-      // sync: data moves only after both peers posted. async: data was already
-      // in flight since the sender posted, the receiver just waits for it to land.
-      const done = commModel === 'sync' ? Math.max(st.clock, counterpart.time) + wire : Math.max(st.clock, counterpart.time + wire);
-      results.push({ done, isSend: p.isSend, peer: counterpart, wire, transfer: p.transfer, from, to });
-      if (done >= completion) {
-        completion = done;
-        // Time until the peer posted its end (0 if it was already there).
-        // Under async the send was posted at counterpart.time as well, so the
-        // same expression tells how long this rank waited for the peer to
-        // even start sending; the remainder of the idle is wire time.
-        peerArrival = Math.max(st.clock, counterpart.time);
-        last = { transfer: p.transfer, isSend: p.isSend, peer: counterpart };
+      const from = o.isSend ? rank : o.transfer.peer;
+      const to = o.isSend ? o.transfer.peer : rank;
+      const wire = cost.transfer(o.transfer.kind, o.transfer.mb, from, to);
+      const start = Math.max(o.postedAt, counterpart.time);
+      results.push({ done: start + wire, o, peer: counterpart });
+      if (!recorded.has(o.transfer.tag)) {
+        recorded.add(o.transfer.tag);
+        const sendPosted = o.isSend ? o.postedAt : counterpart.time;
+        const recvPosted = o.isSend ? counterpart.time : o.postedAt;
+        transfers.push({
+          tag: o.transfer.tag,
+          kind: o.transfer.kind,
+          mb: o.transfer.mb,
+          from,
+          to,
+          sendPosted,
+          recvPosted,
+          start,
+          landed: start + wire,
+          producer: producerOf(from, o.transfer, sendPosted),
+        });
       }
     }
-    // All counterparts are present: the step completes now. Only from here on
-    // may state be recorded, since an early `return false` above means the
-    // whole loop runs again on a later sweep.
+    // All counterparts present: the step completes now.
+    let completion = st.clock;
+    let last: { done: number; o: Outstanding; peer: Posted } | null = null;
     for (const r of results) {
-      if (r.isSend) continue;
-      // Recorded once, from the receiving side, which sees both posting times.
-      const start = commModel === 'sync' ? Math.max(st.clock, r.peer.time) : r.peer.time;
-      transfers.push({
-        tag: r.transfer.tag,
-        kind: r.transfer.kind,
-        mb: r.transfer.mb,
-        from: r.from,
-        to: r.to,
-        sendPosted: r.peer.time,
-        recvPosted: st.clock,
-        start,
-        landed: start + r.wire,
-        producer: producerOf(r.from, r.transfer, r.peer.time),
-      });
+      if (r.done >= completion) {
+        completion = r.done;
+        last = r;
+      }
     }
     if (completion > st.clock && last) {
-      const t = last.transfer;
+      const peerArrival = Math.max(st.clock, last.peer.time);
       idles.push({
         rank,
         start: st.clock,
         end: completion,
-        reason: last.isSend ? 'wait-send' : 'wait-recv',
-        transferTag: t.tag,
+        reason: last.o.isSend ? 'wait-send' : 'wait-recv',
+        transferTag: last.o.transfer.tag,
         peerWait: peerArrival - st.clock,
         transfer: completion - peerArrival,
       });
@@ -211,24 +236,22 @@ export function runProgram(program: Program, pp: number, cost: CostModel, commMo
     // binding constraint on the next op, whether or not this rank idled. The
     // one chosen as `last` goes first so it stays the chain's primary hop.
     st.commBinding = [];
-    const primary = last ? results.find((r) => r.peer === last!.peer) : undefined;
-    const ordered = primary ? [primary, ...results.filter((r) => r !== primary)] : results;
-    const arrival = st.clock;
+    const ordered = last ? [last, ...results.filter((r) => r !== last)] : results;
     const ownPrev = st.opIds.length ? st.opIds[st.opIds.length - 1] : null;
     for (const r of ordered) {
       if (Math.abs(r.done - completion) > 1e-9) continue;
-      // Who set the completion time: the peer (it posted after we arrived, or
-      // its data was still in flight), or ourselves (we arrived last and only
-      // the wire time remained)? In the latter case the constraint is our own
-      // previous op plus wire, so it is attributed to that op.
-      const peerBound = commModel === 'sync' ? r.peer.time >= arrival - 1e-9 : r.peer.time + r.wire >= arrival - 1e-9;
+      // Who set the completion: the peer (posted after we arrived, so the
+      // rendezvous waited for it) or ourselves (we arrived last and only the
+      // wire time remained; attributed to our own previous op).
+      const peerBound = r.peer.time >= st.clock - 1e-9;
       const producer = peerBound ? lastOpBefore(r.peer.rank, r.peer.time) : ownPrev;
       if (producer !== null && !st.commBinding.some((b) => b.op === producer)) {
-        st.commBinding.push({ reason: r.isSend ? 'wait-send' : 'wait-recv', op: producer, transferTag: r.transfer.tag });
+        st.commBinding.push({ reason: r.o.isSend ? 'wait-send' : 'wait-recv', op: producer, transferTag: r.o.transfer.tag });
       }
     }
+    for (const tag of st.waiting) st.outstanding.delete(tag);
     st.clock = completion;
-    st.pending = null;
+    st.waiting = null;
     st.pc += 1;
     return true;
   };
@@ -238,16 +261,17 @@ export function runProgram(program: Program, pp: number, cost: CostModel, commMo
     let unfinished = false;
     for (let r = 0; r < pp; r++) {
       const st = ranks[r];
-      if (st.pending) {
+      if (st.waiting) {
         unfinished = true;
         progress = tryComplete(r) || progress;
+        if (failure) break;
         continue;
       }
       if (st.pc >= program[r].length) continue;
       unfinished = true;
       const step = program[r][st.pc];
       if (step.type === 'compute') {
-        // Cross-rank dependencies are enforced by the rendezvous below (a tensor
+        // Cross-rank dependencies are enforced by the rendezvous (a tensor
         // cannot be received before it was sent). The one dependency no
         // communication covers is a backward needing its own rank's forward,
         // which matters at the last stage where the gradient is produced
@@ -256,7 +280,7 @@ export function runProgram(program: Program, pp: number, cost: CostModel, commMo
         const key = `${step.mb}:${step.chunk * pp + r}`;
         const dur = cost.compute(step.kind, step.mb, step.chunk, r);
         if (step.kind === 'F') forwarded.add(key);
-        else if (!forwarded.has(key)) {
+        else if (step.kind === 'B' && !forwarded.has(key)) {
           failure = {
             kind: 'program',
             message: `Program error on rank ${r}: B of micro-batch ${step.mb} at stage ${step.chunk * pp + r} is scheduled before its forward.`,
@@ -287,13 +311,27 @@ export function runProgram(program: Program, pp: number, cost: CostModel, commMo
         st.opIds.push(id);
         st.clock += dur;
         st.pc += 1;
+      } else if (step.type === 'post') {
+        postAll(r, step);
+        st.pc += 1;
       } else {
-        if (step.sends.length === 0 && step.recvs.length === 0) {
+        // `comm` posts then waits; `wait` waits for tags posted earlier. Tags
+        // already waited for (hence no longer outstanding) are no-ops; a tag
+        // this rank never posted is a schedule bug.
+        if (step.type === 'wait') {
+          const unknown = step.tags.find((tag) => !st.everPosted.has(tag));
+          if (unknown !== undefined) {
+            failure = { kind: 'program', message: `Program error on rank ${r}: waiting for ${unknown}, which was never posted.`, blocked: blockedRanks(), op: null };
+            break;
+          }
+        }
+        const tags = step.type === 'comm' ? postAll(r, step) : step.tags.filter((tag) => st.outstanding.has(tag));
+        if (tags.length === 0) {
           st.pc += 1;
         } else {
-          post(r, step);
-          // Complete immediately if the peers are already there.
-          tryComplete(r);
+          st.waiting = tags;
+          tryComplete(r); // completes at once if the peers are already there
+          if (failure) break;
         }
       }
       progress = true;

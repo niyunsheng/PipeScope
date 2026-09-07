@@ -1,5 +1,5 @@
 import type { Program, SimConfig, Step } from '../types.ts';
-import { Topology, comm, compute, push } from './common.ts';
+import { Topology, comm, compute, post, push, wait } from './common.ts';
 
 /**
  * Schedule lookup table, copied from Megatron-LM `get_schedule_table` (core_v0.19.0, L962).
@@ -30,9 +30,9 @@ export function numWarmup(m: number, pp: number, rank: number, vpp: number, grou
 
 /**
  * Megatron-LM interleaved 1F1B (`forward_backward_pipelining_with_interleaving`).
- * With `sendAfter = 'B'`, `waitGrad = 'beforeF'` this is the synchronous p2p
- * path (`overlap_p2p_comm = False`); with `'F'` / `'beforeB'` it is the overlap
- * path as far as wait placement goes (see `InterleavedKnobs`).
+ * `commModel = 'sync'` selects the synchronous p2p path (`overlap_p2p_comm =
+ * False`, blocking batched calls); `'async'` selects the overlap path (isend /
+ * irecv, waits right before use). See `InterleavedKnobs`.
  * Reference: Megatron-LM tag core_v0.19.0, megatron/core/pipeline_parallel/schedules.py
  *   https://github.com/NVIDIA/Megatron-LM/blob/core_v0.19.0/megatron/core/pipeline_parallel/schedules.py#L992
  *
@@ -50,7 +50,7 @@ export function numWarmup(m: number, pp: number, rank: number, vpp: number, grou
 export function interleavedProgram(cfg: SimConfig): Program {
   const { pp, vpp, microBatches: m } = cfg;
   const G = cfg.groupSize; // Megatron: microbatch_group_size_per_vp_stage, default pp
-  return interleavedFamily(cfg, { groupSize: G, warmupOf: (r) => numWarmup(m, pp, r, vpp, G), sendAfter: cfg.sendAfter, waitGrad: cfg.waitGrad });
+  return interleavedFamily(cfg, { groupSize: G, warmupOf: (r) => numWarmup(m, pp, r, vpp, G), sendAfter: cfg.sendAfter, waitGrad: cfg.waitGrad, nonblocking: cfg.commModel === 'async' });
 }
 
 /** Knobs of the interleaved skeleton that the custom schedule exposes. */
@@ -62,14 +62,23 @@ export interface InterleavedKnobs {
   /** Steady state: send the forward's output right after it (`F`) or after the backward (`B`). */
   sendAfter: 'F' | 'B';
   /**
-   * Steady state: wait for a backward's gradient in the batched step before
-   * the preceding forward (`beforeF`) or right before the backward (`beforeB`).
-   * The next forward's input is always waited for right before that forward.
-   * (B, beforeF) is Megatron's synchronous path; (F, beforeB) is its overlap
-   * path, which under the async comm model needs no separate post/wait: the
-   * post time of a recv does not matter there, only where the rank waits.
+   * Steady state: wait for a backward's gradient before the preceding forward
+   * (`beforeF`, in the batched step that ends the previous round) or right
+   * before the backward (`beforeB`). The next forward's input is always waited
+   * for right before that forward.
    */
   waitGrad: 'beforeF' | 'beforeB';
+  /**
+   * `false`: every communication call posts and waits (`comm` steps), i.e.
+   * Megatron's synchronous path with `sendAfter = 'B'`, `waitGrad = 'beforeF'`.
+   * `true`: isend / irecv. Warmup and cooldown keep blocking pairs (as in
+   * Megatron's `overlap_p2p_comm` path without warmup-flush overlap); in the
+   * steady state sends are posted right after the op that produced them,
+   * receives for the next round are posted together with them, and the rank
+   * waits only right before the consuming op. With `sendAfter = 'F'`,
+   * `waitGrad = 'beforeB'` this is Megatron's overlap path.
+   */
+  nonblocking: boolean;
 }
 
 /**
@@ -79,7 +88,7 @@ export interface InterleavedKnobs {
  */
 export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Program {
   const { pp, vpp, microBatches: m } = cfg;
-  const { groupSize, sendAfter, waitGrad } = knobs;
+  const { groupSize, sendAfter, waitGrad, nonblocking } = knobs;
   const topo = new Topology(pp, vpp);
   const table = scheduleTable(m, vpp, groupSize);
   const total = m * vpp;
@@ -101,11 +110,42 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
     // input_tensors[0].append(recv_forward(...))
     push(steps, comm([], [recvF(0)]));
 
+    if (nonblocking) {
+      // isend / irecv: post early, wait right before use. Warmup and cooldown
+      // stay blocking pairs like Megatron's overlap path (path B).
+      for (let k = 0; k < warmup; k++) {
+        steps.push(compute('F', F(k).mb, F(k).chunk));
+        push(steps, comm([sendF(k)], [recvF(k + 1)]));
+        // Last warmup step: irecv for the first backward's gradient, waited for later.
+        if (k === warmup - 1 && !allWarmup) push(steps, post([], [recvB(0)]));
+      }
+      if (allWarmup) push(steps, comm([], [recvB(0)]));
+      for (let k = 0; k < remaining; k++) {
+        const fk = k + warmup;
+        const bk = k;
+        const nextF = k === remaining - 1 ? null : recvF(fk + 1);
+        if (k > 0) push(steps, wait([recvF(fk)])); // input posted in the previous round
+        if (waitGrad === 'beforeF') push(steps, wait([recvB(bk)]));
+        steps.push(compute('F', F(fk).mb, F(fk).chunk));
+        if (sendAfter === 'F') push(steps, post([sendF(fk)], [nextF]));
+        if (waitGrad === 'beforeB') push(steps, wait([recvB(bk)]));
+        steps.push(compute('B', B(bk).mb, B(bk).chunk));
+        push(steps, post([sendB(bk), sendAfter === 'B' ? sendF(fk) : null], [recvB(bk + 1), sendAfter === 'B' ? nextF : null]));
+      }
+      for (let k = remaining; k < total; k++) {
+        push(steps, wait([recvB(k)])); // no-op unless it was posted (first cooldown step)
+        steps.push(compute('B', B(k).mb, B(k).chunk));
+        push(steps, comm([sendB(k)], [recvB(k + 1)]));
+      }
+      program.push(steps);
+      continue;
+    }
+
     if (waitGrad === 'beforeB') {
-      // Gradient waited for right before the backward that needs it (1F1B's
-      // pairing generalised to chunks). With `sendAfter = 'F'` this is
-      // `forward_backward_pipelining_without_interleaving` when vpp = 1 and
-      // Megatron's overlap path otherwise.
+      // Blocking pairs with the gradient waited for right before the backward
+      // that needs it (1F1B's pairing generalised to chunks). With
+      // `sendAfter = 'F'` this is `forward_backward_pipelining_without_
+      // interleaving` when vpp = 1.
       for (let k = 0; k < warmup; k++) {
         steps.push(compute('F', F(k).mb, F(k).chunk));
         push(steps, comm([sendF(k)], [recvF(k + 1)]));

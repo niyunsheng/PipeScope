@@ -11,16 +11,15 @@
 export type ScheduleName = 'gpipe' | '1f1b' | 'interleaved-1f1b' | 'custom';
 
 /**
- * How a point-to-point transfer completes.
- * - `async`: buffered / asynchronous send. The sender never blocks; data
- *   lands at `send time + latency` and a recv completes at
- *   `max(recv posted, data landed)`. Close to `overlap_p2p_comm` or an
- *   isend whose wait is deferred. This is the default because it matches
- *   the intuition that data sent long ago is available immediately.
- * - `sync`: rendezvous. Data only moves once both peers have posted, so a
- *   transfer completes at `max(send posted, recv posted) + latency` and both
- *   ranks block until then. This mirrors NCCL send/recv kernels under
- *   Megatron's synchronous `batch_isend_irecv` + `wait` path.
+ * How the program issues point-to-point communication. The transport itself
+ * is always NCCL-style rendezvous: data moves only once both peers have
+ * posted, and lands `latency` later.
+ * - `sync`: every call posts and waits (Megatron's `batch_isend_irecv` +
+ *   `wait`); the rank blocks in the call.
+ * - `async`: isend / irecv. Posting returns at once; the rank waits only
+ *   right before it needs the data (Megatron's `overlap_p2p_comm` path).
+ *   Receives are posted ahead, so the rendezvous usually happens while the
+ *   rank is still computing.
  */
 export type CommModel = 'async' | 'sync';
 
@@ -157,8 +156,8 @@ export interface Transfer {
 }
 
 /**
- * A blocking, batched communication step. Megatron issues sends and recvs
- * together (`send_forward_recv_backward`, ...) and waits for all of them.
+ * A blocking, batched communication step: post every transfer and wait for
+ * all of them (Megatron's `send_forward_recv_backward` etc. under the sync path).
  */
 export interface CommStep {
   type: 'comm';
@@ -166,7 +165,20 @@ export interface CommStep {
   recvs: Transfer[];
 }
 
-export type Step = ComputeStep | CommStep;
+/** Post transfers without waiting (isend / irecv); pair with a later `wait`. */
+export interface PostStep {
+  type: 'post';
+  sends: Transfer[];
+  recvs: Transfer[];
+}
+
+/** Block until the listed, previously posted transfers have completed. Already-complete tags are no-ops. */
+export interface WaitStep {
+  type: 'wait';
+  tags: string[];
+}
+
+export type Step = ComputeStep | CommStep | PostStep | WaitStep;
 
 /** Per-rank step sequences. `program[rank]` is executed sequentially. */
 export type Program = Step[][];
@@ -237,7 +249,7 @@ export interface TransferRecord {
   sendPosted: number;
   /** When the receiver posted its recv. */
   recvPosted: number;
-  /** When data started moving: `sendPosted` under async, `max(sendPosted, recvPosted)` under sync. */
+  /** When data started moving: the rendezvous, `max(sendPosted, recvPosted)`. */
   start: number;
   /** When data landed on the receiver: `start + wire`. */
   landed: number;
@@ -248,8 +260,8 @@ export interface TransferRecord {
 export interface MemorySample {
   t: number;
   bytes: number;
-  /** What changed at this event: input buffer allocated / forward started / backward ended. */
-  event: 'input' | 'forward' | 'release';
+  /** What changed: input buffer allocated / forward started / backward ended / output produced / output sent (freed). */
+  event: 'input' | 'forward' | 'release' | 'output' | 'sent';
   /** Activations resident on the rank right after this event, as "mb:chunk". */
   resident: string[];
 }

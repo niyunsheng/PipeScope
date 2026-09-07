@@ -20,5 +20,6 @@ export function customProgram(cfg: SimConfig): Program {
     warmupOf: (rank) => formula.eval(warmupVars(cfg, rank)),
     sendAfter: cfg.sendAfter,
     waitGrad: cfg.waitGrad,
+    nonblocking: cfg.commModel === 'async',
   });
 }

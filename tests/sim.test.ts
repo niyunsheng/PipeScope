@@ -75,8 +75,12 @@ test('1F1B total time matches closed form when p2p = 0', () => {
       checkInvariants(t);
       const expected = (pp - 1) * 3 + m * 3;
       assert.ok(Math.abs(t.metrics.totalTime - expected) < EPS, `pp=${pp} m=${m}: ${t.metrics.totalTime} != ${expected}`);
-      // Peak activation memory on rank r is min(pp - r, m).
-      t.metrics.ranks.forEach((r) => assert.equal(r.peakMemory, Math.min(pp - r.rank, m)));
+      // Peak activation memory on rank r is min(pp - r, m), plus at most one
+      // output buffer held while its send is still in flight (deallocate_pipeline_outputs).
+      t.metrics.ranks.forEach((r) => {
+        const base = Math.min(pp - r.rank, m);
+        assert.ok(r.peakMemory >= base && r.peakMemory <= base + 1, `pp=${pp} m=${m} rank ${r.rank}: peak ${r.peakMemory}`);
+      });
     }
   }
 });
@@ -108,7 +112,9 @@ test('Interleaved 1F1B reaches the (pp-1)(tf+tb) bubble bound and Megatron warmu
           );
           t.metrics.ranks.forEach((r) => {
             const w = numWarmup(m, pp, r.rank, vpp, pp);
-            assert.equal(r.peakMemory, Math.min(w + 1, m * vpp), `peak mem rank ${r.rank}`);
+            const base = Math.min(w + 1, m * vpp);
+            // Plus at most one output buffer in flight on the sending side.
+            assert.ok(r.peakMemory >= base && r.peakMemory <= base + 1, `peak mem rank ${r.rank}: ${r.peakMemory} vs ${base}`);
           });
         }
       }
@@ -242,7 +248,9 @@ test('predecessors: every op names predecessors that finished first; the chain e
   // ended at 7 and because the stage-6 output from rank 2 landed at 7.
   const f0c1 = t.ops.find((o) => o.rank === 3 && o.kind === 'F' && o.mb === 0 && o.chunk === 1)!;
   const preds = f0c1.predecessors.map((b) => `${b.reason}:r${t.ops[b.op].rank}:${t.ops[b.op].kind}${t.ops[b.op].mb}c${t.ops[b.op].chunk}`);
-  assert.deepEqual(preds, ['wait-recv:r2:F0c1', 'program:r3:F3c0']);
+  // The input from rank 2 binds first; the rendezvous of its own send to rank 0 may tie too; program order last.
+  assert.equal(preds[0], 'wait-recv:r2:F0c1');
+  assert.equal(preds[preds.length - 1], 'program:r3:F3c0');
 });
 
 test('transfers: one record per received tensor, consistent with ops, posting order and landing times', () => {
@@ -257,8 +265,8 @@ test('transfers: one record per received tensor, consistent with ops, posting or
       assert.equal(new Set(t.transfers.map((x) => x.tag)).size, t.transfers.length, 'tags unique');
       for (const tr of t.transfers) {
         assert.ok(Math.abs(tr.landed - tr.start - lat) < EPS);
-        const earliest = commModel === 'sync' ? Math.max(tr.sendPosted, tr.recvPosted) : tr.sendPosted;
-        assert.ok(Math.abs(tr.start - earliest) < EPS, `${schedule} ${commModel}: data starts when ${commModel === 'sync' ? 'both posted' : 'sent'}`);
+        // Rendezvous: data moves once both ends are posted, whichever way the program issued them.
+        assert.ok(Math.abs(tr.start - Math.max(tr.sendPosted, tr.recvPosted)) < EPS, `${schedule} ${commModel}: data starts at the rendezvous`);
         assert.notEqual(tr.producer, null);
         const prod = t.ops[tr.producer!];
         assert.equal(prod.rank, tr.from);
@@ -427,6 +435,36 @@ test('a program that schedules a backward before its own forward is rejected', (
   assert.ok(Math.abs(r.failure!.op!.start - 1.2) < EPS, 'B would have started when the input landed');
 });
 
+test('post / wait steps: irecv posted ahead completes at the rendezvous; waiting for an unposted tag is a program error', () => {
+  const cost = constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, numLayers: 2, microBatches: 1, p2pLatency: 0.5 });
+  // Rank 1 posts its irecv at t = 0, then computes something else (F of mb 1 as a stand-in),
+  // and only waits right before it needs the tensor. Rank 0 sends after its F (t = 1).
+  const prog = [
+    [{ type: 'compute', kind: 'F', mb: 0, chunk: 0 }, { type: 'post', sends: [{ kind: 'F', peer: 1, tag: 'F:0:0', mb: 0 }], recvs: [] }],
+    [
+      { type: 'post', sends: [], recvs: [{ kind: 'F', peer: 0, tag: 'F:0:0', mb: 0 }] },
+      { type: 'compute', kind: 'F', mb: 1, chunk: 0 },
+      { type: 'wait', tags: ['F:0:0'] },
+      { type: 'compute', kind: 'F', mb: 0, chunk: 0 },
+    ],
+  ] as Program;
+  const r = runProgram(prog, 2, cost);
+  assert.equal(r.failure, null);
+  const tr = r.transfers[0];
+  assert.equal(tr.recvPosted, 0);
+  assert.equal(tr.sendPosted, 1);
+  assert.equal(tr.start, 1, 'data moves at the rendezvous, i.e. when the sender posts');
+  assert.equal(tr.landed, 1.5);
+  const f0 = r.ops.find((o) => o.rank === 1 && o.mb === 0)!;
+  assert.equal(f0.start, 1.5, 'rank 1 waited only from 1 (its F1 ended) to the landing');
+  assert.deepEqual(r.idles.map((i) => [i.rank, i.start, i.end, i.reason]), [[1, 1, 1.5, 'wait-recv']]);
+  // The sender never blocked: its program ends at t = 1.
+  assert.equal(r.rankFinish[0], 1);
+
+  const bad = [[{ type: 'wait', tags: ['F:9:9'] }], []] as Program;
+  assert.equal(runProgram(bad, 2, cost).failure?.kind, 'program');
+});
+
 test('a deadlocked program reports the stuck ranks and keeps the partial timeline', () => {
   // Rank 0 waits for a tensor rank 1 never sends.
   const bad = [
@@ -481,20 +519,26 @@ test('idle breakdown: peerWait + transfer covers the whole idle; async == sync a
 });
 
 test('async comm: a recv whose data already landed completes immediately', () => {
-  // 1F1B pp4, latency 0.5: rank 0 sends F3 long before rank 1 finishes B0, so
-  // under the buffered model rank 1 starts F3 right after B0.
+  // 1F1B pp4, latency 0.5, isend/irecv: rank 1 posts the irecv for F3's input a
+  // round ahead, so the rendezvous happens while it computes and F3 starts right after B0.
   const t = simulate(cfg('1f1b', 4, 1, 8, { p2pLatency: 0.5, commModel: 'async' }));
   const b0 = t.ops.find((o) => o.rank === 1 && o.kind === 'B' && o.mb === 0)!;
   const f3 = t.ops.find((o) => o.rank === 1 && o.kind === 'F' && o.mb === 3)!;
   assert.ok(Math.abs(f3.start - b0.end) < EPS, `F3 starts at ${f3.start}, B0 ends at ${b0.end}`);
-  // Senders never wait under the async model.
-  assert.ok(t.idles.every((i) => i.reason === 'wait-recv'));
+  // Steady-state sends never block (isend); only the blocking warmup / cooldown
+  // pairs can wait on a send, i.e. before the rank's first B or after its last F.
+  for (const i of t.idles.filter((i) => i.reason === 'wait-send')) {
+    const mine = t.ops.filter((o) => o.rank === i.rank);
+    const firstB = mine.filter((o) => o.kind === 'B').sort((a, b) => a.start - b.start)[0];
+    const lastF = mine.filter((o) => o.kind === 'F').sort((a, b) => b.end - a.end)[0];
+    assert.ok(i.start < firstB.start + EPS || i.start >= lastF.end - EPS, `wait-send in steady state on rank ${i.rank} at ${i.start}`);
+  }
   // The sync model is never faster than the async one.
   const sync = simulate(cfg('1f1b', 4, 1, 8, { p2pLatency: 0.5, commModel: 'sync' }));
   assert.ok(sync.metrics.totalTime >= t.metrics.totalTime - EPS);
 });
 
-test('input buffers are allocated when the recv is posted (or data lands), before the forward starts', () => {
+test('input buffers are allocated when the recv is posted, before the forward starts', () => {
   const base = { p2pLatency: 0.5, activationBytes: undefined, seqLen: 1024, hiddenSize: 1024, microBatchSize: 1, dtypeBytes: 2, activationMultiplier: 17, numLayers: 4 };
   const input = 1024 * 1024 * 2;
   for (const commModel of ['async', 'sync'] as const) {
@@ -504,18 +548,18 @@ test('input buffers are allocated when the recv is posted (or data lands), befor
     const before = t.memory[1].filter((smp) => smp.t < f3.start - EPS);
     const inputEv = t.memory[1].find((smp) => smp.event === 'input' && smp.resident.includes('3:0'))!;
     const tr = t.transfers.find((x) => x.to === 1 && x.kind === 'F' && x.mb === 3)!;
-    assert.ok(Math.abs(inputEv.t - Math.min(tr.recvPosted, tr.start)) < EPS, `${commModel}: input allocated at ${inputEv.t}`);
+    assert.ok(Math.abs(inputEv.t - tr.recvPosted) < EPS, `${commModel}: input allocated at ${inputEv.t}`);
     assert.ok(inputEv.t <= f3.start + EPS);
     if (commModel === 'async') {
-      // Data was buffered before rank 1 even posted the recv.
-      assert.ok(tr.landed < tr.recvPosted - EPS);
+      // irecv posted a round ahead: the buffer exists and the data has landed well before F3.
+      assert.ok(tr.recvPosted < f3.start - EPS && tr.landed < f3.start - EPS);
       assert.ok(before.some((smp) => smp.resident.includes('3:0')));
     } else {
-      // Under sync the buffer exists from the recv posting; data lands at F start.
+      // Blocking: the recv is posted right before F3 and the data lands at F start.
       assert.ok(Math.abs(tr.landed - f3.start) < EPS);
     }
-    // Per (mb, chunk) total is input + 17 * input. On the last rank the sync model
-    // holds one activation at a time; async additionally buffers the next input.
+    // Per (mb, chunk) total is input + 17 * input. Blocking holds one activation at a
+    // time on the last rank; isend/irecv additionally holds the next input's buffer.
     assert.equal(t.metrics.ranks[3].peakMemory, commModel === 'sync' ? 18 * input : 19 * input);
   }
 });

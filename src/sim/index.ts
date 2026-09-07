@@ -93,7 +93,7 @@ export function simulate(cfg: SimConfig, cost: CostModel = constantCost(cfg)): T
   const errors = validateConfig(cfg);
   if (errors.length) throw new Error(errors.join('; '));
   const program = buildProgram(cfg);
-  const { ops, idles, rankFinish, transfers, failure } = runProgram(program, cfg.pp, cost, cfg.commModel);
+  const { ops, idles, rankFinish, transfers, failure } = runProgram(program, cfg.pp, cost);
   const memory = computeMemory(ops, cfg.pp, cost, cfg.baselineBytes, transfers);
   const metrics = computeMetrics(ops, idles, memory, rankFinish, cfg.pp);
   return { config: cfg, ops, idles, transfers, memory, metrics, failure };

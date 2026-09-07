@@ -17,5 +17,6 @@ export function oneF1BProgram(cfg: SimConfig): Program {
     warmupOf: (rank) => cfg.pp - rank - 1,
     sendAfter: cfg.sendAfter,
     waitGrad: cfg.waitGrad,
+    nonblocking: cfg.commModel === 'async',
   });
 }

@@ -1,4 +1,4 @@
-import type { CommStep, ComputeStep, OpKind, Step, Transfer } from '../types.ts';
+import type { CommStep, ComputeStep, OpKind, PostStep, Step, Transfer, WaitStep } from '../types.ts';
 
 /**
  * Helpers shared by schedule generators. All generators use Megatron's
@@ -70,6 +70,20 @@ export function comm(sends: (Transfer | null)[], recvs: (Transfer | null)[]): Co
   const r = recvs.filter((t): t is Transfer => t !== null);
   if (s.length === 0 && r.length === 0) return null;
   return { type: 'comm', sends: s, recvs: r };
+}
+
+/** Build a non-blocking post step; returns null when empty. */
+export function post(sends: (Transfer | null)[], recvs: (Transfer | null)[]): PostStep | null {
+  const s = sends.filter((t): t is Transfer => t !== null);
+  const r = recvs.filter((t): t is Transfer => t !== null);
+  if (s.length === 0 && r.length === 0) return null;
+  return { type: 'post', sends: s, recvs: r };
+}
+
+/** Build a wait step for previously posted transfers; returns null when empty. */
+export function wait(transfers: (Transfer | null)[]): WaitStep | null {
+  const tags = transfers.filter((t): t is Transfer => t !== null).map((t) => t.tag);
+  return tags.length ? { type: 'wait', tags } : null;
 }
 
 /** Push a step if it is not null. */
