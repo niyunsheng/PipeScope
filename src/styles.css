@@ -43,6 +43,7 @@ body { margin: 0; }
 .group { border: 1px solid var(--grid); border-radius: 6px; padding: 6px 10px 8px; margin: 0; min-width: 0; }
 .group legend { font-size: 12px; font-weight: 600; color: var(--ink-2); padding: 0 4px; }
 .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 8px; }
 .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 8px; }
 .rows { display: flex; flex-direction: column; gap: 6px; }
 .field.row { flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }

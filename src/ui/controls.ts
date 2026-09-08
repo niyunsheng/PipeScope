@@ -29,7 +29,6 @@ const PIPELINE_FIELDS: NumField[] = [
 const MODEL_FIELDS: NumField[] = [
   { key: 'seqLen', label: 'seqLen', min: 1, step: 1024 },
   { key: 'hiddenSize', label: 'hidden', min: 1, step: 512 },
-  { key: 'microBatchSize', label: 'mbs', min: 1, step: 1 },
 ];
 /** Full-width rows: input with its explanation shown beside it. */
 const MODEL_ROWS: (NumField & { note: Key })[] = [
@@ -298,6 +297,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
 
   // Model
   const model = fieldset(form, t('groupMemory'));
+  model.grid.className = 'grid4'; // the four shape fields on one row (micro-batch size stays 1)
   for (const f of MODEL_FIELDS) addNum(model.grid, f);
   const dtypeSelect = select(
     DTYPES.map((b) => ({ value: String(b), label: `${b} Byte${b > 1 ? 's' : ''}` })),
