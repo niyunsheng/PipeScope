@@ -50,7 +50,7 @@ export function numWarmup(m: number, pp: number, rank: number, vpp: number, grou
 export function interleavedProgram(cfg: SimConfig): Program {
   const { pp, vpp, microBatches: m } = cfg;
   const G = cfg.groupSize; // Megatron: microbatch_group_size_per_vp_stage, default pp
-  return interleavedFamily(cfg, { groupSize: G, warmupOf: (r) => numWarmup(m, pp, r, vpp, G), sendAfter: cfg.sendAfter, waitGrad: cfg.waitGrad, nonblocking: cfg.commModel === 'async' });
+  return interleavedFamily(cfg, { groupSize: G, warmupOf: (r) => numWarmup(m, pp, r, vpp, G), sendAfter: cfg.sendAfter, waitGrad: cfg.waitGrad, nonblocking: cfg.commModel === 'async', warmupFlush: cfg.prefetchWarmupFlush });
 }
 
 /** Knobs of the interleaved skeleton that the custom schedule exposes. */
@@ -79,6 +79,12 @@ export interface InterleavedKnobs {
    * `waitGrad = 'beforeB'` this is Megatron's overlap path.
    */
   nonblocking: boolean;
+  /**
+   * With `nonblocking`: also prefetch in warmup and cooldown (Megatron path C,
+   * `overlap_p2p_comm_warmup_flush`). The recv for step k+1 is posted before
+   * step k, sends are not waited for. Only these two phases change.
+   */
+  warmupFlush: boolean;
 }
 
 /**
@@ -88,7 +94,7 @@ export interface InterleavedKnobs {
  */
 export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Program {
   const { pp, vpp, microBatches: m } = cfg;
-  const { groupSize, sendAfter, waitGrad, nonblocking } = knobs;
+  const { groupSize, sendAfter, waitGrad, nonblocking, warmupFlush } = knobs;
   const topo = new Topology(pp, vpp);
   const table = scheduleTable(m, vpp, groupSize);
   const total = m * vpp;
@@ -107,8 +113,41 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
     const allWarmup = warmup === total;
     const remaining = total - warmup;
 
-    // input_tensors[0].append(recv_forward(...))
-    push(steps, comm([], [recvF(0)]));
+    // input_tensors[0].append(recv_forward(...)); path C posts it and waits later.
+    push(steps, nonblocking && warmupFlush ? post([], [recvF(0)]) : comm([], [recvF(0)]));
+
+    if (nonblocking && warmupFlush) {
+      // Path C: warmup and cooldown prefetch too. The recv for the next step
+      // is posted before the current one runs; sends are never waited for.
+      for (let k = 0; k < warmup; k++) {
+        push(steps, post([], [recvF(k + 1)]));
+        push(steps, wait([recvF(k)]));
+        steps.push(compute('F', F(k).mb, F(k).chunk));
+        push(steps, post([sendF(k)], []));
+        if (k === warmup - 1 && !allWarmup) push(steps, post([], [recvB(0)]));
+      }
+      if (allWarmup) push(steps, post([], [recvB(0)]));
+      for (let k = 0; k < remaining; k++) {
+        const fk = k + warmup;
+        const bk = k;
+        const nextF = k === remaining - 1 ? null : recvF(fk + 1);
+        push(steps, wait([recvF(fk)]));
+        if (waitGrad === 'beforeF') push(steps, wait([recvB(bk)]));
+        steps.push(compute('F', F(fk).mb, F(fk).chunk));
+        if (sendAfter === 'F') push(steps, post([sendF(fk)], [nextF]));
+        if (waitGrad === 'beforeB') push(steps, wait([recvB(bk)]));
+        steps.push(compute('B', B(bk).mb, B(bk).chunk));
+        push(steps, post([sendB(bk), sendAfter === 'B' ? sendF(fk) : null], [recvB(bk + 1), sendAfter === 'B' ? nextF : null]));
+      }
+      for (let k = remaining; k < total; k++) {
+        push(steps, post([], [recvB(k + 1)]));
+        push(steps, wait([recvB(k)]));
+        steps.push(compute('B', B(k).mb, B(k).chunk));
+        push(steps, post([sendB(k)], []));
+      }
+      program.push(steps);
+      continue;
+    }
 
     if (nonblocking) {
       // isend / irecv: post early, wait right before use. Warmup and cooldown

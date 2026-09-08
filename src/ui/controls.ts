@@ -199,7 +199,9 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     b.addEventListener('click', () => {
       // 1F1B (and the GPipe baseline, which mirrors its communication) are blocking-only.
       const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : store.get().config.commModel;
-      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, ...megatronPlacement(info.name, comm) });
+      // Switching to a blocking-only schedule drops the settings that only exist on the isend / irecv path.
+      const prefetch = comm === 'async' && store.get().config.prefetchWarmupFlush;
+      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...megatronPlacement(info.name, comm) });
     });
     schedButtons.set(info.name, b);
     scheduleSlot.appendChild(b);
@@ -244,7 +246,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     (v: CommModel) => {
       // For the built-in schedules the comm model also picks Megatron's path (and its placement).
       const sched = store.get().config.schedule;
-      update({ commModel: v, ...(sched === 'custom' ? {} : megatronPlacement(sched, v)) });
+      update({ commModel: v, ...(v === 'async' ? {} : { prefetchWarmupFlush: false }), ...(sched === 'custom' ? {} : megatronPlacement(sched, v)) });
     },
   );
   const commNote = el('p', 'note');
@@ -271,6 +273,17 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
   const waitNote = el('p', 'note');
   const waitCell = row(t('waitGrad'), waitSeg.root, waitNote);
   pipe.grid.appendChild(waitCell);
+  // Megatron path C: warmup / cooldown prefetch on top of isend / irecv.
+  const prefetchSeg = segmented<'off' | 'on'>(
+    [
+      { value: 'off', label: t('prefetchOff') },
+      { value: 'on', label: t('prefetchOn') },
+    ],
+    (v) => update({ prefetchWarmupFlush: v === 'on' }),
+  );
+  const prefetchNote = el('p', 'note');
+  const prefetchCell = row(t('prefetch'), prefetchSeg.root, prefetchNote);
+  pipe.grid.appendChild(prefetchCell);
 
   // Warmup formula: read-only for the built-in schedules (shows what they
   // use), editable for `custom`. Same row layout as the switches above.
@@ -385,7 +398,10 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
       const f = parseFormula(formula);
       const total = cfg.microBatches * cfg.vpp;
       const vals = Array.from({ length: cfg.pp }, (_, r) => Math.max(0, Math.min(total, Math.round(f.eval(warmupVars(cfg, r))))));
-      formulaNote.textContent = editable ? `${t('warmupValues', { v: vals.join(', ') })} · ${t('warmupVarsHint')}` : t('warmupValues', { v: vals.join(', ') });
+      // Steady 1F1B steps per rank = total - warmup (cooldown mirrors warmup).
+      const lines = [t('warmupValues', { v: vals.join(', ') }), t('steadyValues', { v: vals.map((w) => total - w).join(', ') })];
+      if (editable) lines.push(t('warmupVarsHint'));
+      formulaNote.textContent = lines.join('\n');
       formulaNote.classList.remove('error');
     } catch (e) {
       formulaNote.textContent = e instanceof Error ? e.message : String(e);
@@ -402,6 +418,12 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     waitSeg.enable(cfg.schedule === 'custom');
     sendNote.textContent = t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
     waitNote.textContent = t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
+    // Prefetch exists only on the isend / irecv path of the interleaved skeleton;
+    // shown greyed out elsewhere, like the comm-model row.
+    const hasComm = cfg.schedule === 'interleaved-1f1b' || cfg.schedule === 'custom';
+    prefetchSeg.set(cfg.prefetchWarmupFlush ? 'on' : 'off');
+    prefetchSeg.enable(hasComm && cfg.commModel === 'async');
+    prefetchNote.textContent = t(cfg.prefetchWarmupFlush ? 'prefetchOnHint' : 'prefetchOffHint');
     if (latencyToggle) {
       latencyToggle.textContent = cfg.p2pLatency > 0 ? t('latencyZero') : t('latencyRestore');
       latencyToggle.title = cfg.p2pLatency > 0 ? t('latencyZeroHint') : t('latencyRestoreHint');

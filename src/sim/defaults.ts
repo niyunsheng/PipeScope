@@ -47,6 +47,7 @@ export const DEFAULT_CONFIG: SimConfig = {
   groupSize: 4,
   sendAfter: 'F',
   waitGrad: 'beforeB',
+  prefetchWarmupFlush: false,
   seqLen: 4096,
   hiddenSize: 4096,
   microBatchSize: 1,

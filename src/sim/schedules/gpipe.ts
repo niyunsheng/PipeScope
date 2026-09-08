@@ -17,5 +17,6 @@ export function gpipeProgram(cfg: SimConfig): Program {
     sendAfter: 'F',
     waitGrad: 'beforeB',
     nonblocking: false,
+    warmupFlush: false,
   });
 }

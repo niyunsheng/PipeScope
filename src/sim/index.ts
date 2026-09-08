@@ -61,6 +61,10 @@ export function validateConfig(cfg: SimConfig): string[] {
     if (cfg.schedule === 'interleaved-1f1b' && cfg.vpp > 1 && cfg.commModel === 'sync' && cfg.pp <= 2) {
       errors.push('Megatron requires pp > 2 for the interleaved schedule without p2p overlap (sync path): with pp = 2 a batched call would hold several transfers between the same two ranks; use async (overlap path) or pp ≥ 3');
     }
+    // Megatron: warmup/flush overlap needs overlap_p2p_comm (model_parallel_config.py L570-L574).
+    if (cfg.prefetchWarmupFlush && cfg.commModel !== 'async') {
+      errors.push('prefetching warmup / cooldown receives needs the isend / irecv comm model (Megatron: overlap_p2p_comm_warmup_flush requires overlap_p2p_comm)');
+    }
     // Megatron's 1F1B has no non-blocking variant: every p2p call waits. The idealised
     // async version of the same program is available as Custom with vpp = 1.
     if ((cfg.schedule === '1f1b' || cfg.schedule === 'gpipe') && cfg.commModel !== 'sync') {

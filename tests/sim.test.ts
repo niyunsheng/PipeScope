@@ -353,6 +353,30 @@ test('custom schedule: defaults reproduce Megatron; the warmup formula is live',
   checkInvariants(g5);
 });
 
+test('warmup / cooldown prefetch (path C): steady state unchanged, only pays off when G > pp', () => {
+  const lat = { p2pLatency: 0.2, forwardTime: 1, backwardTime: 2 };
+  const base = simulate(cfg('interleaved-1f1b', 4, 2, 8, lat));
+  const pc = simulate(cfg('interleaved-1f1b', 4, 2, 8, { ...lat, prefetchWarmupFlush: true }));
+  assert.equal(pc.failure, null);
+  checkInvariants(pc);
+  // G = pp: the warmup already pipelines perfectly, so the total does not move ...
+  assert.ok(Math.abs(pc.metrics.totalTime - base.metrics.totalTime) < EPS, `${pc.metrics.totalTime} vs ${base.metrics.totalTime}`);
+  // ... but rank 0 no longer waits for its own send before the next warmup F.
+  const f1 = (t: Trace) => fbOps(t).find((o) => o.rank === 0 && o.kind === 'F' && o.mb === 1)!.start;
+  assert.ok(f1(pc) < f1(base), `rank 0 F1: ${f1(pc)} < ${f1(base)}`);
+  // Steady-state programs are identical: same op order per rank.
+  const order = (t: Trace, r: number) => fbOps(t).filter((o) => o.rank === r).sort((a, b) => a.start - b.start).map((o) => `${o.kind}${o.mb}.${o.chunk}`).join(' ');
+  for (let r = 0; r < 4; r++) assert.equal(order(pc, r), order(base, r));
+  // G > pp: rank 0's warmup has send-then-next-F gaps that prefetch removes.
+  const g5 = simulate(cfg('custom', 4, 2, 10, { ...lat, groupSize: 5 }));
+  const g5pc = simulate(cfg('custom', 4, 2, 10, { ...lat, groupSize: 5, prefetchWarmupFlush: true }));
+  assert.equal(g5pc.failure, null);
+  checkInvariants(g5pc);
+  assert.ok(g5pc.metrics.totalTime < g5.metrics.totalTime, `${g5pc.metrics.totalTime} < ${g5.metrics.totalTime}`);
+  // Megatron: needs the overlap path.
+  assert.match(validateConfig(cfg('interleaved-1f1b', 4, 2, 8, { commModel: 'sync', prefetchWarmupFlush: true })).join(' '), /overlap_p2p_comm_warmup_flush/);
+});
+
 test('custom schedule: validation rejects bad formulas and group sizes with a clear message', () => {
   const bad = (extra: Partial<SimConfig>) => validateConfig(cfg('custom', 4, 2, 8, extra));
   assert.match(bad({ warmupFormula: '2 * (pp - r' }).join(' '), /warmup formula: expected '\)'/);

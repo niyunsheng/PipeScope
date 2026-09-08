@@ -21,5 +21,6 @@ export function customProgram(cfg: SimConfig): Program {
     sendAfter: cfg.sendAfter,
     waitGrad: cfg.waitGrad,
     nonblocking: cfg.commModel === 'async',
+    warmupFlush: cfg.prefetchWarmupFlush,
   });
 }

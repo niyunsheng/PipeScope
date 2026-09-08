@@ -83,6 +83,12 @@ export interface SimConfig {
    */
   waitGrad: 'beforeF' | 'beforeB';
   /**
+   * isend / irecv only. Also overlap the warmup and cooldown phases: post the
+   * next input's / gradient's irecv one step ahead and do not wait for sends
+   * (Megatron's `overlap_p2p_comm_warmup_flush`). Steady state is unaffected.
+   */
+  prefetchWarmupFlush: boolean;
+  /**
    * Override: activation memory retained per (micro-batch, chunk) between
    * its forward and backward pass, in bytes, as a single number. When unset
    * the activation is derived from the model shape below as

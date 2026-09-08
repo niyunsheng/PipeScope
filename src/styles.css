@@ -63,7 +63,7 @@ body { margin: 0; }
 .field.row-note.formula-row input { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
 .field.row-note.formula-row input:disabled { color: var(--muted); background: var(--page); }
 .field.row-note select { width: auto; }
-.field.row-note .note { grid-column: 1 / -1; margin: 0; }
+.field.row-note .note { grid-column: 1 / -1; margin: 0; white-space: pre-line; }
 .note { margin: 0; font-size: 11.5px; line-height: 1.45; color: var(--muted); }
 .segmented { display: inline-flex; margin-left: 16px; border: 1px solid var(--axis); border-radius: 6px; overflow: hidden; }
 .segmented button { font: inherit; font-size: 13px; padding: 4px 12px; border: none; border-right: 1px solid var(--axis); background: #fff; color: var(--ink-2); cursor: pointer; }

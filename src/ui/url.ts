@@ -38,6 +38,8 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
     if (typeof def === 'number') {
       const v = Number(raw);
       if (Number.isFinite(v)) config[key] = v;
+    } else if (typeof def === 'boolean') {
+      config[key] = raw === 'true' || raw === '1';
     } else {
       config[key] = raw;
     }
@@ -46,11 +48,14 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
   if (toks) config.tokens = toks.split(',').map(Number).filter((x) => x > 0);
   // Group size defaults to pp; a link that changes pp but not G means G = pp.
   if (!q.has('groupSize') && q.has('pp')) config.groupSize = config.pp;
-  if (config.schedule === '1f1b' || config.schedule === 'gpipe') config.commModel = 'sync'; // blocking-only schedules
-  // Placement defaults depend on the schedule (Megatron's own), unless the link overrides them.
-  const place = megatronPlacement(config.schedule as SimConfig['schedule'], config.commModel as SimConfig['commModel']);
-  if (!q.has('sendAfter')) config.sendAfter = place.sendAfter;
-  if (!q.has('waitGrad')) config.waitGrad = place.waitGrad;
+  // Controls that are greyed out in the UI ignore the link: blocking-only
+  // schedules are always `sync`, the built-in schedules always use Megatron's
+  // placement, and warmup / cooldown prefetch exists only on the interleaved
+  // skeleton's isend / irecv path.
+  const schedule = config.schedule as SimConfig['schedule'];
+  if (schedule === '1f1b' || schedule === 'gpipe') config.commModel = 'sync';
+  if (schedule !== 'custom') Object.assign(config, megatronPlacement(schedule, config.commModel as SimConfig['commModel']));
+  if (!((schedule === 'interleaved-1f1b' || schedule === 'custom') && config.commModel === 'async')) config.prefetchWarmupFlush = false;
   // Schedules without virtual stages imply vpp = 1; the link does not carry it.
   const sched = SCHEDULES[config.schedule as SimConfig['schedule']];
   if (sched && !sched.supportsVpp) config.vpp = 1;
