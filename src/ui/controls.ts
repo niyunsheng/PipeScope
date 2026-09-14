@@ -119,7 +119,7 @@ function select<V extends string>(options: { value: V; label: string }[], onChan
 function segmented<V extends string>(
   options: { value: V; label: string }[],
   onChange: (v: V) => void,
-): { root: HTMLDivElement; set: (v: V) => void } {
+): { root: HTMLDivElement; set: (v: V) => void; enable: (on: boolean) => void } {
   const root = el('div', 'segmented');
   const buttons = new Map<V, HTMLButtonElement>();
   for (const o of options) {
@@ -200,7 +200,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
       const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : store.get().config.commModel;
       // Switching to a blocking-only schedule drops the settings that only exist on the isend / irecv path.
       const prefetch = comm === 'async' && store.get().config.prefetchWarmupFlush;
-      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...megatronPlacement(info.name, comm) });
+      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...(!info.supportsVpp ? { warmupPlusOne: false, moeOverlap: false } : {}), ...megatronPlacement(info.name, comm) });
     });
     schedButtons.set(info.name, b);
     scheduleSlot.appendChild(b);
@@ -291,9 +291,27 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
   formulaInput.spellcheck = false;
   formulaInput.addEventListener('input', () => update({ warmupFormula: formulaInput.value }));
   const formulaNote = el('p', 'note');
-  const formulaCell = row(t('warmupFormula'), formulaInput, formulaNote);
+  const warmupExtra = el('button', 'mini-btn warmup-extra', '+1');
+  warmupExtra.type = 'button';
+  warmupExtra.setAttribute('aria-label', 'Warmup +1');
+  warmupExtra.title = 'Add one warmup forward (toggle)';
+  warmupExtra.addEventListener('click', () => update({ warmupPlusOne: !store.get().config.warmupPlusOne }));
+  const formulaControls = el('div', 'with-btn');
+  formulaControls.append(formulaInput, warmupExtra);
+  const formulaCell = row(t('warmupFormula'), formulaControls, formulaNote);
   formulaCell.classList.add('formula-row');
   pipe.grid.appendChild(formulaCell);
+
+  const ratiosInput = el('input');
+  ratiosInput.type = 'text';
+  ratiosInput.setAttribute('aria-label', 'Attn / Dispatch / Experts / Combine (%)');
+  ratiosInput.addEventListener('input', () => update({ moeRatios: ratiosInput.value }));
+  const ratiosRow = row('MoE ratios (%)', ratiosInput, el('p', 'note', 'Attn / Dispatch / Experts / Combine · F/B share percentages; total = 100. F/B times include A2A.'));
+  ratiosRow.classList.add('formula-row');
+  pipe.grid.appendChild(ratiosRow);
+  const moeToggle = segmented<'off' | 'on'>([{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }], v => update({ moeOverlap: v === 'on' }));
+  const moeRow = row('1F1B overlap', moeToggle.root, el('p', 'note', 'Fixed Megatron F/B order, no fallback. Both inputs ready before the pair; P2P sends after the pair. Balanced EP, no contention or delayed wgrad.'));
+  pipe.grid.appendChild(moeRow);
 
   // Model
   const model = fieldset(form, t('groupMemory'));
@@ -382,6 +400,11 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
 
   store.subscribeTo(['config', 'error'], (s) => {
     const cfg = s.config;
+    const supportsMoe = SCHEDULES[cfg.schedule].supportsVpp;
+    ratiosRow.hidden = warmupExtra.hidden = moeRow.hidden = !supportsMoe;
+    warmupExtra.setAttribute('aria-pressed', String(cfg.warmupPlusOne));
+    moeToggle.set(cfg.moeOverlap ? 'on' : 'off');
+    if (document.activeElement !== ratiosInput) ratiosInput.value = cfg.moeRatios;
     errorBox.textContent = s.error ?? '';
     for (const [name, b] of schedButtons) b.classList.toggle('active', name === cfg.schedule);
     schedDesc.textContent = t(SCHEDULE_DESC[cfg.schedule]);
@@ -397,7 +420,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     try {
       const f = parseFormula(formula);
       const total = cfg.microBatches * cfg.vpp;
-      const vals = Array.from({ length: cfg.pp }, (_, r) => Math.max(0, Math.min(total, Math.round(f.eval(warmupVars(cfg, r))))));
+      const vals = Array.from({ length: cfg.pp }, (_, r) => Math.max(0, Math.min(total, Math.round(f.eval(warmupVars(cfg, r))) + (cfg.warmupPlusOne ? 1 : 0))));
       // Steady 1F1B steps per rank = total - warmup (cooldown mirrors warmup).
       const lines = [t('warmupValues', { v: vals.join(', ') }), t('steadyValues', { v: vals.map((w) => total - w).join(', ') })];
       if (editable) lines.push(t('warmupVarsHint'));
@@ -416,8 +439,8 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     waitCell.hidden = noSteady;
     sendSeg.enable(cfg.schedule === 'custom');
     waitSeg.enable(cfg.schedule === 'custom');
-    sendNote.textContent = t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
-    waitNote.textContent = t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
+    sendNote.textContent = cfg.moeOverlap ? 'Paired F/B outputs are sent after the combined step.' : t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
+    waitNote.textContent = cfg.moeOverlap ? 'Both forward input and backward gradient must be ready before the fixed pair starts.' : t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
     // Prefetch exists only on the isend / irecv path of the interleaved skeleton;
     // shown greyed out elsewhere, like the comm-model row.
     const hasComm = cfg.schedule === 'interleaved-1f1b' || cfg.schedule === 'custom';

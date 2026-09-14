@@ -99,3 +99,7 @@ body { margin: 0; }
   .sidebar { border-right: none; border-bottom: 1px solid var(--grid); }
   .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+.warmup-extra[aria-pressed="true"] { background: var(--accent, #2879d9); color: white; border-color: var(--accent, #2879d9); }
+.formula-row .with-btn { min-width: 0; }
+.formula-row .with-btn input { min-width: 0; }

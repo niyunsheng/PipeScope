@@ -58,7 +58,11 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
   if (!((schedule === 'interleaved-1f1b' || schedule === 'custom') && config.commModel === 'async')) config.prefetchWarmupFlush = false;
   // Schedules without virtual stages imply vpp = 1; the link does not carry it.
   const sched = SCHEDULES[config.schedule as SimConfig['schedule']];
-  if (sched && !sched.supportsVpp) config.vpp = 1;
+  if (sched && !sched.supportsVpp) {
+    config.vpp = 1;
+    config.warmupPlusOne = false;
+    config.moeOverlap = false;
+  }
   const sel = Number(q.get('sel'));
   return { config: config as unknown as SimConfig, selectedMb: q.has('sel') && Number.isFinite(sel) ? sel : null };
 }
@@ -67,6 +71,7 @@ export function writeUrl(config: SimConfig, defaults: SimConfig, selectedMb: num
   const parts: string[] = [];
   const impliedVpp = !SCHEDULES[config.schedule].supportsVpp;
   for (const [key, def] of Object.entries(defaults)) {
+    if (impliedVpp && ['moeRatios', 'warmupPlusOne', 'moeOverlap'].includes(key)) continue;
     if (key === 'vpp' && impliedVpp) continue;
     if (key === 'groupSize' && (impliedVpp || config.groupSize === config.pp)) continue; // implied
     if (key === 'warmupFormula' && config.schedule !== 'custom') continue; // only Custom uses it

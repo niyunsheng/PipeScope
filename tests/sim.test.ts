@@ -430,7 +430,7 @@ test('sync-model deadlock with non-default group size follows the drift rule flo
       for (let G = pp + 1; G <= m; G++) {
         if (m % G !== 0 && m % G < pp) continue; // Megatron's own constraint
         const c = { ...cfg('interleaved-1f1b', pp, 2, m, { commModel: 'sync' }), groupSize: G };
-        const r = runProgram(buildProgram(c), pp, constantCost(c), 'sync');
+        const r = runProgram(buildProgram(c), pp, constantCost(c));
         const steadyRank0 = m * 2 - numWarmup(m, pp, 0, 2, G);
         const predicted = Math.floor(m / G) * (G - pp) >= 2 && steadyRank0 >= 2;
         assert.equal(r.failure !== null, predicted, `pp=${pp} m=${m} G=${G}`);
@@ -449,7 +449,7 @@ test('a program that schedules a backward before its own forward is rejected', (
     [{ type: 'comm', sends: [], recvs: [{ kind: 'F', peer: 0, tag: 'F:0:0', mb: 0 }] }, { type: 'compute', kind: 'B', mb: 0, chunk: 0 }, { type: 'compute', kind: 'F', mb: 0, chunk: 0 }],
   ] as Program;
   const cost = constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, numLayers: 2, microBatches: 1 });
-  const r = runProgram(bad, 2, cost, 'async');
+  const r = runProgram(bad, 2, cost);
   assert.equal(r.failure?.kind, 'program');
   assert.match(r.failure!.message, /Program error on rank 1/);
   // What ran before the failure is kept, and the illegal step is reported where it would have started.
@@ -495,7 +495,7 @@ test('a deadlocked program reports the stuck ranks and keeps the partial timelin
     [{ type: 'compute', kind: 'F', mb: 0, chunk: 0 }, { type: 'comm', sends: [], recvs: [{ kind: 'B', peer: 1, tag: 'B:0:1', mb: 0 }] }],
     [{ type: 'compute', kind: 'F', mb: 0, chunk: 0 }],
   ] as Program;
-  const r = runProgram(bad, 2, constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, numLayers: 2, microBatches: 1 }), 'async');
+  const r = runProgram(bad, 2, constantCost({ ...DEFAULT_CONFIG, pp: 2, vpp: 1, numLayers: 2, microBatches: 1 }));
   assert.equal(r.failure?.kind, 'deadlock');
   assert.deepEqual(r.failure!.blocked.map((b) => b.rank), [0]);
   assert.equal(r.failure!.blocked[0].since, 1);

@@ -10,7 +10,7 @@ export function computeMetrics(
   const totalTime = Math.max(0, ...rankFinish, ...ops.map((o) => o.end));
   const ranks: RankMetrics[] = [];
   for (let r = 0; r < pp; r++) {
-    const busy = ops.filter((o) => o.rank === r).reduce((s, o) => s + (o.end - o.start), 0);
+    const busy = ops.filter((o) => o.rank === r).reduce((s, o) => s + (o.segments ? o.segments.filter(s => s.resource === 'compute').reduce((n, s) => n + s.end - s.start, 0) : o.end - o.start), 0);
     const waitRecv = idles.filter((i) => i.rank === r && i.reason === 'wait-recv').reduce((s, i) => s + (i.end - i.start), 0);
     const waitSend = idles.filter((i) => i.rank === r && i.reason === 'wait-send').reduce((s, i) => s + (i.end - i.start), 0);
     ranks.push({

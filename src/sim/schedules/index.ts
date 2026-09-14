@@ -1,3 +1,4 @@
+import { combineMoe } from '../moe.ts';
 import type { Program, ScheduleName, SimConfig } from '../types.ts';
 import { gpipeProgram } from './gpipe.ts';
 import { customProgram } from './custom.ts';
@@ -43,7 +44,8 @@ export const SCHEDULES: Record<ScheduleName, ScheduleInfo> = {
 export function buildProgram(cfg: SimConfig): Program {
   const info = SCHEDULES[cfg.schedule];
   if (!info) throw new Error(`Unknown schedule: ${cfg.schedule}`);
-  return withLoss(info.generate(cfg), cfg);
+  const program = info.generate(cfg);
+  return withLoss(cfg.moeOverlap ? combineMoe(program) : program, cfg);
 }
 
 /**

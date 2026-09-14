@@ -170,7 +170,7 @@ export function mountGantt(wrapper: HTMLElement, store: Store): void {
       return bar ? { transfer: bar.tr, lane: true } : {};
     }
     const time = xToTime(x, s);
-    const op = s.trace.ops.find((o) => o.rank === rank && o.start <= time && time < o.end); // zero-length ops never match
+    const op = s.trace.ops.find((o) => o.rank === rank && (o.pair === undefined || o.segments === undefined || (o.kind === 'F' ? (y - AXIS_H - rank * rowH) < compH / 2 : (y - AXIS_H - rank * rowH) >= compH / 2)) && o.start <= time && time < o.end); // zero-length ops never match
     if (op) return { op };
     const idle = s.trace.idles.find((i) => i.rank === rank && i.start <= time && time < i.end);
     return idle ? { idle, transfer: s.trace.transfers.find((tr) => tr.tag === idle.transferTag) } : {};
@@ -297,9 +297,11 @@ export function mountGantt(wrapper: HTMLElement, store: Store): void {
       if (op.end <= op.start) continue; // zero-length op (loss with lossTime = 0): present, not drawn
       const x0 = x(op.start);
       const w = Math.max(1, x(op.end) - x0 - 1);
-      const y = AXIS_H + op.rank * rowH + pad;
-      const h = compH - 2 * pad;
+      const y = AXIS_H + op.rank * rowH + pad + ((op.pair !== undefined && op.segments !== undefined) && op.kind === 'B' ? compH / 2 : 0);
+      const h = ((op.pair !== undefined && op.segments !== undefined) ? compH / 2 : compH) - 2 * pad;
       ctx.fillStyle = chunkColor(op.chunk, op.kind);
+      // Keep the familiar solid F/B envelope; sub-events only affect timing.
+      ctx.globalAlpha = 1;
       ctx.fillRect(x0, y, w, h);
       // No maxWidth argument: fillText with maxWidth takes a slow scaling path.
       if (showLabels && w >= 16) {
@@ -308,22 +310,36 @@ export function mountGantt(wrapper: HTMLElement, store: Store): void {
       }
     }
 
+    // One dashed envelope per completed steady pair, including any P2P gap.
+    ctx.save();
+    ctx.strokeStyle = INK.secondary;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 3]);
+    for (const op of s.trace.ops) {
+      if (op.kind !== 'F' || op.pair === undefined || op.pairEnd === undefined) continue;
+      if (op.pairEnd < tMin || op.pairStart! > tMax) continue;
+      const left = x(op.pairStart!) + 0.5;
+      ctx.strokeRect(left, AXIS_H + op.rank * rowH + 0.5,
+        Math.max(1, x(op.pairEnd) - left - 0.5), compH - 1);
+    }
+    ctx.restore();
+
     const outline = (op: Op, dashed: boolean) => {
       const x0 = x(op.start);
       const w = Math.max(1, x(op.end) - x0 - 1);
-      const y = AXIS_H + op.rank * rowH + pad;
+      const y = AXIS_H + op.rank * rowH + pad + ((op.pair !== undefined && op.segments !== undefined) && op.kind === 'B' ? compH / 2 : 0);
       // White ring then dark outline so the highlight reads on any chunk color.
       ctx.setLineDash([]);
       ctx.strokeStyle = '#ffffff';
       ctx.lineWidth = 4;
-      ctx.strokeRect(x0 + 1.5, y + 1.5, Math.max(1, w - 3), compH - 2 * pad - 3);
+      ctx.strokeRect(x0 + 1.5, y + 1.5, Math.max(1, w - 3), ((op.pair !== undefined && op.segments !== undefined) ? compH / 2 : compH) - 2 * pad - 3);
       ctx.setLineDash(dashed ? [4, 3] : []);
       ctx.strokeStyle = INK.primary;
       ctx.lineWidth = 2;
-      ctx.strokeRect(x0 + 1.5, y + 1.5, Math.max(1, w - 3), compH - 2 * pad - 3);
+      ctx.strokeRect(x0 + 1.5, y + 1.5, Math.max(1, w - 3), ((op.pair !== undefined && op.segments !== undefined) ? compH / 2 : compH) - 2 * pad - 3);
       ctx.setLineDash([]);
     };
-    const center = (op: Op) => ({ cx: (x(op.start) + x(op.end)) / 2, cy: AXIS_H + op.rank * rowH + compH / 2 });
+    const center = (op: Op) => ({ cx: (x(op.start) + x(op.end)) / 2, cy: AXIS_H + op.rank * rowH + ((op.pair === undefined || op.segments === undefined) ? compH / 2 : op.kind === 'F' ? compH / 4 : 3 * compH / 4) });
     /** Bar rectangle of `tr` on `rank` (its send bar on the sender, recv bar on the receiver). */
     const barOf = (tr: TransferRecord, rank: number) => {
       const rowTop = AXIS_H + rank * rowH + compH;
@@ -500,8 +516,9 @@ export function mountGantt(wrapper: HTMLElement, store: Store): void {
     if (hit.op) {
       const o = hit.op;
       const tok = s.config.tokens ? ` · ${s.config.tokens[o.mb]} ${t('tokens')}` : '';
-      const dep = o.predecessors.length ? `<br>${t('startedAfter')}: ${o.predecessors.map((b) => describeDep(b, s.trace.ops, o)).join(' · ')}` : '';
-      tooltip.innerHTML = `<b>${kindName(o.kind)} · ${t('microBatch')} ${o.mb}</b>${tok}<br>${t('opWhere', { r: o.rank, c: o.chunk, s: o.stage })}<br>${fmt(o.start)} – ${fmt(o.end)} (${fmt(o.end - o.start)})${dep}`;
+      const detail = o.segments ? '<br>' + ['attn', 'dispatch', 'experts', 'combine'].map(part => `${part}: ${fmt(o.segments!.filter(seg => seg.part === part).reduce((sum, seg) => sum + seg.end - seg.start, 0))}`).join(' · ') + `<br>Compute: ${fmt(o.segments.filter(seg => seg.resource === 'compute').reduce((sum, seg) => sum + seg.end - seg.start, 0))}` : '';
+      const dep = o.predecessors.length ? `<br>${t('startedAfter')}: ${o.predecessors.map((b) => describeDep(b, s.trace!.ops, o)).join(' · ')}` : '';
+      tooltip.innerHTML = `<b>${kindName(o.kind)} · ${t('microBatch')} ${o.mb}</b>${tok}<br>${t('opWhere', { r: o.rank, c: o.chunk, s: o.stage })}<br>${fmt(o.start)} – ${fmt(o.end)} (${fmt(o.end - o.start)})${detail}${dep}`;
     } else if (hit.lane && hit.transfer) {
       const tr = hit.transfer;
       const wait = Math.max(0, tr.start - Math.min(tr.sendPosted, tr.recvPosted));

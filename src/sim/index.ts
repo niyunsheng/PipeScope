@@ -1,3 +1,4 @@
+import { parseMoeRatios } from './moe.ts';
 import { constantCost } from './cost.ts';
 import type { CostModel } from './cost.ts';
 import { runProgram } from './engine.ts';
@@ -20,6 +21,8 @@ export { warmupVars } from './schedules/custom.ts';
 
 export function validateConfig(cfg: SimConfig): string[] {
   const errors: string[] = [];
+  const ratios = parseMoeRatios(cfg.moeRatios);
+  if (SCHEDULES[cfg.schedule]?.supportsVpp && (ratios.length !== 4 || ratios.some(x => !Number.isFinite(x) || x < 0) || Math.abs(ratios.reduce((a, b) => a + b, 0) - 100) > 1e-6)) errors.push('MoE ratios: enter four non-negative percentages totaling 100 (attn/dispatch/experts/combine)');
   const isInt = (x: number) => Number.isInteger(x);
   if (!isInt(cfg.pp) || cfg.pp < 1) errors.push('pp must be an integer ≥ 1');
   if (!isInt(cfg.vpp) || cfg.vpp < 1) errors.push('vpp must be an integer ≥ 1');
@@ -35,6 +38,7 @@ export function validateConfig(cfg: SimConfig): string[] {
     if (cfg.tokens.length !== cfg.microBatches) errors.push(`tokens has ${cfg.tokens.length} entries, expected ${cfg.microBatches}`);
     if (cfg.tokens.some((x) => !(x > 0))) errors.push('every micro-batch must have > 0 tokens');
   }
+  if ((cfg.schedule === '1f1b' || cfg.schedule === 'gpipe') && (cfg.moeOverlap || cfg.warmupPlusOne)) errors.push('MoE overlap and warmup +1 belong to the VPP / Custom schedule, including vpp = 1, not ordinary 1F1B or GPipe');
   const info = SCHEDULES[cfg.schedule];
   if (!info) errors.push(`unknown schedule: ${cfg.schedule}`);
   else {
@@ -97,7 +101,7 @@ export function simulate(cfg: SimConfig, cost: CostModel = constantCost(cfg)): T
   const errors = validateConfig(cfg);
   if (errors.length) throw new Error(errors.join('; '));
   const program = buildProgram(cfg);
-  const { ops, idles, rankFinish, transfers, failure } = runProgram(program, cfg.pp, cost);
+  const { ops, idles, rankFinish, transfers, failure } = runProgram(program, cfg.pp, cost, cfg);
   const memory = computeMemory(ops, cfg.pp, cost, cfg.baselineBytes, transfers);
   const metrics = computeMetrics(ops, idles, memory, rankFinish, cfg.pp);
   return { config: cfg, ops, idles, transfers, memory, metrics, failure };

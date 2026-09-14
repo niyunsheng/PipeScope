@@ -1,3 +1,5 @@
+import { moeTiming } from './moe.ts';
+import type { SimConfig } from './types.ts';
 import type { CostModel } from './cost.ts';
 import type {
   BlockedBy,
@@ -81,7 +83,7 @@ function channelKey(src: number, dst: number, kind: string): string {
  * is still blocked means the schedule deadlocks, which is reported with the
  * partial timeline.
  */
-export function runProgram(program: Program, pp: number, cost: CostModel): RunResult {
+export function runProgram(program: Program, pp: number, cost: CostModel, cfg?: SimConfig): RunResult {
   const ranks: RankState[] = Array.from({ length: pp }, () => ({
     pc: 0,
     clock: 0,
@@ -277,6 +279,33 @@ export function runProgram(program: Program, pp: number, cost: CostModel): RunRe
         // which matters at the last stage where the gradient is produced
         // locally. Megatron fails here with an empty `input_tensors` list; we
         // fail with a message instead of drawing a plausible-looking timeline.
+        if (cfg?.moeOverlap && step.kind !== 'L') {
+          const b = step.backward ?? (step.kind === 'B' ? step : null);
+          if (b && !forwarded.has(`${b.mb}:${b.chunk * pp + r}`)) {
+            failure = { kind: 'program', message: `MoE overlap dependency conflict on rank ${r}: B mb${b.mb} chunk${b.chunk} requires its completed forward before combine backward; fixed pair cannot run.`, blocked: blockedRanks(), op: { id: nextOpId, rank: r, stage: b.chunk * pp + r, chunk: b.chunk, mb: b.mb, kind: 'B', start: st.clock, end: st.clock + cost.compute('B', b.mb, b.chunk, r), predecessors: [] } };
+            break;
+          }
+          const timing = moeTiming(step, r, st.clock, cfg, cost);
+          const pair = step.backward ? nextOpId : undefined;
+          const binding = st.commBinding.slice();
+          const prev = st.opIds.at(-1);
+          if (prev !== undefined && Math.abs(ops[prev].end - st.clock) < 1e-9) binding.push({ reason: 'program', op: prev });
+          const specs = [step, ...(step.backward ? [{ ...step.backward, kind: 'B' as const }] : [])];
+          specs.forEach((spec, i) => {
+            const segs = timing.segments[i];
+            const id = nextOpId++;
+            ops.push({ id, rank: r, chunk: spec.chunk, stage: spec.chunk * pp + r, mb: spec.mb, kind: spec.kind,
+              start: segs[0].start, end: segs.at(-1)!.end, segments: segs, pair,
+              pairStart: st.clock, pairEnd: timing.end, predecessors: binding.slice() });
+            st.opIds.push(id);
+            if (spec.kind === 'F') forwarded.add(`${spec.mb}:${spec.chunk * pp + r}`);
+          });
+          st.commBinding = [];
+          st.clock = timing.end;
+          st.pc++;
+          progress = true;
+          continue;
+        }
         const key = `${step.mb}:${step.chunk * pp + r}`;
         const dur = cost.compute(step.kind, step.mb, step.chunk, r);
         if (step.kind === 'F') forwarded.add(key);
@@ -308,6 +337,16 @@ export function runProgram(program: Program, pp: number, cost: CostModel): RunRe
           end: st.clock + dur,
           predecessors,
         });
+        // Keep the generator's steady F/B pairing for the visual outline too.
+        if (step.steady && step.kind === 'F') ops[id].pair = id;
+        if (step.kind === 'B') {
+          const f = st.opIds.map(i => ops[i]).reverse().find(o => o.kind === 'F' && o.pair !== undefined && o.pairEnd === undefined);
+          if (f) {
+            ops[id].pair = f.pair;
+            f.pairStart = ops[id].pairStart = f.start;
+            f.pairEnd = ops[id].pairEnd = ops[id].end;
+          }
+        }
         st.opIds.push(id);
         st.clock += dur;
         st.pc += 1;

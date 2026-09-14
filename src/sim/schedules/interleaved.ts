@@ -23,7 +23,6 @@ export function scheduleTable(m: number, vpp: number, groupSize: number): { mb: 
 /** Copied from Megatron-LM `get_pp_rank_microbatches` (core_v0.19.0, L902): number of warmup virtual micro-batches. */
 export function numWarmup(m: number, pp: number, rank: number, vpp: number, groupSize: number): number {
   const total = m * vpp;
-  if (pp === 1) return Math.min(1, total);
   const w = (pp - rank - 1) * 2 + (vpp - 1) * groupSize;
   return Math.min(w, total);
 }
@@ -109,7 +108,7 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
     const sendF = (v: number) => topo.sendF(rank, F(v).mb, F(v).chunk);
     const sendB = (v: number) => topo.sendB(rank, B(v).mb, B(v).chunk);
 
-    const warmup = Math.max(0, Math.min(total, Math.round(knobs.warmupOf(rank))));
+    const warmup = Math.max(0, Math.min(total, Math.round(knobs.warmupOf(rank)) + (cfg.warmupPlusOne ? 1 : 0)));
     const allWarmup = warmup === total;
     const remaining = total - warmup;
 
@@ -133,7 +132,7 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
         const nextF = k === remaining - 1 ? null : recvF(fk + 1);
         push(steps, wait([recvF(fk)]));
         if (waitGrad === 'beforeF') push(steps, wait([recvB(bk)]));
-        steps.push(compute('F', F(fk).mb, F(fk).chunk));
+        steps.push({ ...compute('F', F(fk).mb, F(fk).chunk), steady: true });
         if (sendAfter === 'F') push(steps, post([sendF(fk)], [nextF]));
         if (waitGrad === 'beforeB') push(steps, wait([recvB(bk)]));
         steps.push(compute('B', B(bk).mb, B(bk).chunk));
@@ -165,7 +164,7 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
         const nextF = k === remaining - 1 ? null : recvF(fk + 1);
         if (k > 0) push(steps, wait([recvF(fk)])); // input posted in the previous round
         if (waitGrad === 'beforeF') push(steps, wait([recvB(bk)]));
-        steps.push(compute('F', F(fk).mb, F(fk).chunk));
+        steps.push({ ...compute('F', F(fk).mb, F(fk).chunk), steady: true });
         if (sendAfter === 'F') push(steps, post([sendF(fk)], [nextF]));
         if (waitGrad === 'beforeB') push(steps, wait([recvB(bk)]));
         steps.push(compute('B', B(bk).mb, B(bk).chunk));
@@ -193,7 +192,7 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
       for (let k = 0; k < remaining; k++) {
         const fk = k + warmup;
         const bk = k;
-        steps.push(compute('F', F(fk).mb, F(fk).chunk));
+        steps.push({ ...compute('F', F(fk).mb, F(fk).chunk), steady: true });
         push(steps, comm([sendAfter === 'F' ? sendF(fk) : null], [recvB(bk)]));
         steps.push(compute('B', B(bk).mb, B(bk).chunk));
         const last = k === remaining - 1;
@@ -223,7 +222,7 @@ export function interleavedFamily(cfg: SimConfig, knobs: InterleavedKnobs): Prog
     for (let k = 0; k < remaining; k++) {
       const fk = k + warmup;
       const bk = k;
-      steps.push(compute('F', F(fk).mb, F(fk).chunk));
+      steps.push({ ...compute('F', F(fk).mb, F(fk).chunk), steady: true });
       if (sendAfter === 'F') push(steps, comm([sendF(fk)], []));
       steps.push(compute('B', B(bk).mb, B(bk).chunk));
       const nextF = k === remaining - 1 ? null : recvF(fk + 1);

@@ -43,6 +43,10 @@ export interface SimConfig {
    * counts (1F1B vs. VPP) stay comparable for the same model.
    */
   forwardTime: number;
+  warmupPlusOne: boolean;
+  moeOverlap: boolean;
+  /** Percentages shared by F/B, in forward order. */
+  moeRatios: string;
   /** Backward time of one micro-batch through one transformer layer. */
   backwardTime: number;
   /**
@@ -143,6 +147,9 @@ export interface SimConfig {
 /** A compute step: run F or B of `mb` through model chunk `chunk`. */
 export interface ComputeStep {
   type: 'compute';
+  /** Fixed steady-state partner, never selected dynamically. */
+  backward?: { mb: number; chunk: number };
+  steady?: boolean;
   kind: OpKind;
   mb: number;
   chunk: number;
@@ -225,6 +232,10 @@ export interface Op {
    * Empty only for an op that starts at t = 0.
    */
   predecessors: BlockedBy[];
+  segments?: { part: string; layer: number; start: number; end: number; resource: 'compute' | 'ep' }[];
+  pair?: number;
+  pairStart?: number;
+  pairEnd?: number;
 }
 
 /** A period during which a rank is blocked in a communication step. */
