@@ -101,6 +101,16 @@ function fieldset(parent: HTMLElement, legend: string): { fs: HTMLFieldSetElemen
   return { fs, grid };
 }
 
+/** Secondary settings start collapsed; native details supports keyboard toggling. */
+function collapsibleGroup(parent: HTMLElement, title: string): { grid: HTMLDivElement } {
+  const details = el('details', 'group collapsible-group');
+  details.appendChild(el('summary', undefined, title));
+  const grid = el('div', 'grid3');
+  details.appendChild(grid);
+  parent.appendChild(details);
+  return { grid };
+}
+
 function select<V extends string>(options: { value: V; label: string }[], onChange: (v: V) => void): HTMLSelectElement {
   const sel = el('select');
   for (const o of options) {
@@ -314,7 +324,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
   pipe.grid.appendChild(moeRow);
 
   // Model
-  const model = fieldset(form, t('groupMemory'));
+  const model = collapsibleGroup(form, t('groupMemory'));
   model.grid.className = 'grid4'; // the four shape fields on one row (micro-batch size stays 1)
   for (const f of MODEL_FIELDS) addNum(model.grid, f);
   const dtypeSelect = select(
@@ -335,7 +345,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
   }
 
   // Micro-batch lengths
-  const len = fieldset(form, t('groupLengths'));
+  const len = collapsibleGroup(form, t('groupLengths'));
   const modeSeg = segmented<LengthMode>(
     [
       { value: 'uniform', label: t('modeUniform') },

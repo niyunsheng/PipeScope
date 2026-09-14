@@ -103,3 +103,6 @@ body { margin: 0; }
 .warmup-extra[aria-pressed="true"] { background: var(--accent, #2879d9); color: white; border-color: var(--accent, #2879d9); }
 .formula-row .with-btn { min-width: 0; }
 .formula-row .with-btn input { min-width: 0; }
+
+.collapsible-group > summary { cursor: pointer; font-size: 12px; font-weight: 600; color: var(--ink-2); padding: 2px 0; }
+.collapsible-group[open] > summary { margin-bottom: 8px; }
