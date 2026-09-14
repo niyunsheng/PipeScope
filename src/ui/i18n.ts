@@ -7,7 +7,7 @@ const en = {
   share: 'Share',
   copied: 'Link copied',
   timeline: 'Timeline',
-  timelineHint: 'scroll to zoom · drag to pan · double-click to reset · click a block to pin a micro-batch · shift-click to trace why it started when it did · rows: compute / send / recv · click a gap or a transfer bar to highlight that transfer',
+  timelineHint: 'scroll vertically · Ctrl + scroll to zoom · drag to pan · double-click to reset · click a block to pin a micro-batch · shift-click to trace why it started when it did · rows: compute / send / recv · click a gap or a transfer bar to highlight that transfer',
   startedAfter: 'started after',
   latencyZero: '= 0',
   latencyRestore: '↩',

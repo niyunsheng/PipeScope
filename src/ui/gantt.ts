@@ -571,6 +571,7 @@ export function mountGantt(wrapper: HTMLElement, store: Store): void {
   canvas.addEventListener(
     'wheel',
     (e) => {
+      if (!e.ctrlKey) return; // Ordinary wheel scrolls the containing view.
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left;
