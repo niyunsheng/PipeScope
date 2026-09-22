@@ -10,7 +10,7 @@ export interface CostModel {
   compute(kind: OpKind, mb: number, chunk: number, rank: number): number;
   /** Wire time of one transfer once both peers have arrived. */
   transfer(kind: OpKind, mb: number, from: number, to: number): number;
-  /** Input activation of (mb, chunk): allocated when the tensor lands on the rank. */
+  /** Input activation of (mb, chunk): allocated when the receive is posted (or at F start on the first stage). */
   activationInput(mb: number, chunk: number, rank: number): number;
   /** Intermediate activations of (mb, chunk): allocated when its forward starts. */
   activationIntermediate(mb: number, chunk: number, rank: number): number;
@@ -30,7 +30,8 @@ export function layersPerChunk(cfg: SimConfig): number {
 export function activationBytes(cfg: SimConfig): { input: number; intermediate: number } {
   if (cfg.activationBytes !== undefined) return { input: cfg.activationBytes, intermediate: 0 };
   const input = inputBytes(cfg);
-  return { input, intermediate: layersPerChunk(cfg) * cfg.activationMultiplier * input };
+  // The per-layer total already includes the chunk input allocated earlier.
+  return { input, intermediate: (layersPerChunk(cfg) * cfg.activationMultiplier - 1) * input };
 }
 
 /**

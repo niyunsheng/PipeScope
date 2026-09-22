@@ -1,3 +1,4 @@
+import { activationBytes } from '../sim/cost.ts';
 import { fmt, fmtBytes, pct } from './format.ts';
 import { t } from './i18n.ts';
 import { INK, LOSS_COLOR, chunkColor } from './palette.ts';
@@ -22,7 +23,16 @@ export function mountMetrics(root: HTMLElement, store: Store): void {
     tile(t('ideal'), fmt(m.idealTime), t('idealNote'));
     tile(t('actual'), fmt(m.totalTime), t('actualNote', { d: fmt(m.totalTime - m.idealTime) }));
     tile(t('bubble'), pct(m.bubbleFraction), t('bubbleNote'));
-    tile(t('peak'), fmtBytes(peak.peakMemory), t('peakNote', { r: peak.rank }));
+    const cfg = s.trace.config;
+    const activation = activationBytes(cfg);
+    const chunkBytes = activation.input + activation.intermediate;
+    // Normalize dynamic peak to one reference-length micro-batch / chunk.
+    // Retained activations and communication buffers count; static state does not.
+    const multiple = chunkBytes > 0 ? Math.max(0, peak.peakMemory - cfg.baselineBytes) / chunkBytes : null;
+    const normalized = multiple === null ? t('peakMultipleUnavailable') : t('peakMultiple', { n: multiple.toFixed(2) });
+    tile(t('peak'), fmtBytes(peak.peakMemory), `${t('peakNote', { r: peak.rank })} · ${normalized}<br>${t('peakUnit', { bytes: fmtBytes(chunkBytes), tokens: cfg.seqLen })}`);
+    tiles.lastElementChild!.setAttribute('title', t('peakMultipleHint'));
+
     root.appendChild(tiles);
 
     // Legend: chunk hue × F/B lightness, plus the two comm-row segment styles.

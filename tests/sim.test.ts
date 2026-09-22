@@ -582,9 +582,9 @@ test('input buffers are allocated when the recv is posted, before the forward st
       // Blocking: the recv is posted right before F3 and the data lands at F start.
       assert.ok(Math.abs(tr.landed - f3.start) < EPS);
     }
-    // Per (mb, chunk) total is input + 17 * input. Blocking holds one activation at a
+    // Per (mb, chunk) total is 17 * input, including the input. Blocking holds one activation at a
     // time on the last rank; isend/irecv additionally holds the next input's buffer.
-    assert.equal(t.metrics.ranks[3].peakMemory, commModel === 'sync' ? 18 * input : 19 * input);
+    assert.equal(t.metrics.ranks[3].peakMemory, commModel === 'sync' ? 17 * input : 18 * input);
   }
 });
 

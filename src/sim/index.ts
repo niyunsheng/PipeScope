@@ -32,6 +32,7 @@ export function validateConfig(cfg: SimConfig): string[] {
   if (!(cfg.lossTime >= 0)) errors.push('loss time must be ≥ 0');
   if (!isInt(cfg.numLayers) || cfg.numLayers < 1) errors.push('layers must be an integer ≥ 1');
   else if (cfg.numLayers % (cfg.pp * cfg.vpp) !== 0) errors.push(`layers (${cfg.numLayers}) must be divisible by pp × vpp = ${cfg.pp * cfg.vpp} stages`);
+  if (cfg.activationBytes === undefined && (!Number.isFinite(cfg.activationMultiplier) || cfg.numLayers / (cfg.pp * cfg.vpp) * cfg.activationMultiplier < 1)) errors.push('layers per chunk × activation multiplier must be ≥ 1 to include the chunk input');
   if (!(cfg.p2pLatency >= 0)) errors.push('p2p latency must be ≥ 0');
   if (cfg.commModel !== 'async' && cfg.commModel !== 'sync') errors.push('commModel must be async or sync');
   if (cfg.tokens !== undefined) {

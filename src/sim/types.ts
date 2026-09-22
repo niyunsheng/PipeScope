@@ -96,7 +96,7 @@ export interface SimConfig {
    * Override: activation memory retained per (micro-batch, chunk) between
    * its forward and backward pass, in bytes, as a single number. When unset
    * the activation is derived from the model shape below as
-   * `input + layersPerChunk * activationMultiplier * input` (layersPerChunk = numLayers / (pp * vpp)), where
+   * `layersPerChunk * activationMultiplier * input` (layersPerChunk = numLayers / (pp * vpp)), where
    * `input = seqLen * microBatchSize * hiddenSize * dtypeBytes`.
    */
   activationBytes?: number;
@@ -109,8 +109,8 @@ export interface SimConfig {
   /** Bytes per activation element (2 = bf16). */
   dtypeBytes: number;
   /**
-   * Intermediate activation of one transformer layer as a multiple of the
-   * layer input. Megatron's activation-recomputation paper gives
+   * Total retained activation of one transformer layer, including its input,
+   * as a multiple of the layer input. Megatron's activation-recomputation paper gives
    * 34*s*b*h + 5*a*s^2*b bytes per layer vs. 2*s*b*h for the input, i.e.
    * 17 + 2.5*a*s/h; with flash attention (assumed) the attention-score term
    * vanishes, leaving 17.
