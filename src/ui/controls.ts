@@ -1,3 +1,4 @@
+import { vShapedOrder } from '../sim/schedules/vShaped.ts';
 import { Topology } from '../sim/schedules/common.ts';
 import { DEFAULT_CONFIG, SCHEDULES, activationBytes, builtinWarmupFormula, inputBytes, layersPerChunk, megatronPlacement, parseFormula, quadraticShare, simulate, validateConfig, warmupVars } from '../sim/index.ts';
 import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
@@ -437,11 +438,26 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     // Warmup formula row: built-in schedules show theirs greyed out; custom edits.
     formulaCell.hidden = prefetchCell.hidden = false;
     const editable = cfg.schedule === 'custom';
-    const formula = isVShaped ? 'Automatic (reference order)' : editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
+    const formula = isVShaped ? 'W(r) = count(F before first B on rank r)' : editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
     formulaInput.disabled = !editable;
     if (document.activeElement !== formulaInput) formulaInput.value = formula;
     if (isVShaped) {
-      formulaNote.textContent = 'Warmup and cooldown are generated from PP and microbatch count. Editing warmup / +1 is not implemented. Steady state repeats chunk-specific F/B operations, not necessarily strict F-B alternation on each rank.';
+      const lines = [
+        'W(r) counts chunk-forward operations, not distinct microbatches. Computed from the generated reference order S(r; pp, m), after warmup/cooldown reordering; not the interleaved VPP formula.',
+      ];
+      if (validateConfig(cfg).length === 0) {
+        const counts = vShapedOrder(cfg.pp, cfg.microBatches).map(order => {
+          const firstB = order.findIndex(op => op.kind === 'B');
+          const prefix = order.slice(0, firstB < 0 ? order.length : firstB);
+          return [0, 1].map(chunk => prefix.filter(op => op.kind === 'F' && op.chunk === chunk).length);
+        });
+        lines.push(t('warmupValues', { v: counts.map(c => c[0] + c[1]).join(', ') }));
+        lines.push(...counts.map((c, r) => `rank ${r}: ${c[0] + c[1]} F = ${c[0]} × F₀ + ${c[1]} × F₁`));
+      } else {
+        lines.push('Warmup counts unavailable until the configuration is valid.');
+      }
+      lines.push('First-B boundary only: the remaining operations include transition and cooldown, not all steady state. Warmup / +1 editing is not implemented.');
+      formulaNote.textContent = lines.join('\n');
       formulaNote.classList.remove('error');
     } else try {
       const f = parseFormula(formula);
