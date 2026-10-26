@@ -413,7 +413,13 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     const cfg = s.config;
     const isVShaped = cfg.schedule === '1f1b-v';
     const supportsMoe = SCHEDULES[cfg.schedule].supportsVpp && !isVShaped;
-    ratiosRow.hidden = warmupExtra.hidden = moeRow.hidden = !supportsMoe;
+    ratiosRow.hidden = warmupExtra.hidden = moeRow.hidden = !supportsMoe && !isVShaped;
+    warmupExtra.disabled = isVShaped;
+    warmupExtra.title = isVShaped ? 'Warmup +1 is not implemented for the V-shaped reference order.' : 'Add one warmup forward (toggle)';
+    ratiosInput.disabled = isVShaped;
+    moeToggle.enable(!isVShaped);
+    ratiosRow.querySelector('.note')!.textContent = isVShaped ? 'MoE phase decomposition is not implemented for this schedule; these ratios are not used.' : 'Attn / Dispatch / Experts / Combine · F/B share percentages; total = 100. F/B times include A2A.';
+    moeRow.querySelector('.note')!.textContent = isVShaped ? 'MoE F/B overlap is not implemented for the V-shaped reference order.' : 'Fixed Megatron F/B order, no fallback. Both inputs ready before the pair; P2P sends after the pair. Balanced EP, no contention or delayed wgrad.';
     warmupExtra.setAttribute('aria-pressed', String(cfg.warmupPlusOne));
     moeToggle.set(cfg.moeOverlap ? 'on' : 'off');
     if (document.activeElement !== ratiosInput) ratiosInput.value = cfg.moeRatios;
@@ -425,14 +431,19 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     for (const [key, input] of inputs) {
       setValue(input, cfg[key] as number | undefined);
       input.disabled = (key === 'vpp' || key === 'groupSize') && (!SCHEDULES[cfg.schedule].supportsVpp || isVShaped);
+      input.title = isVShaped && key === 'vpp' ? 'This reference schedule uses exactly two chunks per rank.' : isVShaped && key === 'groupSize' ? 'Group size is not used by the V-shaped reference order.' : '';
+      if (isVShaped && key === 'groupSize') input.value = '';
     }
     // Warmup formula row: built-in schedules show theirs greyed out; custom edits.
-    formulaCell.hidden = prefetchCell.hidden = isVShaped;
+    formulaCell.hidden = prefetchCell.hidden = false;
     const editable = cfg.schedule === 'custom';
-    const formula = editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
+    const formula = isVShaped ? 'Automatic (reference order)' : editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
     formulaInput.disabled = !editable;
     if (document.activeElement !== formulaInput) formulaInput.value = formula;
-    try {
+    if (isVShaped) {
+      formulaNote.textContent = 'Warmup and cooldown are generated from PP and microbatch count. Editing warmup / +1 is not implemented. Steady state repeats chunk-specific F/B operations, not necessarily strict F-B alternation on each rank.';
+      formulaNote.classList.remove('error');
+    } else try {
       const f = parseFormula(formula);
       const total = cfg.microBatches * cfg.vpp;
       const vals = Array.from({ length: cfg.pp }, (_, r) => Math.max(0, Math.min(total, Math.round(f.eval(warmupVars(cfg, r))) + (cfg.warmupPlusOne ? 1 : 0))));
@@ -449,19 +460,19 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     // for the built-in schedules, where they show Megatron's placement.
     sendSeg.set(cfg.sendAfter);
     waitSeg.set(cfg.waitGrad);
-    const noSteady = cfg.schedule === 'gpipe' || isVShaped;
+    const noSteady = cfg.schedule === 'gpipe';
     sendCell.hidden = noSteady;
     waitCell.hidden = noSteady;
     sendSeg.enable(cfg.schedule === 'custom');
     waitSeg.enable(cfg.schedule === 'custom');
-    sendNote.textContent = cfg.moeOverlap ? 'Paired F/B outputs are sent after the combined step.' : t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
-    waitNote.textContent = cfg.moeOverlap ? 'Both forward input and backward gradient must be ready before the fixed pair starts.' : t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
+    sendNote.textContent = isVShaped ? 'Fixed: send each F or B output immediately after its producer. The paired F/B placement switch does not apply.' : cfg.moeOverlap ? 'Paired F/B outputs are sent after the combined step.' : t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
+    waitNote.textContent = isVShaped ? 'Fixed: wait for each input immediately before its F or B consumer.' : cfg.moeOverlap ? 'Both forward input and backward gradient must be ready before the fixed pair starts.' : t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
     // Prefetch exists only on the isend / irecv path of the interleaved skeleton;
     // shown greyed out elsewhere, like the comm-model row.
     const hasComm = cfg.schedule === 'interleaved-1f1b' || cfg.schedule === 'custom';
     prefetchSeg.set(cfg.prefetchWarmupFlush ? 'on' : 'off');
     prefetchSeg.enable(hasComm && cfg.commModel === 'async');
-    prefetchNote.textContent = t(cfg.prefetchWarmupFlush ? 'prefetchOnHint' : 'prefetchOffHint');
+    prefetchNote.textContent = isVShaped ? 'Receive prefetch is not implemented. Receives wait just before use; sends remain nonblocking.' : t(cfg.prefetchWarmupFlush ? 'prefetchOnHint' : 'prefetchOffHint');
     if (latencyToggle) {
       latencyToggle.textContent = cfg.p2pLatency > 0 ? t('latencyZero') : t('latencyRestore');
       latencyToggle.title = cfg.p2pLatency > 0 ? t('latencyZeroHint') : t('latencyRestoreHint');
