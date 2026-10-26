@@ -59,4 +59,5 @@ const html = readFileSync(join(root, 'index.html'), 'utf8')
   .replace('src="/src/main.ts"', `src="${base}src/main.js"`);
 writeFileSync(join(dist, 'index.html'), html);
 writeFileSync(join(dist, '.nojekyll'), '');
+cpSync(join(root, 'public/THIRD_PARTY_NOTICES.txt'), join(dist, 'THIRD_PARTY_NOTICES.txt'));
 console.log(`built ${count} modules into dist/ (base=${base})`);

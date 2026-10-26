@@ -1,3 +1,4 @@
+import { Topology } from '../sim/schedules/common.ts';
 import { DEFAULT_CONFIG, SCHEDULES, activationBytes, builtinWarmupFormula, inputBytes, layersPerChunk, megatronPlacement, parseFormula, quadraticShare, simulate, validateConfig, warmupVars } from '../sim/index.ts';
 import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
 import { fmtBytes } from './format.ts';
@@ -36,7 +37,7 @@ const MODEL_ROWS: (NumField & { note: Key })[] = [
   { key: 'linearAttnRatio', label: 'linearAttn', min: 0, step: 1, note: 'linearAttnNote' },
 ];
 
-const SCHEDULE_DESC: Record<ScheduleName, Key> = { gpipe: 'schedGpipe', '1f1b': 'sched1f1b', 'interleaved-1f1b': 'schedInterleaved', custom: 'schedCustom' };
+const SCHEDULE_DESC: Record<ScheduleName, Key> = { gpipe: 'schedGpipe', '1f1b': 'sched1f1b', 'interleaved-1f1b': 'schedInterleaved', '1f1b-v': 'schedVShaped', custom: 'schedCustom' };
 const COMM_OPTIONS: { value: CommModel; label: Key; hint: Key }[] = [
   { value: 'async', label: 'commAsync', hint: 'commAsyncHint' },
   { value: 'sync', label: 'commSync', hint: 'commSyncHint' },
@@ -207,10 +208,10 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     // Switching schedule also resets the placement to what Megatron uses for it.
     b.addEventListener('click', () => {
       // 1F1B (and the GPipe baseline, which mirrors its communication) are blocking-only.
-      const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : store.get().config.commModel;
+      const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : info.name === '1f1b-v' ? 'async' : store.get().config.commModel;
       // Switching to a blocking-only schedule drops the settings that only exist on the isend / irecv path.
-      const prefetch = comm === 'async' && store.get().config.prefetchWarmupFlush;
-      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...(!info.supportsVpp ? { warmupPlusOne: false, moeOverlap: false } : {}), ...megatronPlacement(info.name, comm) });
+      const prefetch = info.name !== '1f1b-v' && comm === 'async' && store.get().config.prefetchWarmupFlush;
+      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...(!info.supportsVpp || info.name === '1f1b-v' ? { warmupPlusOne: false, moeOverlap: false } : {}), ...megatronPlacement(info.name, comm) });
     });
     schedButtons.set(info.name, b);
     scheduleSlot.appendChild(b);
@@ -410,19 +411,23 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
 
   store.subscribeTo(['config', 'error'], (s) => {
     const cfg = s.config;
-    const supportsMoe = SCHEDULES[cfg.schedule].supportsVpp;
+    const isVShaped = cfg.schedule === '1f1b-v';
+    const supportsMoe = SCHEDULES[cfg.schedule].supportsVpp && !isVShaped;
     ratiosRow.hidden = warmupExtra.hidden = moeRow.hidden = !supportsMoe;
     warmupExtra.setAttribute('aria-pressed', String(cfg.warmupPlusOne));
     moeToggle.set(cfg.moeOverlap ? 'on' : 'off');
     if (document.activeElement !== ratiosInput) ratiosInput.value = cfg.moeRatios;
     errorBox.textContent = s.error ?? '';
     for (const [name, b] of schedButtons) b.classList.toggle('active', name === cfg.schedule);
-    schedDesc.textContent = t(SCHEDULE_DESC[cfg.schedule]);
+    const topology = new Topology(cfg.pp, cfg.vpp, isVShaped);
+    const placement = isVShaped && Number.isInteger(cfg.pp) && cfg.pp > 0 ? ` Forward ranks: ${Array.from({length:2*cfg.pp},(_,s)=>topology.rank(s)).join(' → ')}. Loss: rank 0.` : '';
+    schedDesc.textContent = t(SCHEDULE_DESC[cfg.schedule]) + placement;
     for (const [key, input] of inputs) {
       setValue(input, cfg[key] as number | undefined);
-      input.disabled = (key === 'vpp' || key === 'groupSize') && !SCHEDULES[cfg.schedule].supportsVpp;
+      input.disabled = (key === 'vpp' || key === 'groupSize') && (!SCHEDULES[cfg.schedule].supportsVpp || isVShaped);
     }
     // Warmup formula row: built-in schedules show theirs greyed out; custom edits.
+    formulaCell.hidden = prefetchCell.hidden = isVShaped;
     const editable = cfg.schedule === 'custom';
     const formula = editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
     formulaInput.disabled = !editable;
@@ -444,7 +449,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     // for the built-in schedules, where they show Megatron's placement.
     sendSeg.set(cfg.sendAfter);
     waitSeg.set(cfg.waitGrad);
-    const noSteady = cfg.schedule === 'gpipe';
+    const noSteady = cfg.schedule === 'gpipe' || isVShaped;
     sendCell.hidden = noSteady;
     waitCell.hidden = noSteady;
     sendSeg.enable(cfg.schedule === 'custom');
@@ -470,7 +475,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
       : cfg.schedule === '1f1b' ? t('commPath1f1bSync')
       : cfg.schedule === 'gpipe' ? t('commPathGpipe')
       : '';
-    commNote.textContent = `${t(COMM_OPTIONS.find((o) => o.value === comm)!.hint)} ${pathHint}`.trim();
+    commNote.textContent = isVShaped ? 'Nonblocking sends; receive posted and waited immediately before its consumer. No P2P at the same-rank fold; final drain waits for outstanding sends.' : `${t(COMM_OPTIONS.find((o) => o.value === comm)!.hint)} ${pathHint}`.trim();
     dtypeSelect.value = String(cfg.dtypeBytes);
     const act = activationBytes(cfg);
     modelNote.textContent = `${t('noteTimeUnit', { lpc: layersPerChunk(cfg), stages: cfg.pp * cfg.vpp })} ${t('noteInput', { input: fmtBytes(inputBytes(cfg)), act: fmtBytes(act.input + act.intermediate), layers: layersPerChunk(cfg), mult: cfg.activationMultiplier })}`;

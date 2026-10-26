@@ -8,7 +8,7 @@
  * mirrors Megatron-LM's `batch_isend_irecv(...)` + `wait()` semantics.
  */
 
-export type ScheduleName = 'gpipe' | '1f1b' | 'interleaved-1f1b' | 'custom';
+export type ScheduleName = 'gpipe' | '1f1b-v' | '1f1b' | 'interleaved-1f1b' | 'custom';
 
 /**
  * How the program issues point-to-point communication. The transport itself
@@ -218,7 +218,7 @@ export interface Op {
   id: number;
   rank: number;
   chunk: number;
-  /** Global stage index = chunk * pp + rank (interleaved placement). */
+  /** Logical model stage, resolved through Topology (cyclic or V-shaped placement). */
   stage: number;
   mb: number;
   kind: OpKind;

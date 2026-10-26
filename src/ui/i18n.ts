@@ -39,6 +39,7 @@ const en = {
   commPathGpipe: 'GPipe is a textbook baseline (not in Megatron), given 1F1B\'s blocking communication so the two differ only in memory.',
   schedGpipe: 'All forwards, then all backwards. Peak activations = m micro-batches.',
   sched1f1b: 'Megatron non-interleaved 1F1B: warmup / steady / cooldown. Peak activations ≈ pp.',
+  schedVShaped: '1F1B-V: two chunks per GPU in V-shaped order (rank 0 owns first and last). Full backward; paper reference order, nonblocking sends and just-in-time receives. No B/W split or offload.',
   schedInterleaved: 'Megatron interleaved 1F1B: vpp chunks per rank, bubble shrinks to 1/vpp, more communication.',
   schedCustom: 'Interleaved skeleton with an editable warmup formula. Defaults reproduce Megatron; change one thing and watch.',
   warmupFormula: 'Warmup(r)',

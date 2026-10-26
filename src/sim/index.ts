@@ -22,7 +22,7 @@ export { warmupVars } from './schedules/custom.ts';
 export function validateConfig(cfg: SimConfig): string[] {
   const errors: string[] = [];
   const ratios = parseMoeRatios(cfg.moeRatios);
-  if (SCHEDULES[cfg.schedule]?.supportsVpp && (ratios.length !== 4 || ratios.some(x => !Number.isFinite(x) || x < 0) || Math.abs(ratios.reduce((a, b) => a + b, 0) - 100) > 1e-6)) errors.push('MoE ratios: enter four non-negative percentages totaling 100 (attn/dispatch/experts/combine)');
+  if (SCHEDULES[cfg.schedule]?.supportsVpp && cfg.schedule !== '1f1b-v' && (ratios.length !== 4 || ratios.some(x => !Number.isFinite(x) || x < 0) || Math.abs(ratios.reduce((a, b) => a + b, 0) - 100) > 1e-6)) errors.push('MoE ratios: enter four non-negative percentages totaling 100 (attn/dispatch/experts/combine)');
   const isInt = (x: number) => Number.isInteger(x);
   if (!isInt(cfg.pp) || cfg.pp < 1) errors.push('pp must be an integer ≥ 1');
   if (!isInt(cfg.vpp) || cfg.vpp < 1) errors.push('vpp must be an integer ≥ 1');
@@ -44,7 +44,13 @@ export function validateConfig(cfg: SimConfig): string[] {
   if (!info) errors.push(`unknown schedule: ${cfg.schedule}`);
   else {
     if (!info.supportsVpp && cfg.vpp !== 1) errors.push(`${info.label} requires vpp = 1`);
-    if (info.supportsVpp) {
+    if (cfg.schedule === '1f1b-v') {
+      if (cfg.vpp !== 2) errors.push('1F1B-V requires exactly two chunks per rank');
+      if (cfg.commModel !== 'async') errors.push('1F1B-V uses nonblocking sends and just-in-time receives (async)');
+      if (cfg.moeOverlap || cfg.warmupPlusOne || cfg.prefetchWarmupFlush) errors.push('1F1B-V does not support MoE overlap, warmup +1 or receive prefetch');
+      if (cfg.sendAfter !== 'F' || cfg.waitGrad !== 'beforeB') errors.push('1F1B-V uses send after each pass and wait immediately before its consumer');
+    }
+    if (info.supportsVpp && cfg.schedule !== '1f1b-v') {
       // Megatron's constraints on the group size (schedules.py L1133-L1153).
       // With the default G = pp this is exactly "m divisible by pp".
       const G = cfg.groupSize;

@@ -1,3 +1,5 @@
+import { Topology } from './common.ts';
+import { vShapedProgram } from './vShaped.ts';
 import { combineMoe } from '../moe.ts';
 import type { Program, ScheduleName, SimConfig } from '../types.ts';
 import { gpipeProgram } from './gpipe.ts';
@@ -33,6 +35,7 @@ export const SCHEDULES: Record<ScheduleName, ScheduleInfo> = {
     supportsVpp: true,
     generate: interleavedProgram,
   },
+  '1f1b-v': { name: '1f1b-v', label: '1F1B-V (V-shape)', supportsVpp: true, generate: vShapedProgram },
   custom: {
     name: 'custom',
     label: 'Custom',
@@ -56,10 +59,11 @@ export function buildProgram(cfg: SimConfig): Program {
  * `lossTime = 0` it has no duration and the UI does not draw it.
  */
 function withLoss(program: Program, cfg: SimConfig): Program {
-  const lastStage = cfg.pp * cfg.vpp - 1;
+  const topology = new Topology(cfg.pp, cfg.vpp, cfg.schedule === '1f1b-v');
+  const lastStage = topology.numStages - 1;
   return program.map((steps, rank) =>
     steps.flatMap((step) =>
-      step.type === 'compute' && step.kind === 'F' && step.chunk * cfg.pp + rank === lastStage
+      step.type === 'compute' && step.kind === 'F' && topology.stage(step.chunk, rank) === lastStage
         ? [step, { type: 'compute' as const, kind: 'L' as const, mb: step.mb, chunk: step.chunk }]
         : [step],
     ),

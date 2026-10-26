@@ -63,13 +63,16 @@ export function readUrl(defaults: SimConfig): { config: SimConfig; selectedMb: n
     config.warmupPlusOne = false;
     config.moeOverlap = false;
   }
+  if (schedule === '1f1b-v') {
+    Object.assign(config, {vpp:2, commModel:'async', warmupPlusOne:false, moeOverlap:false, prefetchWarmupFlush:false, sendAfter:'F', waitGrad:'beforeB'});
+  }
   const sel = Number(q.get('sel'));
   return { config: config as unknown as SimConfig, selectedMb: q.has('sel') && Number.isFinite(sel) ? sel : null };
 }
 
 export function writeUrl(config: SimConfig, defaults: SimConfig, selectedMb: number | null): void {
   const parts: string[] = [];
-  const impliedVpp = !SCHEDULES[config.schedule].supportsVpp;
+  const impliedVpp = !SCHEDULES[config.schedule].supportsVpp || config.schedule === '1f1b-v';
   for (const [key, def] of Object.entries(defaults)) {
     if (impliedVpp && ['moeRatios', 'warmupPlusOne', 'moeOverlap'].includes(key)) continue;
     if (key === 'vpp' && impliedVpp) continue;
