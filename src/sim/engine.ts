@@ -1,3 +1,4 @@
+import { Topology } from './schedules/common.ts';
 import { moeTiming } from './moe.ts';
 import type { SimConfig } from './types.ts';
 import type { CostModel } from './cost.ts';
@@ -84,6 +85,7 @@ function channelKey(src: number, dst: number, kind: string): string {
  * partial timeline.
  */
 export function runProgram(program: Program, pp: number, cost: CostModel, cfg?: SimConfig): RunResult {
+  const topology = new Topology(pp, cfg?.vpp ?? 1, cfg?.schedule === '1f1b-v');
   const ranks: RankState[] = Array.from({ length: pp }, () => ({
     pc: 0,
     clock: 0,
@@ -281,8 +283,8 @@ export function runProgram(program: Program, pp: number, cost: CostModel, cfg?: 
         // fail with a message instead of drawing a plausible-looking timeline.
         if (cfg?.moeOverlap && step.kind !== 'L') {
           const b = step.backward ?? (step.kind === 'B' ? step : null);
-          if (b && !forwarded.has(`${b.mb}:${b.chunk * pp + r}`)) {
-            failure = { kind: 'program', message: `MoE overlap dependency conflict on rank ${r}: B mb${b.mb} chunk${b.chunk} requires its completed forward before combine backward; fixed pair cannot run.`, blocked: blockedRanks(), op: { id: nextOpId, rank: r, stage: b.chunk * pp + r, chunk: b.chunk, mb: b.mb, kind: 'B', start: st.clock, end: st.clock + cost.compute('B', b.mb, b.chunk, r), predecessors: [] } };
+          if (b && !forwarded.has(`${b.mb}:${topology.stage(b.chunk, r)}`)) {
+            failure = { kind: 'program', message: `MoE overlap dependency conflict on rank ${r}: B mb${b.mb} chunk${b.chunk} requires its completed forward before combine backward; fixed pair cannot run.`, blocked: blockedRanks(), op: { id: nextOpId, rank: r, stage: topology.stage(b.chunk, r), chunk: b.chunk, mb: b.mb, kind: 'B', start: st.clock, end: st.clock + cost.compute('B', b.mb, b.chunk, r), predecessors: [] } };
             break;
           }
           const timing = moeTiming(step, r, st.clock, cfg, cost);
@@ -294,11 +296,11 @@ export function runProgram(program: Program, pp: number, cost: CostModel, cfg?: 
           specs.forEach((spec, i) => {
             const segs = timing.segments[i];
             const id = nextOpId++;
-            ops.push({ id, rank: r, chunk: spec.chunk, stage: spec.chunk * pp + r, mb: spec.mb, kind: spec.kind,
+            ops.push({ id, rank: r, chunk: spec.chunk, stage: topology.stage(spec.chunk, r), mb: spec.mb, kind: spec.kind,
               start: segs[0].start, end: segs.at(-1)!.end, segments: segs, pair,
               pairStart: st.clock, pairEnd: timing.end, predecessors: binding.slice() });
             st.opIds.push(id);
-            if (spec.kind === 'F') forwarded.add(`${spec.mb}:${spec.chunk * pp + r}`);
+            if (spec.kind === 'F') forwarded.add(`${spec.mb}:${topology.stage(spec.chunk, r)}`);
           });
           st.commBinding = [];
           st.clock = timing.end;
@@ -306,17 +308,31 @@ export function runProgram(program: Program, pp: number, cost: CostModel, cfg?: 
           progress = true;
           continue;
         }
-        const key = `${step.mb}:${step.chunk * pp + r}`;
+        const key = `${step.mb}:${topology.stage(step.chunk, r)}`;
         const dur = cost.compute(step.kind, step.mb, step.chunk, r);
         if (step.kind === 'F') forwarded.add(key);
         else if (step.kind === 'B' && !forwarded.has(key)) {
           failure = {
             kind: 'program',
-            message: `Program error on rank ${r}: B of micro-batch ${step.mb} at stage ${step.chunk * pp + r} is scheduled before its forward.`,
+            message: `Program error on rank ${r}: B of micro-batch ${step.mb} at stage ${topology.stage(step.chunk, r)} is scheduled before its forward.`,
             blocked: blockedRanks(),
-            op: { id: nextOpId, rank: r, chunk: step.chunk, stage: step.chunk * pp + r, mb: step.mb, kind: 'B', start: st.clock, end: st.clock + dur, predecessors: [] },
+            op: { id: nextOpId, rank: r, chunk: step.chunk, stage: topology.stage(step.chunk, r), mb: step.mb, kind: 'B', start: st.clock, end: st.clock + dur, predecessors: [] },
           };
           break;
+        }
+        if (cfg?.schedule === '1f1b-v') {
+          const stage = topology.stage(step.chunk, r);
+          const needs: { kind: string; stage: number }[] = [];
+          if (step.kind === 'F' && stage > 0 && topology.rank(stage - 1) === r) needs.push({kind:'F',stage:stage-1});
+          if (step.kind === 'L') needs.push({kind:'F',stage});
+          if (step.kind === 'B') {
+            if (stage === topology.numStages - 1) needs.push({kind:'L',stage});
+            else if (topology.rank(stage + 1) === r) needs.push({kind:'B',stage:stage+1});
+          }
+          if (needs.some(dep => !st.opIds.some(id => ops[id].kind === dep.kind && ops[id].stage === dep.stage && ops[id].mb === step.mb && ops[id].end <= st.clock))) {
+            failure = {kind:'program',message:`V-shape local dependency not satisfied at rank ${r}, stage ${stage}`,blocked:blockedRanks(),op:null};
+            break;
+          }
         }
         const prev = st.opIds.length ? st.opIds[st.opIds.length - 1] : null;
         const predecessors: BlockedBy[] = st.commBinding;
@@ -330,7 +346,7 @@ export function runProgram(program: Program, pp: number, cost: CostModel, cfg?: 
           id,
           rank: r,
           chunk: step.chunk,
-          stage: step.chunk * pp + r,
+          stage: topology.stage(step.chunk, r),
           mb: step.mb,
           kind: step.kind,
           start: st.clock,

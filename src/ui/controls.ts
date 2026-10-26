@@ -1,3 +1,5 @@
+import { vShapedOrder } from '../sim/schedules/vShaped.ts';
+import { Topology } from '../sim/schedules/common.ts';
 import { DEFAULT_CONFIG, SCHEDULES, activationBytes, builtinWarmupFormula, inputBytes, layersPerChunk, megatronPlacement, parseFormula, quadraticShare, simulate, validateConfig, warmupVars } from '../sim/index.ts';
 import type { CommModel, ScheduleName, SimConfig } from '../sim/index.ts';
 import { fmtBytes } from './format.ts';
@@ -36,7 +38,7 @@ const MODEL_ROWS: (NumField & { note: Key })[] = [
   { key: 'linearAttnRatio', label: 'linearAttn', min: 0, step: 1, note: 'linearAttnNote' },
 ];
 
-const SCHEDULE_DESC: Record<ScheduleName, Key> = { gpipe: 'schedGpipe', '1f1b': 'sched1f1b', 'interleaved-1f1b': 'schedInterleaved', custom: 'schedCustom' };
+const SCHEDULE_DESC: Record<ScheduleName, Key> = { gpipe: 'schedGpipe', '1f1b': 'sched1f1b', 'interleaved-1f1b': 'schedInterleaved', '1f1b-v': 'schedVShaped', custom: 'schedCustom' };
 const COMM_OPTIONS: { value: CommModel; label: Key; hint: Key }[] = [
   { value: 'async', label: 'commAsync', hint: 'commAsyncHint' },
   { value: 'sync', label: 'commSync', hint: 'commSyncHint' },
@@ -207,10 +209,10 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     // Switching schedule also resets the placement to what Megatron uses for it.
     b.addEventListener('click', () => {
       // 1F1B (and the GPipe baseline, which mirrors its communication) are blocking-only.
-      const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : store.get().config.commModel;
+      const comm = info.name === '1f1b' || info.name === 'gpipe' ? 'sync' : info.name === '1f1b-v' ? 'async' : store.get().config.commModel;
       // Switching to a blocking-only schedule drops the settings that only exist on the isend / irecv path.
-      const prefetch = comm === 'async' && store.get().config.prefetchWarmupFlush;
-      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...(!info.supportsVpp ? { warmupPlusOne: false, moeOverlap: false } : {}), ...megatronPlacement(info.name, comm) });
+      const prefetch = info.name !== '1f1b-v' && comm === 'async' && store.get().config.prefetchWarmupFlush;
+      update({ schedule: info.name, vpp: info.supportsVpp ? 2 : 1, commModel: comm, prefetchWarmupFlush: prefetch, ...(!info.supportsVpp || info.name === '1f1b-v' ? { warmupPlusOne: false, moeOverlap: false } : {}), ...megatronPlacement(info.name, comm) });
     });
     schedButtons.set(info.name, b);
     scheduleSlot.appendChild(b);
@@ -410,24 +412,54 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
 
   store.subscribeTo(['config', 'error'], (s) => {
     const cfg = s.config;
-    const supportsMoe = SCHEDULES[cfg.schedule].supportsVpp;
-    ratiosRow.hidden = warmupExtra.hidden = moeRow.hidden = !supportsMoe;
+    const isVShaped = cfg.schedule === '1f1b-v';
+    const supportsMoe = SCHEDULES[cfg.schedule].supportsVpp && !isVShaped;
+    ratiosRow.hidden = warmupExtra.hidden = moeRow.hidden = !supportsMoe && !isVShaped;
+    warmupExtra.disabled = isVShaped;
+    warmupExtra.title = isVShaped ? 'Warmup +1 is not implemented for the V-shaped reference order.' : 'Add one warmup forward (toggle)';
+    ratiosInput.disabled = isVShaped;
+    moeToggle.enable(!isVShaped);
+    ratiosRow.querySelector('.note')!.textContent = isVShaped ? 'MoE phase decomposition is not implemented for this schedule; these ratios are not used.' : 'Attn / Dispatch / Experts / Combine · F/B share percentages; total = 100. F/B times include A2A.';
+    moeRow.querySelector('.note')!.textContent = isVShaped ? 'MoE F/B overlap is not implemented for the V-shaped reference order.' : 'Fixed Megatron F/B order, no fallback. Both inputs ready before the pair; P2P sends after the pair. Balanced EP, no contention or delayed wgrad.';
     warmupExtra.setAttribute('aria-pressed', String(cfg.warmupPlusOne));
     moeToggle.set(cfg.moeOverlap ? 'on' : 'off');
     if (document.activeElement !== ratiosInput) ratiosInput.value = cfg.moeRatios;
     errorBox.textContent = s.error ?? '';
     for (const [name, b] of schedButtons) b.classList.toggle('active', name === cfg.schedule);
-    schedDesc.textContent = t(SCHEDULE_DESC[cfg.schedule]);
+    const topology = new Topology(cfg.pp, cfg.vpp, isVShaped);
+    const placement = isVShaped && Number.isInteger(cfg.pp) && cfg.pp > 0 ? ` Forward ranks: ${Array.from({length:2*cfg.pp},(_,s)=>topology.rank(s)).join(' → ')}. Loss: rank 0.` : '';
+    schedDesc.textContent = t(SCHEDULE_DESC[cfg.schedule]) + placement;
     for (const [key, input] of inputs) {
       setValue(input, cfg[key] as number | undefined);
-      input.disabled = (key === 'vpp' || key === 'groupSize') && !SCHEDULES[cfg.schedule].supportsVpp;
+      input.disabled = (key === 'vpp' || key === 'groupSize') && (!SCHEDULES[cfg.schedule].supportsVpp || isVShaped);
+      input.title = isVShaped && key === 'vpp' ? 'This reference schedule uses exactly two chunks per rank.' : isVShaped && key === 'groupSize' ? 'Group size is not used by the V-shaped reference order.' : '';
+      if (isVShaped && key === 'groupSize') input.value = '';
     }
     // Warmup formula row: built-in schedules show theirs greyed out; custom edits.
+    formulaCell.hidden = prefetchCell.hidden = false;
     const editable = cfg.schedule === 'custom';
-    const formula = editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
+    const formula = isVShaped ? 'W(r) = count(F before first B on rank r)' : editable ? cfg.warmupFormula : builtinWarmupFormula(cfg.schedule);
     formulaInput.disabled = !editable;
     if (document.activeElement !== formulaInput) formulaInput.value = formula;
-    try {
+    if (isVShaped) {
+      const lines = [
+        'W(r) counts chunk-forward operations, not distinct microbatches. Computed from the generated reference order S(r; pp, m), after warmup/cooldown reordering; not the interleaved VPP formula.',
+      ];
+      if (validateConfig(cfg).length === 0) {
+        const counts = vShapedOrder(cfg.pp, cfg.microBatches).map(order => {
+          const firstB = order.findIndex(op => op.kind === 'B');
+          const prefix = order.slice(0, firstB < 0 ? order.length : firstB);
+          return [0, 1].map(chunk => prefix.filter(op => op.kind === 'F' && op.chunk === chunk).length);
+        });
+        lines.push(t('warmupValues', { v: counts.map(c => c[0] + c[1]).join(', ') }));
+        lines.push(...counts.map((c, r) => `rank ${r}: ${c[0] + c[1]} F = ${c[0]} × F₀ + ${c[1]} × F₁`));
+      } else {
+        lines.push('Warmup counts unavailable until the configuration is valid.');
+      }
+      lines.push('First-B boundary only: the remaining operations include transition and cooldown, not all steady state. Warmup / +1 editing is not implemented.');
+      formulaNote.textContent = lines.join('\n');
+      formulaNote.classList.remove('error');
+    } else try {
       const f = parseFormula(formula);
       const total = cfg.microBatches * cfg.vpp;
       const vals = Array.from({ length: cfg.pp }, (_, r) => Math.max(0, Math.min(total, Math.round(f.eval(warmupVars(cfg, r))) + (cfg.warmupPlusOne ? 1 : 0))));
@@ -449,14 +481,14 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
     waitCell.hidden = noSteady;
     sendSeg.enable(cfg.schedule === 'custom');
     waitSeg.enable(cfg.schedule === 'custom');
-    sendNote.textContent = cfg.moeOverlap ? 'Paired F/B outputs are sent after the combined step.' : t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
-    waitNote.textContent = cfg.moeOverlap ? 'Both forward input and backward gradient must be ready before the fixed pair starts.' : t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
+    sendNote.textContent = isVShaped ? 'Fixed: send each F or B output immediately after its producer. The paired F/B placement switch does not apply.' : cfg.moeOverlap ? 'Paired F/B outputs are sent after the combined step.' : t(cfg.sendAfter === 'F' ? 'sendAfterFHint' : 'sendAfterBHint');
+    waitNote.textContent = isVShaped ? 'Fixed: wait for each input immediately before its F or B consumer.' : cfg.moeOverlap ? 'Both forward input and backward gradient must be ready before the fixed pair starts.' : t(cfg.waitGrad === 'beforeF' ? 'waitBeforeFHint' : 'waitBeforeBHint');
     // Prefetch exists only on the isend / irecv path of the interleaved skeleton;
     // shown greyed out elsewhere, like the comm-model row.
     const hasComm = cfg.schedule === 'interleaved-1f1b' || cfg.schedule === 'custom';
     prefetchSeg.set(cfg.prefetchWarmupFlush ? 'on' : 'off');
     prefetchSeg.enable(hasComm && cfg.commModel === 'async');
-    prefetchNote.textContent = t(cfg.prefetchWarmupFlush ? 'prefetchOnHint' : 'prefetchOffHint');
+    prefetchNote.textContent = isVShaped ? 'Receive prefetch is not implemented. Receives wait just before use; sends remain nonblocking.' : t(cfg.prefetchWarmupFlush ? 'prefetchOnHint' : 'prefetchOffHint');
     if (latencyToggle) {
       latencyToggle.textContent = cfg.p2pLatency > 0 ? t('latencyZero') : t('latencyRestore');
       latencyToggle.title = cfg.p2pLatency > 0 ? t('latencyZeroHint') : t('latencyRestoreHint');
@@ -470,7 +502,7 @@ export function mountControls(root: HTMLElement, scheduleSlot: HTMLElement, stor
       : cfg.schedule === '1f1b' ? t('commPath1f1bSync')
       : cfg.schedule === 'gpipe' ? t('commPathGpipe')
       : '';
-    commNote.textContent = `${t(COMM_OPTIONS.find((o) => o.value === comm)!.hint)} ${pathHint}`.trim();
+    commNote.textContent = isVShaped ? 'Nonblocking sends; receive posted and waited immediately before its consumer. No P2P at the same-rank fold; final drain waits for outstanding sends.' : `${t(COMM_OPTIONS.find((o) => o.value === comm)!.hint)} ${pathHint}`.trim();
     dtypeSelect.value = String(cfg.dtypeBytes);
     const act = activationBytes(cfg);
     modelNote.textContent = `${t('noteTimeUnit', { lpc: layersPerChunk(cfg), stages: cfg.pp * cfg.vpp })} ${t('noteInput', { input: fmtBytes(inputBytes(cfg)), act: fmtBytes(act.input + act.intermediate), layers: layersPerChunk(cfg), mult: cfg.activationMultiplier })}`;

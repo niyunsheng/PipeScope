@@ -1,52 +1,60 @@
 import type { CommStep, ComputeStep, OpKind, PostStep, Step, Transfer, WaitStep } from '../types.ts';
 
 /**
- * Helpers shared by schedule generators. All generators use Megatron's
+ * Helpers shared by schedule generators. By default, use Megatron's
  * interleaved placement: global stage of (chunk, rank) is `chunk * pp + rank`,
  * so a chunk's forward output flows to rank+1 (wrapping to rank 0 for the next
  * chunk) and its backward gradient flows to rank-1 (wrapping to rank pp-1).
+ * V-shaped placement reverses chunk 1 and omits same-device transfers.
  */
 export class Topology {
   readonly pp: number;
   readonly vpp: number;
   readonly numStages: number;
 
-  constructor(pp: number, vpp: number) {
+  readonly vShaped: boolean;
+
+  constructor(pp: number, vpp: number, vShaped = false) {
+    this.vShaped = vShaped;
     this.pp = pp;
     this.vpp = vpp;
     this.numStages = pp * vpp;
   }
 
   stage(chunk: number, rank: number): number {
-    return chunk * this.pp + rank;
+    return chunk * this.pp + (this.vShaped && chunk === 1 ? this.pp - 1 - rank : rank);
+  }
+
+  rank(stage: number): number {
+    return this.vShaped && stage >= this.pp ? 2 * this.pp - 1 - stage : stage % this.pp;
   }
 
   /** Transfer describing this rank sending its F output for (mb, chunk). Null on last stage. */
   sendF(rank: number, mb: number, chunk: number): Transfer | null {
     const s = this.stage(chunk, rank);
-    if (s >= this.numStages - 1) return null;
-    return { kind: 'F', peer: (rank + 1) % this.pp, tag: fTag(mb, s), mb };
+    if (s >= this.numStages - 1 || this.rank(s + 1) === rank) return null;
+    return { kind: 'F', peer: this.rank(s + 1), tag: fTag(mb, s), mb };
   }
 
   /** Transfer describing this rank receiving the F input for (mb, chunk). Null on first stage. */
   recvF(rank: number, mb: number, chunk: number): Transfer | null {
     const s = this.stage(chunk, rank);
-    if (s === 0) return null;
-    return { kind: 'F', peer: (rank - 1 + this.pp) % this.pp, tag: fTag(mb, s - 1), mb };
+    if (s === 0 || this.rank(s - 1) === rank) return null;
+    return { kind: 'F', peer: this.rank(s - 1), tag: fTag(mb, s - 1), mb };
   }
 
   /** Transfer describing this rank sending its B output (input grad) for (mb, chunk). Null on first stage. */
   sendB(rank: number, mb: number, chunk: number): Transfer | null {
     const s = this.stage(chunk, rank);
-    if (s === 0) return null;
-    return { kind: 'B', peer: (rank - 1 + this.pp) % this.pp, tag: bTag(mb, s), mb };
+    if (s === 0 || this.rank(s - 1) === rank) return null;
+    return { kind: 'B', peer: this.rank(s - 1), tag: bTag(mb, s), mb };
   }
 
   /** Transfer describing this rank receiving the B input (output grad) for (mb, chunk). Null on last stage. */
   recvB(rank: number, mb: number, chunk: number): Transfer | null {
     const s = this.stage(chunk, rank);
-    if (s >= this.numStages - 1) return null;
-    return { kind: 'B', peer: (rank + 1) % this.pp, tag: bTag(mb, s + 1), mb };
+    if (s >= this.numStages - 1 || this.rank(s + 1) === rank) return null;
+    return { kind: 'B', peer: this.rank(s + 1), tag: bTag(mb, s + 1), mb };
   }
 }
 
